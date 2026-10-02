@@ -1,615 +1,95 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finalizar Ficha</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Ficha</title>
 
-```
-<style>
-    body {
-        margin: 0;
-        background: #0b0b0b;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
-    }
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-    h1 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    .campo {
-        background: #181818;
-        border: 1px solid #444;
-        border-radius: 10px;
-        padding: 18px;
-        margin-bottom: 15px;
-    }
+        .campo {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
 
-    .titulo {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
+        .titulo {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-    input {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        background: #0b0b0b;
-        color: white;
-        border: 1px solid #555;
-        border-radius: 6px;
-        font-size: 17px;
-    }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #0b0b0b;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            font-size: 17px;
+        }
 
-    .origem {
-        font-size: 18px;
-        color: #ddd;
-    }
-
-    .lista-origens {
-        margin-top: 10px;
-    }
-
-    .origem-item {
-        background: #101010;
-        border: 1px solid #444;
-        border-radius: 8px;
-        margin-bottom: 8px;
-        overflow: hidden;
-    }
-
-    .origem-titulo {
-        padding: 14px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 17px;
-    }
-
-    .origem-titulo:hover {
-        background: #222;
-    }
-
-    .seta {
-        font-size: 16px;
-        transition: transform 0.2s;
-    }
-
-    .descricao {
-        display: none;
-        padding: 12px 14px;
-        border-top: 1px solid #333;
-        color: #bbb;
-        font-size: 15px;
-        line-height: 1.5;
-    }
-
-    .origem-item.aberta .descricao {
-        display: block;
-    }
-
-    .origem-item.aberta .seta {
-        transform: rotate(180deg);
-    }
-</style>
-```
-
+        .origem {
+            font-size: 18px;
+            color: #ddd;
+        }
+    </style>
 </head>
 
 <body>
 
-```
-<h1>FINALIZAR FICHA</h1>
-
-<div class="campo">
-    <div class="titulo">Nome do personagem:</div>
-
-    <input
-        type="text"
-        id="nomePersonagem"
-        placeholder="Digite o nome do personagem"
-    >
-</div>
-
-<div class="campo">
-    <div class="titulo">Nome do jogador:</div>
-
-    <input
-        type="text"
-        id="nomeJogador"
-        placeholder="Digite o nome do jogador"
-    >
-</div>
-
-<div class="campo">
-    <div class="titulo">Origem:</div>
-
-    <div class="origem" id="origem">
-        Nenhuma
-    </div>
-
-    <div class="lista-origens" id="listaOrigens">
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Acadêmico</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Agente de Saúde</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Amigo dos Animais</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Amnésico</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Artista</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Astronauta</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Atleta</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Blaster</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Body Builder</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Chef</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Chef do Outro Lado</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Cientista Forense</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Colegial</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Cosplayer</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Criminoso</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Cultista Arrependido</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Desgarrado</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Diplomata</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Dublê</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Engenheiro</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Espírito</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Executivo</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Experimento</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Explorador</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Fanático</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Fotógrafo</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Gaudério Abutre</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Ginasta</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Investigador</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Inventor</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Jornalista</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Legista</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Lutador</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Magnata</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Mateiro</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Mercenário</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Mergulhador</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Militar</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Místico</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Motorista</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Nerd</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Operário</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Personal Trainer</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Policial</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Professor</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Profetizado</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Psicólogo</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Religioso</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Repórter</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Revoltado</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Servidor Público</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>T.I.</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Teórico da Conspiração</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Trabalhador Rural</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Trambiqueiro</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Universitário</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-        <div class="origem-item">
-            <div class="origem-titulo">
-                <span>Vítima</span>
-                <span class="seta">▼</span>
-            </div>
-            <div class="descricao">Descrição ainda não adicionada.</div>
-        </div>
-
-    </div>
-</div>
-
-<script>
-    let origemEscolhida = localStorage.getItem("origem");
-
-    document.getElementById("origem").textContent =
-        origemEscolhida || "Nenhuma";
-
-    const origens = document.querySelectorAll(".origem-item");
-
-    origens.forEach(function(origem) {
-        origem.querySelector(".origem-titulo").addEventListener("click", function() {
-            origem.classList.toggle("aberta");
-        });
-    });
-</script>
-```
+    <h1>FINALIZAR FICHA</h1>
+
+    <div class="campo">
+        <div class="titulo">Nome do personagem:</div>
+
+        <input
+            type="text"
+            id="nomePersonagem"
+            placeholder="Digite o nome do personagem"
+        >
+    </div>
+
+    <div class="campo">
+        <div class="titulo">Nome do jogador:</div>
+
+        <input
+            type="text"
+            id="nomeJogador"
+            placeholder="Digite o nome do jogador"
+        >
+    </div>
+
+    <div class="campo">
+        <div class="titulo">Origem:</div>
+
+        <div class="origem" id="origem">
+            -
+        </div>
+    </div>
+
+    <script>
+        let origemEscolhida = localStorage.getItem("origem");
+
+        document.getElementById("origem").textContent =
+            origemEscolhida || "Nenhuma";
+    </script>
 
 </body>
-                </html>
-    
+</html>
+```
