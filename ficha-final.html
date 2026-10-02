@@ -1,95 +1,191 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finalizar Ficha</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            background: #0b0b0b;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
+    <title>Finalizar Ficha</title>
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
 
-        .campo {
-            background: #181818;
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 15px;
-        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-        .titulo {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+        .campo {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
 
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            background: #0b0b0b;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 6px;
-            font-size: 17px;
-        }
+        .titulo {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
 
-        .origem {
-            font-size: 18px;
-            color: #ddd;
-        }
-    </style>
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #0b0b0b;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            font-size: 17px;
+        }
+
+        .origem {
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        .menu-botao {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+            background: #292929;
+            color: white;
+
+            border: 1px solid #666;
+
+            font-size: 24px;
+            cursor: pointer;
+
+            z-index: 10;
+        }
+
+        .menu {
+            display: none;
+
+            position: fixed;
+            right: 20px;
+            bottom: 85px;
+
+            width: 180px;
+
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+
+            padding: 10px;
+
+            z-index: 10;
+        }
+
+        .menu.aberto {
+            display: block;
+        }
+
+        .menu a {
+            display: block;
+
+            color: white;
+            text-decoration: none;
+
+            padding: 12px;
+
+            border-radius: 6px;
+        }
+
+        .menu a:hover {
+            background: #292929;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>FINALIZAR FICHA</h1>
+    <h1>FINALIZAR FICHA</h1>
 
-    <div class="campo">
-        <div class="titulo">Nome do personagem:</div>
+    <div class="campo">
+        <div class="titulo">
+            Nome do personagem:
+        </div>
 
-        <input
-            type="text"
-            id="nomePersonagem"
-            placeholder="Digite o nome do personagem"
-        >
-    </div>
+        <input
+            type="text"
+            id="nomePersonagem"
+            placeholder="Digite o nome do personagem"
+        >
+    </div>
 
-    <div class="campo">
-        <div class="titulo">Nome do jogador:</div>
+    <div class="campo">
+        <div class="titulo">
+            Nome do jogador:
+        </div>
 
-        <input
-            type="text"
-            id="nomeJogador"
-            placeholder="Digite o nome do jogador"
-        >
-    </div>
+        <input
+            type="text"
+            id="nomeJogador"
+            placeholder="Digite o nome do jogador"
+        >
+    </div>
 
-    <div class="campo">
-        <div class="titulo">Origem:</div>
+    <div class="campo">
+        <div class="titulo">
+            Origem:
+        </div>
 
-        <div class="origem" id="origem">
-            -
-        </div>
-    </div>
+        <div class="origem" id="origem">
+            -
+        </div>
+    </div>
 
-    <script>
-        let origemEscolhida = localStorage.getItem("origem");
 
-        document.getElementById("origem").textContent =
-            origemEscolhida || "Nenhuma";
-    </script>
+    <div class="menu" id="menu">
+
+        <a href="ficha-final.html">
+            📋 Ficha
+        </a>
+
+        <a href="dados.html">
+            🎲 Dados
+        </a>
+
+    </div>
+
+
+    <button
+        class="menu-botao"
+        onclick="abrirMenu()"
+    >
+        ☰
+    </button>
+
+
+    <script>
+
+        let origemEscolhida =
+            localStorage.getItem("origem");
+
+        document.getElementById("origem").textContent =
+            origemEscolhida || "Nenhuma";
+
+
+        function abrirMenu() {
+
+            document
+                .getElementById("menu")
+                .classList.toggle("aberto");
+        }
+
+    </script>
 
 </body>
 </html>
-```

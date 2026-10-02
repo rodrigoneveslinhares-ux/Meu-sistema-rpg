@@ -1,458 +1,214 @@
+```html
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Origem</title>
+    <title>Origens</title>
 
-```
-<style>
-    body {
-        margin: 0;
-        background: #0b0b0b;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
-    }
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-    h1 {
-        text-align: center;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-    .info {
-        text-align: center;
-        color: #aaa;
-        margin-bottom: 25px;
-    }
+        .origem {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
 
-    .origem {
-        background: #181818;
-        border: 1px solid #444;
-        border-radius: 10px;
-        padding: 0;
-        margin-bottom: 12px;
-        cursor: pointer;
-        overflow: hidden;
-    }
+        .cabecalho-origem {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
 
-    .origem.selecionada {
-        border: 2px solid white;
-        background: #292929;
-    }
+        .nome-origem {
+            font-size: 18px;
+        }
 
-    .cabecalho-origem {
-        padding: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+        .seta {
+            transition: transform 0.2s;
+        }
 
-    .nome {
-        font-size: 20px;
-        font-weight: bold;
-    }
+        .descricao {
+            display: none;
+            padding: 0 16px 16px 16px;
+            color: #aaa;
+            border-top: 1px solid #333;
+            padding-top: 12px;
+        }
 
-    .seta {
-        font-size: 18px;
-        transition: transform 0.2s;
-        padding: 5px 10px;
-    }
+        .origem.aberta .descricao {
+            display: block;
+        }
 
-    .descricao {
-        display: none;
-        color: #aaa;
-        padding: 0 18px 18px 18px;
-        line-height: 1.5;
-    }
+        .origem.aberta .seta {
+            transform: rotate(180deg);
+        }
 
-    .origem.aberta .descricao {
-        display: block;
-    }
+        .origem.selecionada {
+            border: 2px solid white;
+        }
 
-    .origem.aberta .seta {
-        transform: rotate(180deg);
-    }
-
-    .continuar {
-        width: 100%;
-        padding: 16px;
-        margin-top: 15px;
-        background: #292929;
-        color: white;
-        border: 1px solid #555;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-    }
-
-    .continuar:hover {
-        background: #333;
-    }
-</style>
-```
-
+        .continuar {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            background: #292929;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
-```
-<h1>ORIGEM</h1>
-
-<div class="info">
-    Escolha a origem do seu personagem
-</div>
-
-<!-- ORIGENS EXISTENTES -->
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem">
-        <div class="nome">Lutador</div>
-        <div class="seta" onclick="abrirDescricao(event, this)">▼</div>
-    </div>
-    <div class="descricao">
-        Treinado para combate e confronto físico.
-    </div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem">
-        <div class="nome">Professor</div>
-        <div class="seta" onclick="abrirDescricao(event, this)">▼</div>
-    </div>
-    <div class="descricao">
-        Possui conhecimento e experiência acadêmica.
-    </div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem">
-        <div class="nome">Apresentador</div>
-        <div class="seta" onclick="abrirDescricao(event, this)">▼</div>
-    </div>
-    <div class="descricao">
-        Sabe lidar com pessoas e chamar atenção.
-    </div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem">
-        <div class="nome">Atleta</div>
-        <div class="seta" onclick="abrirDescricao(event, this)">▼</div>
-    </div>
-    <div class="descricao">
-        Possui preparo físico e disciplina.
-    </div>
-</div>
-
-<!-- NOVAS ORIGENS -->
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Acadêmico</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Agente de Saúde</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Amigo dos Animais</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Amnésico</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Artista</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Astronauta</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Blaster</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Body Builder</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Chef</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Chef do Outro Lado</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Cientista Forense</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Colegial</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Cosplayer</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Criminoso</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Cultista Arrependido</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Desgarrado</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Diplomata</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Dublê</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Engenheiro</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Espírito</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Executivo</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Experimento</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Explorador</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Fanático</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Fotógrafo</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Gaudério Abutre</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Ginasta</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Investigador</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Inventor</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Jornalista</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Legista</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Magnata</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Mateiro</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Mercenário</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Mergulhador</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Militar</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Místico</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Motorista</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Nerd</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Operário</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Personal Trainer</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Policial</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Profetizado</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Psicólogo</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Religioso</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Repórter</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Revoltado</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Servidor Público</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">T.I.</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Teórico da Conspiração</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Trabalhador Rural</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Trambiqueiro</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Universitário</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<div class="origem" onclick="selecionar(this)">
-    <div class="cabecalho-origem"><div class="nome">Vítima</div><div class="seta" onclick="abrirDescricao(event, this)">▼</div></div>
-    <div class="descricao">Descrição ainda não adicionada.</div>
-</div>
-
-<button class="continuar" onclick="continuar()">
-    CONTINUAR
-</button>
-
-<script>
-    let origemEscolhida = null;
-
-    function selecionar(elemento) {
-        document.querySelectorAll(".origem").forEach(origem => {
-            origem.classList.remove("selecionada");
+    <h1>ESCOLHA SUA ORIGEM</h1>
+
+    <div id="listaOrigens"></div>
+
+    <button class="continuar" onclick="continuar()">
+        CONTINUAR
+    </button>
+
+    <script>
+        const origens = [
+            "Lutador",
+            "Professor",
+            "Apresentador",
+            "Atleta",
+            "Acadêmico",
+            "Agente de Saúde",
+            "Amigo dos Animais",
+            "Amnésico",
+            "Artista",
+            "Astronauta",
+            "Blaster",
+            "Body Builder",
+            "Chef",
+            "Chef do Outro Lado",
+            "Cientista Forense",
+            "Colegial",
+            "Cosplayer",
+            "Criminoso",
+            "Cultista Arrependido",
+            "Desgarrado",
+            "Diplomata",
+            "Dublê",
+            "Engenheiro",
+            "Espírito",
+            "Executivo",
+            "Experimento",
+            "Explorador",
+            "Fanático",
+            "Fotógrafo",
+            "Gaudério Abutre",
+            "Ginasta",
+            "Investigador",
+            "Inventor",
+            "Jornalista",
+            "Legista",
+            "Magnata",
+            "Mateiro",
+            "Mercenário",
+            "Mergulhador",
+            "Militar",
+            "Místico",
+            "Motorista",
+            "Nerd",
+            "Operário",
+            "Personal Trainer",
+            "Policial",
+            "Profetizado",
+            "Psicólogo",
+            "Religioso",
+            "Repórter",
+            "Revoltado",
+            "Servidor Público",
+            "T.I.",
+            "Teórico da Conspiração",
+            "Trabalhador Rural",
+            "Trambiqueiro",
+            "Universitário",
+            "Vítima"
+        ];
+
+        const lista = document.getElementById("listaOrigens");
+
+        origens.forEach(nome => {
+            const div = document.createElement("div");
+            div.className = "origem";
+
+            div.innerHTML = `
+                <div class="cabecalho-origem"
+                     onclick="selecionar(this.parentElement)">
+                    <span class="nome-origem">${nome}</span>
+
+                    <span class="seta"
+                          onclick="abrirDescricao(event, this)">
+                        ▼
+                    </span>
+                </div>
+
+                <div class="descricao">
+                    Descrição ainda não adicionada.
+                </div>
+            `;
+
+            lista.appendChild(div);
         });
 
-        elemento.classList.add("selecionada");
-        origemEscolhida = elemento.querySelector(".nome").textContent;
-    }
+        function abrirDescricao(evento, seta) {
+            evento.stopPropagation();
 
-    function abrirDescricao(evento, seta) {
-        evento.stopPropagation();
+            const origem = seta.parentElement.parentElement;
 
-        const origem = seta.closest(".origem");
-        origem.classList.toggle("aberta");
-    }
-
-    function continuar() {
-        if (origemEscolhida === null) {
-            alert("Escolha uma origem primeiro!");
-            return;
+            origem.classList.toggle("aberta");
         }
 
-        localStorage.setItem("origem", origemEscolhida);
+        function selecionar(elemento) {
+            document.querySelectorAll(".origem").forEach(origem => {
+                origem.classList.remove("selecionada");
+            });
 
-        window.location.href = "atributos.html";
-    }
-</script>
-```
+            elemento.classList.add("selecionada");
+
+            localStorage.setItem(
+                "origem",
+                elemento.querySelector(".nome-origem").textContent
+            );
+        }
+
+        function continuar() {
+            const origemSelecionada =
+                localStorage.getItem("origem");
+
+            if (!origemSelecionada) {
+                alert("Escolha uma origem antes de continuar.");
+                return;
+            }
+
+            window.location.href = "atributos.html";
+        }
+    </script>
 
 </body>
-                                                                    </html>
-                                                                    
+</html>
+```

@@ -1,0 +1,306 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        .pericia {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .nome {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .linha {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .caixa {
+            width: 48px;
+            height: 42px;
+            box-sizing: border-box;
+            background: #0b0b0b;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .caixa-automatico {
+            color: #aaa;
+        }
+
+        .botao-dado {
+            width: 48px;
+            height: 42px;
+            background: #292929;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .resultado {
+            margin-top: 10px;
+            color: #aaa;
+            min-height: 20px;
+        }
+
+        .menu-voltar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            padding: 15px;
+            background: #292929;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 17px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎲 DADOS</h1>
+
+    <div class="subtitulo">
+        Role 1d20 + atributo + bônus manual
+    </div>
+
+    <div id="listaPericias"></div>
+
+    <a class="menu-voltar" href="ficha-final.html">
+        ← Voltar para a ficha
+    </a>
+
+    <script>
+        const atributosSalvos =
+            JSON.parse(localStorage.getItem("atributos")) || {};
+
+        const pericias = [
+            { nome: "Acrobacia", atributo: "agilidade" },
+            { nome: "Adestramento", atributo: "presenca" },
+            { nome: "Artesanato", atributo: "intelecto" },
+            { nome: "Atletismo", atributo: "forca" },
+            { nome: "Atualidades", atributo: "intelecto" },
+            { nome: "Ciências", atributo: "intelecto" },
+            { nome: "Crime", atributo: "agilidade" },
+            { nome: "Diplomacia", atributo: "presenca" },
+            { nome: "Enganação", atributo: "presenca" },
+            { nome: "Fortitude", atributo: "vigor" },
+            { nome: "Furtividade", atributo: "agilidade" },
+            { nome: "Iniciativa", atributo: "agilidade" },
+            { nome: "Intimidação", atributo: "presenca" },
+            { nome: "Intuição", atributo: "presenca" },
+            { nome: "Investigação", atributo: "intelecto" },
+            { nome: "Luta", atributo: "forca" },
+            { nome: "Medicina", atributo: "intelecto" },
+            { nome: "Ocultismo", atributo: "intelecto" },
+            { nome: "Percepção", atributo: "presenca" },
+            { nome: "Pilotagem", atributo: "agilidade" },
+            { nome: "Pontaria", atributo: "agilidade" },
+            { nome: "Profissão", atributo: "intelecto" },
+            { nome: "Reflexos", atributo: "agilidade" },
+            { nome: "Religião", atributo: "presenca" },
+            { nome: "Sobrevivência", atributo: "intelecto" },
+            { nome: "Tática", atributo: "intelecto" },
+            { nome: "Tecnologia", atributo: "intelecto" },
+            { nome: "Vontade", atributo: "presenca" }
+        ];
+
+        const lista = document.getElementById("listaPericias");
+
+        pericias.forEach((pericia, indice) => {
+
+            const bonusAtributo =
+                Number(atributosSalvos[pericia.atributo]) || 0;
+
+            const div = document.createElement("div");
+
+            div.className = "pericia";
+
+            div.innerHTML = `
+                <div class="nome">
+                    ${pericia.nome}
+                </div>
+
+                <div class="linha">
+
+                    <input
+                        class="caixa caixa-automatico"
+                        id="atributo-${indice}"
+                        value="${bonusAtributo}"
+                        readonly
+                        title="Bônus do atributo"
+                    >
+
+                    <input
+                        class="caixa"
+                        id="manual-${indice}"
+                        type="number"
+                        value="0"
+                        title="Bônus manual"
+                    >
+
+                    <button
+                        class="botao-dado"
+                        onclick="rolar(${indice})"
+                        title="Rolar 1d20"
+                    >
+                        🎲
+                    </button>
+
+                </div>
+
+                <div
+                    class="resultado"
+                    id="resultado-${indice}">
+                </div>
+            `;
+
+            lista.appendChild(div);
+        });
+
+        function rolar(indice) {
+
+            const pericia = pericias[indice];
+
+            const bonusAtributo =
+                Number(
+                    document.getElementById(
+                        "atributo-" + indice
+                    ).value
+                ) || 0;
+
+            const bonusManual =
+                Number(
+                    document.getElementById(
+                        "manual-" + indice
+                    ).value
+                ) || 0;
+
+            const dado =
+                Math.floor(Math.random() * 20) + 1;
+
+            const total =
+                dado + bonusAtributo + bonusManual;
+
+            let resultadoTexto =
+                `🎲 ${dado} + ${bonusAtributo} + ${bonusManual} = ${total}`;
+
+            const bonusTotal =
+                bonusAtributo + bonusManual;
+
+            const dificuldade =
+                descobrirResultado(dado, bonusTotal);
+
+            if (dificuldade) {
+                resultadoTexto +=
+                    ` — ${dificuldade}`;
+            }
+
+            document.getElementById(
+                "resultado-" + indice
+            ).textContent = resultadoTexto;
+        }
+
+        function descobrirResultado(dado, bonus) {
+
+            if (bonus < 1) {
+                return null;
+            }
+
+            if (bonus > 18) {
+                bonus = 18;
+            }
+
+            const tabela = {
+                1:  { normal: 20, bom: null, extremo: null },
+                2:  { normal: 19, bom: 20, extremo: null },
+                3:  { normal: 18, bom: 20, extremo: null },
+                4:  { normal: 17, bom: 19, extremo: null },
+                5:  { normal: 16, bom: 19, extremo: 20 },
+                6:  { normal: 15, bom: 18, extremo: 20 },
+                7:  { normal: 14, bom: 18, extremo: 20 },
+                8:  { normal: 13, bom: 17, extremo: 20 },
+                9:  { normal: 12, bom: 17, extremo: 20 },
+                10: { normal: 11, bom: 16, extremo: 19 },
+                11: { normal: 10, bom: 16, extremo: 19 },
+                12: { normal: 9,  bom: 15, extremo: 19 },
+                13: { normal: 8,  bom: 15, extremo: 19 },
+                14: { normal: 7,  bom: 14, extremo: 19 },
+                15: { normal: 6,  bom: 14, extremo: 18 },
+                16: { normal: 5,  bom: 13, extremo: 18 },
+                17: { normal: 4, bom: 13, extremo: 18 },
+                18: { normal: 3, bom: 12, extremo: 18 }
+            };
+
+            const faixa = tabela[bonus];
+
+            if (!faixa) {
+                return null;
+            }
+
+            if (
+                faixa.extremo !== null &&
+                dado >= faixa.extremo
+            ) {
+                return "EXTREMO";
+            }
+
+            if (
+                faixa.bom !== null &&
+                dado >= faixa.bom
+            ) {
+                return "BOM";
+            }
+
+            if (dado >= faixa.normal) {
+                return "NORMAL";
+            }
+
+            return "FALHA";
+        }
+    </script>
+
+</body>
+</html>
+```
