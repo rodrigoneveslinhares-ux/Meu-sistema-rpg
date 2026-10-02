@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Ficha</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .campo {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .titulo {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #0b0b0b;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            font-size: 17px;
+        }
+
+        .origem {
+            font-size: 18px;
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>FINALIZAR FICHA</h1>
+
+    <div class="campo">
+        <div class="titulo">Nome do personagem:</div>
+
+        <input
+            type="text"
+            id="nomePersonagem"
+            placeholder="Digite o nome do personagem"
+        >
+    </div>
+
+    <div class="campo">
+        <div class="titulo">Nome do jogador:</div>
+
+        <input
+            type="text"
+            id="nomeJogador"
+            placeholder="Digite o nome do jogador"
+        >
+    </div>
+
+    <div class="campo">
+        <div class="titulo">Origem:</div>
+
+        <div class="origem" id="origem">
+            -
+        </div>
+    </div>
+
+    <script>
+        let origemEscolhida = localStorage.getItem("origem");
+
+        document.getElementById("origem").textContent =
+            origemEscolhida || "Nenhuma";
+    </script>
+
+</body>
+</html>
+```

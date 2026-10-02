@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origem</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .info {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        .origem {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .origem.selecionada {
+            border: 2px solid white;
+            background: #292929;
+        }
+
+        .nome {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .descricao {
+            color: #aaa;
+            margin-top: 8px;
+        }
+
+        .continuar {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            background: #292929;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ORIGEM</h1>
+
+    <div class="info">
+        Escolha a origem do seu personagem
+    </div>
+
+    <div class="origem" onclick="selecionar(this)">
+        <div class="nome">Lutador</div>
+        <div class="descricao">Treinado para combate e confronto físico.</div>
+    </div>
+
+    <div class="origem" onclick="selecionar(this)">
+        <div class="nome">Professor</div>
+        <div class="descricao">Possui conhecimento e experiência acadêmica.</div>
+    </div>
+
+    <div class="origem" onclick="selecionar(this)">
+        <div class="nome">Apresentador</div>
+        <div class="descricao">Sabe lidar com pessoas e chamar atenção.</div>
+    </div>
+
+    <div class="origem" onclick="selecionar(this)">
+        <div class="nome">Atleta</div>
+        <div class="descricao">Possui preparo físico e disciplina.</div>
+    </div>
+
+    <button class="continuar" onclick="continuar()">
+        CONTINUAR
+    </button>
+
+    <script>
+        let origemEscolhida = null;
+
+        function selecionar(elemento) {
+            document.querySelectorAll(".origem").forEach(origem => {
+                origem.classList.remove("selecionada");
+            });
+
+            elemento.classList.add("selecionada");
+            origemEscolhida = elemento.querySelector(".nome").textContent;
+        }
+
+        function continuar() {
+            if (origemEscolhida === null) {
+                alert("Escolha uma origem primeiro!");
+                return;
+            }
+
+            localStorage.setItem("origem", origemEscolhida);
+
+            window.location.href = "atributos.html";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perícias</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        } Não, apenas com 
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 25px;
+        }
+
+        .pericia {
+            background: #181818;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nome {
+            font-size: 17px;
+        }
+
+        .valor {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .finalizar {
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            background: #292929;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>PERÍCIAS</h1>
+
+    <div class="info">
+        Perícias do personagem
+    </div>
+
+    <div class="pericia"><span class="nome">Atirar</span><span class="valor" id="atirar">0</span></div>
+    <div class="pericia"><span class="nome">Ciência</span><span class="valor" id="ciencia">0</span></div>
+    <div class="pericia"><span class="nome">Disfarce</span><span class="valor" id="disfarce">0</span></div>
+    <div class="pericia"><span class="nome">Eletrônica</span><span class="valor" id="eletronica">0</span></div>
+    <div class="pericia"><span class="nome">Escutar</span><span class="valor" id="escutar">0</span></div>
+    <div class="pericia"><span class="nome">Esquivar</span><span class="valor" id="esquivar">0</span></div>
+    <div class="pericia"><span class="nome">Furtividade</span><span class="valor" id="furtividade">0</span></div>
+    <div class="pericia"><span class="nome">História</span><span class="valor" id="historia">0</span></div>
+    <div class="pericia"><span class="nome">Intimidação</span><span class="valor" id="intimidacao">0</span></div>
+    <div class="pericia"><span class="nome">Intuição</span><span class="valor" id="intuicao">0</span></div>
+    <div class="pericia"><span class="nome">Luta</span><span class="valor" id="luta">0</span></div>
+    <div class="pericia"><span class="nome">Medicina</span><span class="valor" id="medicina">0</span></div>
+    <div class="pericia"><span class="nome">Persuasão</span><span class="valor" id="persuasao">0</span></div>
+    <div class="pericia"><span class="nome">Pilotar</span><span class="valor" id="pilotar">0</span></div>
+    <div class="pericia"><span class="nome">Pontaria</span><span class="valor" id="pontaria">0</span></div>
+    <div class="pericia"><span class="nome">Psicologia</span><span class="valor" id="psicologia">0</span></div>
+    <div class="pericia"><span class="nome">Rastrear</span><span class="valor" id="rastrear">0</span></div>
+    <div class="pericia"><span class="nome">Religião</span><span class="valor" id="religiao">0</span></div>
+    <div class="pericia"><span class="nome">Tecnologia</span><span class="valor" id="tecnologia">0</span></div>
+
+    <button class="finalizar" onclick="finalizarFicha()">
+        FINALIZAR FICHA
+    </button>
+
+    <script>
+
+        let atributos = JSON.parse(
+            localStorage.getItem("atributos")
+        ) || {
+            intelecto: 0,
+            agilidade: 0,
+            forca: 0,
+            vigor: 0,
+            presenca: 0
+        };
+
+        document.getElementById("atirar").textContent = atributos.agilidade;
+        document.getElementById("esquivar").textContent = atributos.agilidade;
+        document.getElementById("furtividade").textContent = atributos.agilidade;
+        document.getElementById("pilotar").textContent = atributos.agilidade;
+        document.getElementById("pontaria").textContent = atributos.agilidade;
+
+        document.getElementById("ciencia").textContent = atributos.intelecto;
+        document.getElementById("disfarce").textContent = atributos.intelecto;
+        document.getElementById("eletronica").textContent = atributos.intelecto;
+        document.getElementById("historia").textContent = atributos.intelecto;
+        document.getElementById("medicina").textContent = atributos.intelecto;
+        document.getElementById("psicologia").textContent = atributos.intelecto;
+        document.getElementById("rastrear").textContent = atributos.intelecto;
+        document.getElementById("tecnologia").textContent = atributos.intelecto;
+
+        document.getElementById("escutar").textContent = atributos.presenca;
+        document.getElementById("intimidacao").textContent = atributos.presenca;
+        document.getElementById("intuicao").textContent = atributos.presenca;
+        document.getElementById("persuasao").textContent = atributos.presenca;
+        document.getElementById("religiao").textContent = atributos.presenca;
+
+        document.getElementById("luta").textContent = atributos.forca;
+
+        function finalizarFicha() {
+            window.location.href = "ficha-final.html";
+        }
+
+    </script>
+
+</body>
+</html>
+```
