@@ -97,138 +97,63 @@
     </div>
 
     <div class="atributo">
-
-        <span class="nome">
-            Intelecto
-        </span>
+        <span class="nome">Intelecto</span>
 
         <div class="controles">
+            <button onclick="diminuir('intelecto')">−</button>
 
-            <button onclick="diminuir('intelecto')">
-                −
-            </button>
+            <span class="valor" id="intelecto">0</span>
 
-            <span
-                class="valor"
-                id="intelecto"
-            >
-                0
-            </span>
-
-            <button onclick="aumentar('intelecto')">
-                +
-            </button>
-
+            <button onclick="aumentar('intelecto')">+</button>
         </div>
-
     </div>
 
     <div class="atributo">
-
-        <span class="nome">
-            Agilidade
-        </span>
+        <span class="nome">Agilidade</span>
 
         <div class="controles">
+            <button onclick="diminuir('agilidade')">−</button>
 
-            <button onclick="diminuir('agilidade')">
-                −
-            </button>
+            <span class="valor" id="agilidade">0</span>
 
-            <span
-                class="valor"
-                id="agilidade"
-            >
-                0
-            </span>
-
-            <button onclick="aumentar('agilidade')">
-                +
-            </button>
-
+            <button onclick="aumentar('agilidade')">+</button>
         </div>
-
     </div>
 
     <div class="atributo">
-
-        <span class="nome">
-            Força
-        </span>
+        <span class="nome">Força</span>
 
         <div class="controles">
+            <button onclick="diminuir('forca')">−</button>
 
-            <button onclick="diminuir('forca')">
-                −
-            </button>
+            <span class="valor" id="forca">0</span>
 
-            <span
-                class="valor"
-                id="forca"
-            >
-                0
-            </span>
-
-            <button onclick="aumentar('forca')">
-                +
-            </button>
-
+            <button onclick="aumentar('forca')">+</button>
         </div>
-
     </div>
 
     <div class="atributo">
-
-        <span class="nome">
-            Vigor
-        </span>
+        <span class="nome">Vigor</span>
 
         <div class="controles">
+            <button onclick="diminuir('vigor')">−</button>
 
-            <button onclick="diminuir('vigor')">
-                −
-            </button>
+            <span class="valor" id="vigor">0</span>
 
-            <span
-                class="valor"
-                id="vigor"
-            >
-                0
-            </span>
-
-            <button onclick="aumentar('vigor')">
-                +
-            </button>
-
+            <button onclick="aumentar('vigor')">+</button>
         </div>
-
     </div>
 
     <div class="atributo">
-
-        <span class="nome">
-            Presença
-        </span>
+        <span class="nome">Presença</span>
 
         <div class="controles">
+            <button onclick="diminuir('presenca')">−</button>
 
-            <button onclick="diminuir('presenca')">
-                −
-            </button>
+            <span class="valor" id="presenca">0</span>
 
-            <span
-                class="valor"
-                id="presenca"
-            >
-                0
-            </span>
-
-            <button onclick="aumentar('presenca')">
-                +
-            </button>
-
+            <button onclick="aumentar('presenca')">+</button>
         </div>
-
     </div>
 
     <button
@@ -258,6 +183,7 @@
         ).textContent =
             origem || "Nenhuma";
 
+
         if (origem === "Lutador") {
             atributos.forca = 1;
         }
@@ -274,6 +200,7 @@
             atributos.vigor = 1;
         }
 
+
         function aumentar(atributo) {
 
             if (pontos > 0) {
@@ -285,6 +212,7 @@
                 atualizar();
             }
         }
+
 
         function diminuir(atributo) {
 
@@ -328,6 +256,7 @@
             }
         }
 
+
         function atualizar() {
 
             document.getElementById(
@@ -361,6 +290,7 @@
                 atributos.presenca;
         }
 
+
         function continuar() {
 
             localStorage.setItem(
@@ -371,6 +301,7 @@
             window.location.href =
                 "ficha-final.html";
         }
+
 
         atualizar();
 
