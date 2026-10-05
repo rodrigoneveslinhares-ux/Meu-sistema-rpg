@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Atributos</title>
-  
-    <style> 
+
+    <style>
         body {
             margin: 0;
             background: #0b0b0b;
@@ -96,9 +96,6 @@
         <strong id="pontos">4</strong>
     </div>
 
-
-    <!-- INTELECTO -->
-
     <div class="atributo">
 
         <span class="nome">
@@ -117,6 +114,7 @@
             >
                 0
             </span>
+
             <button onclick="aumentar('intelecto')">
                 +
             </button>
@@ -124,9 +122,6 @@
         </div>
 
     </div>
-
-
-    <!-- AGILIDADE -->
 
     <div class="atributo">
 
@@ -155,9 +150,6 @@
 
     </div>
 
-
-    <!-- FORÇA -->
-
     <div class="atributo">
 
         <span class="nome">
@@ -185,9 +177,6 @@
 
     </div>
 
-
-    <!-- VIGOR -->
-
     <div class="atributo">
 
         <span class="nome">
@@ -205,7 +194,7 @@
                 id="vigor"
             >
                 0
-            </span> 
+            </span>
 
             <button onclick="aumentar('vigor')">
                 +
@@ -214,9 +203,6 @@
         </div>
 
     </div>
-
-
-    <!-- PRESENÇA -->
 
     <div class="atributo">
 
@@ -245,7 +231,6 @@
 
     </div>
 
-
     <button
         class="continuar"
         onclick="continuar()"
@@ -253,66 +238,41 @@
         CONTINUAR
     </button>
 
-
     <script>
 
         let pontos = 4;
 
-
         let atributos = {
-
             intelecto: 0,
-
             agilidade: 0,
-
             forca: 0,
-
             vigor: 0,
-
             presenca: 0
-
         };
-
 
         let origem =
             localStorage.getItem("origem");
-
 
         document.getElementById(
             "nomeOrigem"
         ).textContent =
             origem || "Nenhuma";
 
-
-        /* BÔNUS DA ORIGEM */
-
         if (origem === "Lutador") {
-
             atributos.forca = 1;
-
         }
-
 
         if (origem === "Professor") {
-
             atributos.intelecto = 1;
-
         }
-
 
         if (origem === "Apresentador") {
-
             atributos.presenca = 1;
-
         }
-
 
         if (origem === "Atleta") {
-
             atributos.vigor = 1;
-
         }
-
 
         function aumentar(atributo) {
 
@@ -323,56 +283,40 @@
                 pontos--;
 
                 atualizar();
-
             }
-
         }
-
 
         function diminuir(atributo) {
 
             let minimo = 0;
 
-
             if (
                 origem === "Lutador" &&
                 atributo === "forca"
             ) {
-
                 minimo = 1;
-
             }
-
 
             if (
                 origem === "Professor" &&
                 atributo === "intelecto"
             ) {
-
                 minimo = 1;
-
             }
-
 
             if (
                 origem === "Apresentador" &&
                 atributo === "presenca"
             ) {
-
                 minimo = 1;
-
             }
-
 
             if (
                 origem === "Atleta" &&
                 atributo === "vigor"
             ) {
-
                 minimo = 1;
-
             }
-
 
             if (atributos[atributo] > minimo) {
 
@@ -381,11 +325,8 @@
                 pontos++;
 
                 atualizar();
-
             }
-
         }
-
 
         function atualizar() {
 
@@ -394,38 +335,31 @@
             ).textContent =
                 pontos;
 
-
             document.getElementById(
                 "intelecto"
             ).textContent =
                 atributos.intelecto;
-
 
             document.getElementById(
                 "agilidade"
             ).textContent =
                 atributos.agilidade;
 
-
             document.getElementById(
                 "forca"
             ).textContent =
                 atributos.forca;
-
 
             document.getElementById(
                 "vigor"
             ).textContent =
                 atributos.vigor;
 
-
             document.getElementById(
                 "presenca"
             ).textContent =
                 atributos.presenca;
-
         }
-
 
         function continuar() {
 
@@ -434,12 +368,9 @@
                 JSON.stringify(atributos)
             );
 
-
             window.location.href =
                 "ficha-final.html";
-
         }
-
 
         atualizar();
 
