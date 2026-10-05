@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Atributos</title>
 
     <style>
@@ -60,7 +60,6 @@
             border: 1px solid #555;
             border-radius: 6px;
             font-size: 22px;
-            cursor: pointer;
         }
 
         .valor {
@@ -78,7 +77,6 @@
             border: 1px solid #555;
             border-radius: 8px;
             font-size: 18px;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -98,73 +96,54 @@
 
     <div class="atributo">
         <span class="nome">Intelecto</span>
-
         <div class="controles">
             <button onclick="diminuir('intelecto')">−</button>
-
             <span class="valor" id="intelecto">0</span>
-
             <button onclick="aumentar('intelecto')">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Agilidade</span>
-
         <div class="controles">
             <button onclick="diminuir('agilidade')">−</button>
-
             <span class="valor" id="agilidade">0</span>
-
             <button onclick="aumentar('agilidade')">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Força</span>
-
         <div class="controles">
             <button onclick="diminuir('forca')">−</button>
-
             <span class="valor" id="forca">0</span>
-
             <button onclick="aumentar('forca')">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Vigor</span>
-
         <div class="controles">
             <button onclick="diminuir('vigor')">−</button>
-
             <span class="valor" id="vigor">0</span>
-
             <button onclick="aumentar('vigor')">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Presença</span>
-
         <div class="controles">
             <button onclick="diminuir('presenca')">−</button>
-
             <span class="valor" id="presenca">0</span>
-
             <button onclick="aumentar('presenca')">+</button>
         </div>
     </div>
 
-    <button
-        class="continuar"
-        onclick="continuar()"
-    >
+    <button class="continuar" onclick="continuar()">
         CONTINUAR
     </button>
 
     <script>
-
         let pontos = 4;
 
         let atributos = {
@@ -175,14 +154,10 @@
             presenca: 0
         };
 
-        let origem =
-            localStorage.getItem("origem");
+        let origem = localStorage.getItem("origem");
 
-        document.getElementById(
-            "nomeOrigem"
-        ).textContent =
+        document.getElementById("nomeOrigem").textContent =
             origem || "Nenhuma";
-
 
         if (origem === "Lutador") {
             atributos.forca = 1;
@@ -200,112 +175,62 @@
             atributos.vigor = 1;
         }
 
-
         function aumentar(atributo) {
-
             if (pontos > 0) {
-
                 atributos[atributo]++;
-
                 pontos--;
-
                 atualizar();
             }
         }
 
-
         function diminuir(atributo) {
-
             let minimo = 0;
 
-            if (
-                origem === "Lutador" &&
-                atributo === "forca"
-            ) {
+            if (origem === "Lutador" && atributo === "forca") {
                 minimo = 1;
             }
 
-            if (
-                origem === "Professor" &&
-                atributo === "intelecto"
-            ) {
+            if (origem === "Professor" && atributo === "intelecto") {
                 minimo = 1;
             }
 
-            if (
-                origem === "Apresentador" &&
-                atributo === "presenca"
-            ) {
+            if (origem === "Apresentador" && atributo === "presenca") {
                 minimo = 1;
             }
 
-            if (
-                origem === "Atleta" &&
-                atributo === "vigor"
-            ) {
+            if (origem === "Atleta" && atributo === "vigor") {
                 minimo = 1;
             }
 
             if (atributos[atributo] > minimo) {
-
                 atributos[atributo]--;
-
                 pontos++;
-
                 atualizar();
             }
         }
 
-
         function atualizar() {
-
-            document.getElementById(
-                "pontos"
-            ).textContent =
-                pontos;
-
-            document.getElementById(
-                "intelecto"
-            ).textContent =
-                atributos.intelecto;
-
-            document.getElementById(
-                "agilidade"
-            ).textContent =
-                atributos.agilidade;
-
-            document.getElementById(
-                "forca"
-            ).textContent =
-                atributos.forca;
-
-            document.getElementById(
-                "vigor"
-            ).textContent =
-                atributos.vigor;
-
-            document.getElementById(
-                "presenca"
-            ).textContent =
-                atributos.presenca;
+            document.getElementById("pontos").textContent = pontos;
+            document.getElementById("intelecto").textContent = atributos.intelecto;
+            document.getElementById("agilidade").textContent = atributos.agilidade;
+            document.getElementById("forca").textContent = atributos.forca;
+            document.getElementById("vigor").textContent = atributos.vigor;
+            document.getElementById("presenca").textContent = atributos.presenca;
         }
 
-
         function continuar() {
-
             localStorage.setItem(
                 "atributos",
                 JSON.stringify(atributos)
             );
 
-            window.location.href =
-                "ficha-final.html";
+            window.location.href = "ficha-final.html";
         }
 
-
         atualizar();
-
     </script>
 
 </body>
 </html>
+```
+
