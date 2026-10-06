@@ -1,9 +1,10 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dados</title>
 
     <style>
@@ -102,7 +103,7 @@
     <h1>🎲 DADOS</h1>
 
     <div class="subtitulo">
-        Role 1d20 + atributo + bônus manual
+        Role 1d20 + atributo + bônus de origem + bônus manual
     </div>
 
     <div id="listaPericias"></div>
@@ -112,13 +113,22 @@
     </a>
 
     <script>
+
         const atributosSalvos =
-            JSON.parse(localStorage.getItem("atributos")) || {};
+            JSON.parse(
+                localStorage.getItem("atributos")
+            ) || {};
+
+        const bonusOrigem =
+            JSON.parse(
+                localStorage.getItem("bonusPericias")
+            ) || {};
 
         const pericias = [
+
             { nome: "Acrobacia", atributo: "agilidade" },
             { nome: "Adestramento", atributo: "presenca" },
-            { nome: "Artesanato", atributo: "intelecto" },
+            { nome: "Artes", atributo: "presenca" },
             { nome: "Atletismo", atributo: "forca" },
             { nome: "Atualidades", atributo: "intelecto" },
             { nome: "Ciências", atributo: "intelecto" },
@@ -144,70 +154,107 @@
             { nome: "Tática", atributo: "intelecto" },
             { nome: "Tecnologia", atributo: "intelecto" },
             { nome: "Vontade", atributo: "presenca" }
+
         ];
 
-        const lista = document.getElementById("listaPericias");
+        const lista =
+            document.getElementById(
+                "listaPericias"
+            );
 
-        pericias.forEach((pericia, indice) => {
+        pericias.forEach(
+            (pericia, indice) => {
 
-            const bonusAtributo =
-                Number(atributosSalvos[pericia.atributo]) || 0;
+                const bonusAtributo =
+                    Number(
+                        atributosSalvos[
+                            pericia.atributo
+                        ]
+                    ) || 0;
 
-            const div = document.createElement("div");
+                const bonusDaOrigem =
+                    Number(
+                        bonusOrigem[
+                            pericia.nome
+                        ]
+                    ) || 0;
 
-            div.className = "pericia";
+                const bonusAutomatico =
+                    bonusAtributo +
+                    bonusDaOrigem;
 
-            div.innerHTML = `
-                <div class="nome">
-                    ${pericia.nome}
-                </div>
+                const div =
+                    document.createElement(
+                        "div"
+                    );
 
-                <div class="linha">
+                div.className =
+                    "pericia";
 
-                    <input
-                        class="caixa caixa-automatico"
-                        id="atributo-${indice}"
-                        value="${bonusAtributo}"
-                        readonly
-                        title="Bônus do atributo"
-                    >
+                div.innerHTML = `
 
-                    <input
-                        class="caixa"
-                        id="manual-${indice}"
-                        type="number"
-                        value="0"
-                        title="Bônus manual"
-                    >
+                    <div class="nome">
+                        ${pericia.nome}
+                    </div>
 
-                    <button
-                        class="botao-dado"
-                        onclick="rolar(${indice})"
-                        title="Rolar 1d20"
-                    >
-                        🎲
-                    </button>
+                    <div class="linha">
 
-                </div>
+                        <input
+                            class="caixa caixa-automatico"
+                            id="atributo-${indice}"
+                            value="${bonusAutomatico}"
+                            readonly
+                            title="Atributo + bônus da origem"
+                        >
 
-                <div
-                    class="resultado"
-                    id="resultado-${indice}">
-                </div>
-            `;
+                        <input
+                            class="caixa"
+                            id="manual-${indice}"
+                            type="number"
+                            value="0"
+                            title="Bônus manual"
+                        >
 
-            lista.appendChild(div);
-        });
+                        <button
+                            class="botao-dado"
+                            onclick="rolar(${indice})"
+                            title="Rolar 1d20"
+                        >
+                            🎲
+                        </button>
+
+                    </div>
+
+                    <div
+                        class="resultado"
+                        id="resultado-${indice}">
+                    </div>
+
+                `;
+
+                lista.appendChild(div);
+
+            }
+        );
+
 
         function rolar(indice) {
 
-            const pericia = pericias[indice];
+            const pericia =
+                pericias[indice];
 
             const bonusAtributo =
                 Number(
-                    document.getElementById(
-                        "atributo-" + indice
-                    ).value
+                    atributosSalvos[
+                        pericia.atributo
+                    ]
+                ) || 0;
+
+            const bonusDaOrigem =
+                Number(
+                    bonusOrigem[
+                        pericia.nome
+                    ]
                 ) || 0;
 
             const bonusManual =
@@ -218,31 +265,68 @@
                 ) || 0;
 
             const dado =
-                Math.floor(Math.random() * 20) + 1;
+                Math.floor(
+                    Math.random() * 20
+                ) + 1;
+
+            const bonusAutomatico =
+                bonusAtributo +
+                bonusDaOrigem;
 
             const total =
-                dado + bonusAtributo + bonusManual;
+                dado +
+                bonusAutomatico +
+                bonusManual;
 
             let resultadoTexto =
-                `🎲 ${dado} + ${bonusAtributo} + ${bonusManual} = ${total}`;
+                `🎲 ${dado} + ${bonusAtributo}`;
+
+            if (bonusDaOrigem > 0) {
+
+                resultadoTexto +=
+                    ` + ${bonusDaOrigem} origem`;
+
+            }
+
+            if (bonusManual !== 0) {
+
+                resultadoTexto +=
+                    ` + ${bonusManual}`;
+
+            }
+
+            resultadoTexto +=
+                ` = ${total}`;
 
             const bonusTotal =
-                bonusAtributo + bonusManual;
+                bonusAutomatico +
+                bonusManual;
 
             const dificuldade =
-                descobrirResultado(dado, bonusTotal);
+                descobrirResultado(
+                    dado,
+                    bonusTotal
+                );
 
             if (dificuldade) {
+
                 resultadoTexto +=
                     ` — ${dificuldade}`;
+
             }
 
             document.getElementById(
                 "resultado-" + indice
-            ).textContent = resultadoTexto;
+            ).textContent =
+                resultadoTexto;
+
         }
 
-        function descobrirResultado(dado, bonus) {
+
+        function descobrirResultado(
+            dado,
+            bonus
+        ) {
 
             if (bonus < 1) {
                 return null;
@@ -253,27 +337,119 @@
             }
 
             const tabela = {
-                1:  { normal: 20, bom: null, extremo: null },
-                2:  { normal: 19, bom: 20, extremo: null },
-                3:  { normal: 18, bom: 20, extremo: null },
-                4:  { normal: 17, bom: 19, extremo: null },
-                5:  { normal: 16, bom: 19, extremo: 20 },
-                6:  { normal: 15, bom: 18, extremo: 20 },
-                7:  { normal: 14, bom: 18, extremo: 20 },
-                8:  { normal: 13, bom: 17, extremo: 20 },
-                9:  { normal: 12, bom: 17, extremo: 20 },
-                10: { normal: 11, bom: 16, extremo: 19 },
-                11: { normal: 10, bom: 16, extremo: 19 },
-                12: { normal: 9,  bom: 15, extremo: 19 },
-                13: { normal: 8,  bom: 15, extremo: 19 },
-                14: { normal: 7,  bom: 14, extremo: 19 },
-                15: { normal: 6,  bom: 14, extremo: 18 },
-                16: { normal: 5,  bom: 13, extremo: 18 },
-                17: { normal: 4, bom: 13, extremo: 18 },
-                18: { normal: 3, bom: 12, extremo: 18 }
+
+                1: {
+                    normal: 20,
+                    bom: null,
+                    extremo: null
+                },
+
+                2: {
+                    normal: 19,
+                    bom: 20,
+                    extremo: null
+                },
+
+                3: {
+                    normal: 18,
+                    bom: 20,
+                    extremo: null
+                },
+
+                4: {
+                    normal: 17,
+                    bom: 19,
+                    extremo: null
+                },
+
+                5: {
+                    normal: 16,
+                    bom: 19,
+                    extremo: 20
+                },
+
+                6: {
+                    normal: 15,
+                    bom: 18,
+                    extremo: 20
+                },
+
+                7: {
+                    normal: 14,
+                    bom: 18,
+                    extremo: 20
+                },
+
+                8: {
+                    normal: 13,
+                    bom: 17,
+                    extremo: 20
+                },
+
+                9: {
+                    normal: 12,
+                    bom: 17,
+                    extremo: 20
+                },
+
+                10: {
+                    normal: 11,
+                    bom: 16,
+                    extremo: 19
+                },
+
+                11: {
+                    normal: 10,
+                    bom: 16,
+                    extremo: 19
+                },
+
+                12: {
+                    normal: 9,
+                    bom: 15,
+                    extremo: 19
+                },
+
+                13: {
+                    normal: 8,
+                    bom: 15,
+                    extremo: 19
+                },
+
+                14: {
+                    normal: 7,
+                    bom: 14,
+                    extremo: 19
+                },
+
+                15: {
+                    normal: 6,
+                    bom: 14,
+                    extremo: 18
+                },
+
+                16: {
+                    normal: 5,
+                    bom: 13,
+                    extremo: 18
+                },
+
+                17: {
+                    normal: 4,
+                    bom: 13,
+                    extremo: 18
+                },
+
+                18: {
+                    normal: 3,
+                    bom: 12,
+                    extremo: 18
+                }
+
             };
 
-            const faixa = tabela[bonus];
+            const faixa =
+                tabela[bonus];
 
             if (!faixa) {
                 return null;
@@ -293,12 +469,15 @@
                 return "BOM";
             }
 
-            if (dado >= faixa.normal) {
+            if (
+                dado >= faixa.normal
+            ) {
                 return "NORMAL";
             }
 
             return "FALHA";
         }
+
     </script>
 
 </body>
