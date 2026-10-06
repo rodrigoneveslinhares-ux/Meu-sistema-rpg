@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Origens</title>
 
     <style>
@@ -46,10 +46,10 @@
 
         .descricao {
             display: none;
-            padding: 0 16px 16px 16px;
+            padding: 12px 16px 16px 16px;
             color: #aaa;
             border-top: 1px solid #333;
-            padding-top: 12px;
+            line-height: 1.5;
         }
 
         .origem.aberta .descricao {
@@ -75,6 +75,10 @@
             font-size: 18px;
             cursor: pointer;
         }
+
+        .continuar:hover {
+            background: #3a3a3a;
+        }
     </style>
 </head>
 
@@ -89,126 +93,404 @@
     </button>
 
     <script>
+
         const origens = [
-            "Lutador",
-            "Professor",
-            "Apresentador",
-            "Atleta",
-            "Acadêmico",
-            "Agente de Saúde",
-            "Amigo dos Animais",
-            "Amnésico",
-            "Artista",
-            "Astronauta",
-            "Blaster",
-            "Body Builder",
-            "Chef",
-            "Chef do Outro Lado",
-            "Cientista Forense",
-            "Colegial",
-            "Cosplayer",
-            "Criminoso",
-            "Cultista Arrependido",
-            "Desgarrado",
-            "Diplomata",
-            "Dublê",
-            "Engenheiro",
-            "Espírito",
-            "Executivo",
-            "Experimento",
-            "Explorador",
-            "Fanático",
-            "Fotógrafo",
-            "Gaudério Abutre",
-            "Ginasta",
-            "Investigador",
-            "Inventor",
-            "Jornalista",
-            "Legista",
-            "Magnata",
-            "Mateiro",
-            "Mercenário",
-            "Mergulhador",
-            "Militar",
-            "Místico",
-            "Motorista",
-            "Nerd",
-            "Operário",
-            "Personal Trainer",
-            "Policial",
-            "Profetizado",
-            "Psicólogo",
-            "Religioso",
-            "Repórter",
-            "Revoltado",
-            "Servidor Público",
-            "T.I.",
-            "Teórico da Conspiração",
-            "Trabalhador Rural",
-            "Trambiqueiro",
-            "Universitário",
-            "Vítima"
+
+            {
+                nome: "Acadêmico",
+                descricao: "Saber é Poder — Gaste 2 PE para receber +5 em um teste de Intelecto ou de uma perícia baseada em Intelecto."
+            },
+
+            {
+                nome: "Agente de Saúde",
+                descricao: "Técnico em Medicina — Quando você cura um personagem com a perícia Medicina, ele recupera +2 PV por dado."
+            },
+
+            {
+                nome: "Amigo dos Animais",
+                descricao: "Vínculo de Fera — Você recebe um companheiro animal de pequeno porte que concede bônus em Percepção e Sobrevivência."
+            },
+
+            {
+                nome: "Amnésico",
+                descricao: "Vislumbres do Passado — Gaste 1 PE para fazer um teste de Intelecto e tentar se lembrar de uma informação útil. Ganha resistência a Pasmo."
+            },
+
+            {
+                nome: "Artista",
+                descricao: "Magnum Opus — Uma vez por missão, ganhe +5 em testes de Presença contra um NPC específico após realizar uma performance."
+            },
+
+            {
+                nome: "Astronauta",
+                descricao: "Isolamento Espacial — Imunidade ou alta resistência a efeitos de asfixia, vácuo, ambientes de pressão extrema e isolamento."
+            },
+
+            {
+                nome: "Atleta",
+                descricao: "110% — Gaste 2 PE para receber +5 em um teste de Atletismo ou Acrobacia, ou para dobrar seu deslocamento na rodada."
+            },
+
+            {
+                nome: "Blaster",
+                descricao: "Granadeiro Técnico — Você recebe proficiência com explosivos e pode gastar PE para aumentar o raio ou o dano de granadas."
+            },
+
+            {
+                nome: "Body Builder",
+                descricao: "Hipertrofia — Você usa seu Vigor no lugar de Força para calcular sua capacidade de carga e para testes de quebrar ou empurrar objetos."
+            },
+
+            {
+                nome: "Chef",
+                descricao: "Ingrediente Secreto — Durante interlúdios, você cozinha uma refeição que dá +2 PV por dado de cura em descansos até o fim da próxima cena."
+            },
+
+            {
+                nome: "Chef do Outro Lado",
+                descricao: "Banquete Macabro — No interlúdio, use restos de criaturas para cozinhar um prato que dá resistência a um elemento específico para o grupo."
+            },
+
+            {
+                nome: "Cientista Forense",
+                descricao: "Investigação Científica — Uma vez por cena de investigação, gaste uma ação livre para usar Ciências no lugar de qualquer outra perícia."
+            },
+
+            {
+                nome: "Colegial",
+                descricao: "Lição de Casa — Você pode \"estudar\" uma perícia não treinada na preparação para usá-la temporariamente como se fosse treinado."
+            },
+
+            {
+                nome: "Cosplayer",
+                descricao: "Identidade Secreta — Ao vestir um traje completo, ganha +5 em Enganação ou Diplomacia para se passar pelo personagem escolhido."
+            },
+
+            {
+                nome: "Criminoso",
+                descricao: "O Crime Compensa — Você recebe +2 em testes de Crime e Furtividade. Move-se como ação livre após um ataque furtivo ou roubo bem-sucedido."
+            },
+
+            {
+                nome: "Cultista Arrependido",
+                descricao: "Trauma Sobrevivido — Você começa o jogo com um Poder Paranormal à sua escolha, mas sofre uma penalidade permanente na Sanidade máxima."
+            },
+
+            {
+                nome: "Desgarrado",
+                descricao: "Calejado — Você recebe +1 PV para cada nível/NEX que avançar (retroativo)."
+            },
+
+            {
+                nome: "Diplomata",
+                descricao: "Imunidade Política — NPCs evitam atacar você no primeiro turno de interação ou combate, e você pode gastar PE para cessar hostilidades verbais."
+            },
+
+            {
+                nome: "Dublê",
+                descricao: "Amortecer Queda — Gaste 2 PE para reduzir qualquer dano de impacto ou de queda pela metade."
+            },
+
+            {
+                nome: "Engenheiro",
+                descricao: "Ferramentas Otimizadas — Escolha um item de tecnologia ou kit de perícia. O peso desse item diminui em 1 espaço (mínimo 0)."
+            },
+
+            {
+                nome: "Espírito",
+                descricao: "Presença Residual — Você pode flutuar levemente, ignorar certos obstáculos físicos e gastar PE para se tornar parcialmente incorpóreo."
+            },
+
+            {
+                nome: "Executivo",
+                descricao: "Processo Paciente — Reduz o custo em PE de habilidades de investigação ou burocráticas quando usadas fora de combate."
+            },
+
+            {
+                nome: "Experimento",
+                descricao: "Mutação Instável — Gaste PE para ativar uma alteração física (como garras ou pele rígida) que aumenta atributos físicos, mas causa dano de Sanidade."
+            },
+
+            {
+                nome: "Explorador",
+                descricao: "Sentido de Direção — Você nunca se perde em ambientes naturais ou labirintos e pode gastar PE para revelar caminhos seguros em fugas."
+            },
+
+            {
+                nome: "Fanático",
+                descricao: "Fé Cega — Quando segue cegamente as doutrinas do seu culto, gaste PE para ignorar penalidades de condições mentais negativas."
+            },
+
+            {
+                nome: "Fotógrafo",
+                descricao: "Enquadramento Perfeito — Gaste uma ação para tirar uma foto da cena. Ao analisá-la, você revela detalhes ocultos ou fraquezas de criaturas."
+            },
+
+            {
+                nome: "Gaudério Abutre",
+                descricao: "Espírito Macanudo — Recebe bônus em testes de Sobrevivência e ganha resistência a efeitos climáticos severos e venenos mundanos."
+            },
+
+            {
+                nome: "Ginasta",
+                descricao: "Flexibilidade Extrema — Gaste PE para passar automaticamente em testes de acrobacia para escapar de enredamento, agarre ou espaços apertados."
+            },
+
+            {
+                nome: "Investigador",
+                descricao: "Faro para Pistas — Em uma cena de investigação, gaste 1 PE para encontrar uma pista adicional imediatamente ou reduzir a DT do teste."
+            },
+
+            {
+                nome: "Inventor",
+                descricao: "Engenhoca Improvisada — Crie um item temporário de utilidade geral usando sucata durante um interlúdio, gastando PE para fazê-lo funcionar."
+            },
+
+            {
+                nome: "Jornalista",
+                descricao: "Furo de Reportagem — Revelar publicamente um segredo bombástico concede a você e ao grupo um bônus de prestígio e recursos extras no próximo interlúdio."
+            },
+
+            {
+                nome: "Legista",
+                descricao: "Autópsia Visual — Ao examinar um cadáver, você descobre a causa exata da morte e o elemento paranormal envolvido sem testes complexos."
+            },
+
+            {
+                nome: "Lutador",
+                descricao: "Mão Pesada — Você recebe +2 em testes de Luta e adiciona +2 ao dano de seus ataques corpo a corpo desarmados ou com armas simples de impacto."
+            },
+
+            {
+                nome: "Magnata",
+                descricao: "Patrocínio — Seu limite de crédito é aumentado em um nível (por exemplo, de Baixo para Médio)."
+            },
+
+            {
+                nome: "Mateiro",
+                descricao: "Camuflagem Natural — Você pode se esconder mesmo sem cobertura total quando estiver em florestas ou matas, recebendo +5 em Furtividade."
+            },
+
+            {
+                nome: "Mercenário",
+                descricao: "Posição de Disparo — No primeiro turno de um combate, você recebe +2 em testes de ataque e na sua Defesa."
+            },
+
+            {
+                nome: "Mergulhador",
+                descricao: "Pulmões de Aço — Consegue prender a respiração pelo triplo do tempo normal e não sofre penalidades de movimento ou ataque embaixo d'água."
+            },
+
+            {
+                nome: "Militar",
+                descricao: "Para Bellum — Você recebe +2 em rolagens de dano com armas de fogo."
+            },
+
+            {
+                nome: "Místico",
+                descricao: "Sexto Sentido — Você sente mecanicamente a presença ou vibração do paranormal antes que ele se manifeste visualmente na cena."
+            },
+
+            {
+                nome: "Motorista",
+                descricao: "Direção Defensiva — Quando pilota um veículo, você soma seu Intelecto ou Agilidade à Defesa do veículo e ignora colisões leves."
+            },
+
+            {
+                nome: "Nerd",
+                descricao: "Hiperfoco — Escolha um assunto ultraespecífico. Se o mistério envolver esse tema, passa automaticamente em testes de Intelecto de DT até 20."
+            },
+
+            {
+                nome: "Operário",
+                descricao: "Ferramenta de Trabalho — Escolha uma ferramenta (como marreta ou picareta). Você se torna proficiente com ela e ela causa +1d de dano em suas mãos."
+            },
+
+            {
+                nome: "Personal Trainer",
+                descricao: "Treino de Resiliência — Gaste uma ação e PE para conceder pontos de vida temporários a um aliado através de instruções físicas motivacionais."
+            },
+
+            {
+                nome: "Policial",
+                descricao: "Patrulha — Você recebe +2 em Defesa e +2 em testes de Percepção."
+            },
+
+            {
+                nome: "Professor",
+                descricao: "Aula de Campo — Gaste uma ação padrão e 2 PE para conceder +1 em um atributo à escolha de um aliado até o final da cena."
+            },
+
+            {
+                nome: "Profetizado",
+                descricao: "Estava Escrito — Uma vez por sessão de jogo, você pode forçar a rolagem de um dado (seu ou do Mestre) alegando que previu aquele momento."
+            },
+
+            {
+                nome: "Psicólogo",
+                descricao: "Terapia de Choque — Ajuda a estabilizar surtos de loucura de aliados em combate gastando menos ações e PE do que a ação convencional de acalentar."
+            },
+
+            {
+                nome: "Religioso",
+                descricao: "Acalentar — Gaste 2 PE e uma ação padrão para restaurar 1d6 de Sanidade de um aliado voluntário em alcance curto."
+            },
+
+            {
+                nome: "Repórter",
+                descricao: "Entrevista Conduzida — Ao conversar com um NPC, gaste PE para fazê-lo deixar escapar uma informação que ele estava tentando esconder."
+            },
+
+            {
+                nome: "Revoltado",
+                descricao: "Contra o Sistema — Você recebe bônus em testes de ataque e rolagens de dano contra alvos que representem autoridades instituídas ou opressoras."
+            },
+
+            {
+                nome: "Servidor Público",
+                descricao: "Espírito de Equipe — Quando usa a ação Ajudar, você pode gastar 1 PE para conceder um bônus de +5 em vez de +2 ao seu aliado."
+            },
+
+            {
+                nome: "T.I.",
+                descricao: "Motor de Busca — Você pode usar a perícia Tecnologia no lugar de Investigação ou Atualidades quando tiver acesso a um computador ou internet."
+            },
+
+            {
+                nome: "Teórico da Conspiração",
+                descricao: "Eu Já Sabia! — Você recebe +5 em testes de Vontade contra efeitos de medo ou choque de criaturas que você já tenha teorizado a respeito."
+            },
+
+            {
+                nome: "Trabalhador Rural",
+                descricao: "Casca Grossa — Você recebe +2 em Fortitude e Sobrevivência, e ignora penalidades de terreno difícil natural."
+            },
+
+            {
+                nome: "Trambiqueiro",
+                descricao: "Impostor — Gaste 2 PE para usar a perícia Enganação no lugar de qualquer outra perícia social (como Diplomacia ou Intimidação)."
+            },
+
+            {
+                nome: "Universitário",
+                descricao: "Dedicação — Você recebe +1 PE por nível/NEX que avançar (retroativo)."
+            },
+
+            {
+                nome: "Vítima",
+                descricao: "Cicatrizes Psicológicas — Você recebe +5 em testes de Vontade contra habilidades de criaturas paranormais e começa o jogo com +5 de Sanidade máxima."
+            }
+
         ];
 
-        const lista = document.getElementById("listaOrigens");
 
-        origens.forEach(nome => {
-            const div = document.createElement("div");
+        const lista =
+            document.getElementById("listaOrigens");
+
+
+        origens.forEach((origem) => {
+
+            const div =
+                document.createElement("div");
+
             div.className = "origem";
 
             div.innerHTML = `
-                <div class="cabecalho-origem"
-                     onclick="selecionar(this.parentElement)">
-                    <span class="nome-origem">${nome}</span>
 
-                    <span class="seta"
-                          onclick="abrirDescricao(event, this)">
+                <div
+                    class="cabecalho-origem"
+                    onclick="selecionar(this.parentElement)"
+                >
+
+                    <span class="nome-origem">
+                        ${origem.nome}
+                    </span>
+
+                    <span
+                        class="seta"
+                        onclick="abrirDescricao(event, this)"
+                    >
                         ▼
                     </span>
+
                 </div>
 
                 <div class="descricao">
-                    Descrição ainda não adicionada.
+                    <strong>${origem.descricao.split(" — ")[0]}</strong>
+                    ${origem.descricao.includes(" — ")
+                        ? " — " + origem.descricao.split(" — ").slice(1).join(" — ")
+                        : ""}
                 </div>
+
             `;
 
             lista.appendChild(div);
+
         });
 
+
         function abrirDescricao(evento, seta) {
+
             evento.stopPropagation();
 
-            const origem = seta.parentElement.parentElement;
+            const origem =
+                seta.parentElement.parentElement;
 
             origem.classList.toggle("aberta");
+
         }
 
-        function selecionar(elemento) {
-            document.querySelectorAll(".origem").forEach(origem => {
-                origem.classList.remove("selecionada");
-            });
 
-            elemento.classList.add("selecionada");
+        function selecionar(elemento) {
+
+            document
+                .querySelectorAll(".origem")
+                .forEach(origem => {
+
+                    origem.classList.remove(
+                        "selecionada"
+                    );
+
+                });
+
+
+            elemento.classList.add(
+                "selecionada"
+            );
+
 
             localStorage.setItem(
                 "origem",
-                elemento.querySelector(".nome-origem").textContent
+                elemento
+                    .querySelector(".nome-origem")
+                    .textContent
             );
+
         }
 
+
         function continuar() {
+
             const origemSelecionada =
                 localStorage.getItem("origem");
 
+
             if (!origemSelecionada) {
-                alert("Escolha uma origem antes de continuar.");
+
+                alert(
+                    "Escolha uma origem antes de continuar."
+                );
+
                 return;
             }
 
-            window.location.href = "atributos.html";
+
+            window.location.href =
+                "atributos.html";
+
         }
+
     </script>
 
 </body>
 </html>
-```
