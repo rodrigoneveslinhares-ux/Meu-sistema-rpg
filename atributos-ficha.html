@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,18 +22,18 @@ body {
 
 .container {
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
 }
 
 h1 {
     text-align: center;
-    margin: 15px 0 30px;
-    font-size: 30px;
+    margin: 0 0 32px;
+    font-size: 28px;
 }
 
 .status {
-    margin-bottom: 28px;
+    margin-bottom: 34px;
 }
 
 .status-titulo {
@@ -43,50 +44,30 @@ h1 {
     margin-bottom: 10px;
 }
 
-.status-titulo h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
 .nome-status {
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+}
+
+.nome-status h2 {
+    margin: 0;
+    font-size: 18px;
 }
 
 .icone-status {
-    font-size: 27px;
+    font-size: 25px;
     line-height: 1;
-}
-
-.valores {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.valores button {
-    width: 30px;
-    height: 30px;
-    background: #292929;
-    color: white;
-    border: 1px solid #555;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.valores span {
-    min-width: 65px;
-    text-align: center;
-    font-size: 16px;
 }
 
 .maximo {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 12px;
     color: #ccc;
+    white-space: nowrap;
 }
 
 .maximo input {
@@ -99,24 +80,11 @@ h1 {
     font-size: 14px;
 }
 
-.barra-linha {
+.barra-controles {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    min-height: 30px;
-}
-
-.coracao {
-    width: 35px;
-    height: 35px;
-    flex: 0 0 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    line-height: 1;
-    image-rendering: pixelated;
 }
 
 .barra {
@@ -146,6 +114,39 @@ h1 {
 
 .esforco {
     background: #f0a020;
+}
+
+.botoes-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.botoes-status button {
+    width: 29px;
+    height: 27px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #292929;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.botoes-status button:hover {
+    background: #444;
+}
+
+.valor-atual {
+    min-width: 65px;
+    text-align: center;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 .menu {
@@ -197,30 +198,46 @@ h1 {
     background: #383838;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 480px) {
     body {
         padding: 15px;
+    }
+
+    h1 {
+        font-size: 25px;
     }
 
     .status-titulo {
         flex-wrap: wrap;
     }
 
-    .status-titulo h2 {
-        font-size: 18px;
+    .nome-status h2 {
+        font-size: 16px;
     }
 
-    .maximo {
+    .icone-status {
+        font-size: 22px;
+    }
+
+    .barra-controles {
+        gap: 6px;
+    }
+
+    .valor-atual {
+        min-width: 58px;
         font-size: 12px;
+    }
+
+    .botoes-status button {
+        width: 26px;
+        height: 26px;
     }
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
-
     <h1>Atributos</h1>
 
     <section class="status">
@@ -230,22 +247,22 @@ h1 {
                 <h2>Vida</h2>
             </div>
 
-            <div class="valores">
-                <button onclick="alterarStatus('vida', -1)">−</button>
-                <span id="valorVida">10 / 10</span>
-                <button onclick="alterarStatus('vida', 1)">+</button>
-            </div>
-
             <label class="maximo">
                 Máx.
-                <input type="number" id="maxVida" min="1" value="10"
+                <input type="number" id="maxVida" min="1"
                     onchange="alterarMaximo('vida', this.value)">
             </label>
         </div>
 
-        <div class="barra-linha">
+        <div class="barra-controles">
             <div class="barra">
                 <div class="preenchimento vida" id="barraVida"></div>
+            </div>
+
+            <div class="botoes-status">
+                <button onclick="alterarStatus('vida', -1)" aria-label="Diminuir vida">−</button>
+                <span class="valor-atual" id="valorVida">10 / 10</span>
+                <button onclick="alterarStatus('vida', 1)" aria-label="Aumentar vida">+</button>
             </div>
         </div>
     </section>
@@ -257,22 +274,22 @@ h1 {
                 <h2>Sanidade</h2>
             </div>
 
-            <div class="valores">
-                <button onclick="alterarStatus('sanidade', -1)">−</button>
-                <span id="valorSanidade">10 / 10</span>
-                <button onclick="alterarStatus('sanidade', 1)">+</button>
-            </div>
-
             <label class="maximo">
                 Máx.
-                <input type="number" id="maxSanidade" min="1" value="10"
+                <input type="number" id="maxSanidade" min="1"
                     onchange="alterarMaximo('sanidade', this.value)">
             </label>
         </div>
 
-        <div class="barra-linha">
+        <div class="barra-controles">
             <div class="barra">
                 <div class="preenchimento sanidade" id="barraSanidade"></div>
+            </div>
+
+            <div class="botoes-status">
+                <button onclick="alterarStatus('sanidade', -1)" aria-label="Diminuir sanidade">−</button>
+                <span class="valor-atual" id="valorSanidade">10 / 10</span>
+                <button onclick="alterarStatus('sanidade', 1)" aria-label="Aumentar sanidade">+</button>
             </div>
         </div>
     </section>
@@ -284,26 +301,25 @@ h1 {
                 <h2>Pontos de Esforço</h2>
             </div>
 
-            <div class="valores">
-                <button onclick="alterarStatus('esforco', -1)">−</button>
-                <span id="valorEsforco">5 / 5</span>
-                <button onclick="alterarStatus('esforco', 1)">+</button>
-            </div>
-
             <label class="maximo">
                 Máx.
-                <input type="number" id="maxEsforco" min="1" value="5"
+                <input type="number" id="maxEsforco" min="1"
                     onchange="alterarMaximo('esforco', this.value)">
             </label>
         </div>
 
-        <div class="barra-linha">
+        <div class="barra-controles">
             <div class="barra">
                 <div class="preenchimento esforco" id="barraEsforco"></div>
             </div>
+
+            <div class="botoes-status">
+                <button onclick="alterarStatus('esforco', -1)" aria-label="Diminuir pontos de esforço">−</button>
+                <span class="valor-atual" id="valorEsforco">5 / 5</span>
+                <button onclick="alterarStatus('esforco', 1)" aria-label="Aumentar pontos de esforço">+</button>
+            </div>
         </div>
     </section>
-
 </div>
 
 <div class="menu">
@@ -318,9 +334,9 @@ h1 {
 
 <script>
 const statusPadrao = {
-    vida: { atual: 10, maximo: 10 },
-    sanidade: { atual: 10, maximo: 10 },
-    esforco: { atual: 5, maximo: 5 }
+    vida: { atual: 30, maximo: 30 },
+    sanidade: { atual: 33, maximo: 33 },
+    esforco: { atual: 52, maximo: 52 }
 };
 
 function carregarStatus() {
@@ -335,7 +351,7 @@ function carregarStatus() {
             };
         }
     } catch (erro) {
-        console.error("Erro ao carregar os status:", erro);
+        console.error("Erro ao carregar status:", erro);
     }
 
     return JSON.parse(JSON.stringify(statusPadrao));
@@ -354,21 +370,19 @@ function capitalizar(texto) {
 function atualizarTela() {
     ["vida", "sanidade", "esforco"].forEach(tipo => {
         const status = statusFicha[tipo];
-
         status.maximo = Math.max(1, Number(status.maximo) || 1);
-        status.atual = Math.max(
-            0,
-            Math.min(status.maximo, Number(status.atual) || 0)
-        );
+        status.atual = Math.max(0, Math.min(
+            status.maximo,
+            Number(status.atual) || 0
+        ));
 
         const nome = capitalizar(tipo);
-        const porcentagem = (status.atual / status.maximo) * 100;
 
         document.getElementById("valor" + nome).textContent =
             status.atual + " / " + status.maximo;
 
         document.getElementById("barra" + nome).style.width =
-            porcentagem + "%";
+            (status.atual / status.maximo * 100) + "%";
 
         document.getElementById("max" + nome).value = status.maximo;
     });
@@ -392,6 +406,5 @@ function alternarMenu() {
 
 atualizarTela();
 </script>
-
 </body>
 </html>
