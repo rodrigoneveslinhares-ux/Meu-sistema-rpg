@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Atributos</title>
 
 <style>
@@ -47,6 +46,17 @@ h1 {
 .status-titulo h2 {
     margin: 0;
     font-size: 20px;
+}
+
+.nome-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icone-status {
+    font-size: 27px;
+    line-height: 1;
 }
 
 .valores {
@@ -215,7 +225,10 @@ h1 {
 
     <section class="status">
         <div class="status-titulo">
-            <h2>Vida</h2>
+            <div class="nome-status">
+                <span class="icone-status">❤️</span>
+                <h2>Vida</h2>
+            </div>
 
             <div class="valores">
                 <button onclick="alterarStatus('vida', -1)">−</button>
@@ -225,19 +238,12 @@ h1 {
 
             <label class="maximo">
                 Máx.
-                <input
-                    type="number"
-                    id="maxVida"
-                    min="1"
-                    value="10"
-                    onchange="alterarMaximo('vida', this.value)"
-                >
+                <input type="number" id="maxVida" min="1" value="10"
+                    onchange="alterarMaximo('vida', this.value)">
             </label>
         </div>
 
         <div class="barra-linha">
-            <div class="coracao">❤️</div>
-
             <div class="barra">
                 <div class="preenchimento vida" id="barraVida"></div>
             </div>
@@ -246,7 +252,10 @@ h1 {
 
     <section class="status">
         <div class="status-titulo">
-            <h2>Sanidade</h2>
+            <div class="nome-status">
+                <span class="icone-status">🧠</span>
+                <h2>Sanidade</h2>
+            </div>
 
             <div class="valores">
                 <button onclick="alterarStatus('sanidade', -1)">−</button>
@@ -256,13 +265,8 @@ h1 {
 
             <label class="maximo">
                 Máx.
-                <input
-                    type="number"
-                    id="maxSanidade"
-                    min="1"
-                    value="10"
-                    onchange="alterarMaximo('sanidade', this.value)"
-                >
+                <input type="number" id="maxSanidade" min="1" value="10"
+                    onchange="alterarMaximo('sanidade', this.value)">
             </label>
         </div>
 
@@ -275,7 +279,10 @@ h1 {
 
     <section class="status">
         <div class="status-titulo">
-            <h2>Pontos de Esforço</h2>
+            <div class="nome-status">
+                <span class="icone-status">🗡️</span>
+                <h2>Pontos de Esforço</h2>
+            </div>
 
             <div class="valores">
                 <button onclick="alterarStatus('esforco', -1)">−</button>
@@ -285,13 +292,8 @@ h1 {
 
             <label class="maximo">
                 Máx.
-                <input
-                    type="number"
-                    id="maxEsforco"
-                    min="1"
-                    value="5"
-                    onchange="alterarMaximo('esforco', this.value)"
-                >
+                <input type="number" id="maxEsforco" min="1" value="5"
+                    onchange="alterarMaximo('esforco', this.value)">
             </label>
         </div>
 
@@ -316,21 +318,10 @@ h1 {
 
 <script>
 const statusPadrao = {
-    vida: {
-        atual: 10,
-        maximo: 10
-    },
-    sanidade: {
-        atual: 10,
-        maximo: 10
-    },
-    esforco: {
-        atual: 5,
-        maximo: 5
-    }
+    vida: { atual: 10, maximo: 10 },
+    sanidade: { atual: 10, maximo: 10 },
+    esforco: { atual: 5, maximo: 5 }
 };
-
-let statusFicha = carregarStatus();
 
 function carregarStatus() {
     try {
@@ -338,35 +329,30 @@ function carregarStatus() {
 
         if (salvo) {
             return {
-                vida: {
-                    ...statusPadrao.vida,
-                    ...(salvo.vida || {})
-                },
-                sanidade: {
-                    ...statusPadrao.sanidade,
-                    ...(salvo.sanidade || {})
-                },
-                esforco: {
-                    ...statusPadrao.esforco,
-                    ...(salvo.esforco || {})
-                }
+                vida: { ...statusPadrao.vida, ...(salvo.vida || {}) },
+                sanidade: { ...statusPadrao.sanidade, ...(salvo.sanidade || {}) },
+                esforco: { ...statusPadrao.esforco, ...(salvo.esforco || {}) }
             };
         }
     } catch (erro) {
-        console.error("Não foi possível carregar os status.", erro);
+        console.error("Erro ao carregar os status:", erro);
     }
 
     return JSON.parse(JSON.stringify(statusPadrao));
 }
 
+let statusFicha = carregarStatus();
+
 function salvarStatus() {
     localStorage.setItem("statusFicha", JSON.stringify(statusFicha));
 }
 
-function atualizarTela() {
-    const tipos = ["vida", "sanidade", "esforco"];
+function capitalizar(texto) {
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
 
-    tipos.forEach(tipo => {
+function atualizarTela() {
+    ["vida", "sanidade", "esforco"].forEach(tipo => {
         const status = statusFicha[tipo];
 
         status.maximo = Math.max(1, Number(status.maximo) || 1);
@@ -375,16 +361,16 @@ function atualizarTela() {
             Math.min(status.maximo, Number(status.atual) || 0)
         );
 
+        const nome = capitalizar(tipo);
         const porcentagem = (status.atual / status.maximo) * 100;
 
-        document.getElementById("valor" + capitalizar(tipo)).textContent =
+        document.getElementById("valor" + nome).textContent =
             status.atual + " / " + status.maximo;
 
-        document.getElementById("barra" + capitalizar(tipo)).style.width =
+        document.getElementById("barra" + nome).style.width =
             porcentagem + "%";
 
-        document.getElementById("max" + capitalizar(tipo)).value =
-            status.maximo;
+        document.getElementById("max" + nome).value = status.maximo;
     });
 
     salvarStatus();
@@ -392,32 +378,12 @@ function atualizarTela() {
 
 function alterarStatus(tipo, quantidade) {
     statusFicha[tipo].atual += quantidade;
-
-    statusFicha[tipo].atual = Math.max(
-        0,
-        Math.min(
-            statusFicha[tipo].maximo,
-            statusFicha[tipo].atual
-        )
-    );
-
     atualizarTela();
 }
 
 function alterarMaximo(tipo, valor) {
-    const novoMaximo = Math.max(1, parseInt(valor, 10) || 1);
-
-    statusFicha[tipo].maximo = novoMaximo;
-
-    if (statusFicha[tipo].atual > novoMaximo) {
-        statusFicha[tipo].atual = novoMaximo;
-    }
-
+    statusFicha[tipo].maximo = Math.max(1, parseInt(valor, 10) || 1);
     atualizarTela();
-}
-
-function capitalizar(texto) {
-    return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
 function alternarMenu() {
