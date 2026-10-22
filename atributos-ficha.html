@@ -1,36 +1,431 @@
-.vida-barra-wrap {
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Atributos</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin: 15px 0 30px;
+    font-size: 30px;
+}
+
+.status {
+    margin-bottom: 28px;
+}
+
+.status-titulo {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.status-titulo h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.valores {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.valores button {
+    width: 30px;
+    height: 30px;
+    background: #292929;
+    color: white;
+    border: 1px solid #555;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.valores span {
+    min-width: 65px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.maximo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.maximo input {
+    width: 55px;
+    padding: 5px;
+    background: #222;
+    color: white;
+    border: 1px solid #555;
+    text-align: center;
+    font-size: 14px;
+}
+
+.barra-linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
-    min-height: 50px;
+    min-height: 30px;
 }
 
-.coracao-pixel {
-    width: 54px;
-    height: 54px;
-    object-fit: contain;
+.coracao {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    line-height: 1;
     image-rendering: pixelated;
-    flex: 0 0 54px;
-    z-index: 1;
-    margin-right: -5px;
 }
 
-.barra-vida {
+.barra {
     flex: 1;
-    width: auto;
     min-width: 0;
     height: 12px;
+    background: #444;
     border: 2px solid #000;
     border-radius: 0;
-    background: #858585;
     overflow: hidden;
-    clip-path: none;
 }
 
-.barra-vida .preenchimento {
+.preenchimento {
+    width: 100%;
     height: 100%;
     border-radius: 0;
-    background: #e31324;
-    clip-path: none;
-    transition: width 0.2s;
+    transition: width 0.2s ease;
 }
+
+.vida {
+    background: #e31324;
+}
+
+.sanidade {
+    background: #2878e8;
+}
+
+.esforco {
+    background: #f0a020;
+}
+
+.menu {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 10;
+}
+
+.menu-botao {
+    width: 52px;
+    height: 52px;
+    border: 2px solid #555;
+    border-radius: 50%;
+    background: #222;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.menu-opcoes {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 62px;
+    width: 160px;
+    padding: 8px;
+    background: #222;
+    border: 1px solid #555;
+}
+
+.menu-opcoes.aberto {
+    display: block;
+}
+
+.menu-opcoes a {
+    display: block;
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+}
+
+.menu-opcoes a:last-child {
+    border-bottom: none;
+}
+
+.menu-opcoes a:hover {
+    background: #383838;
+}
+
+@media (max-width: 420px) {
+    body {
+        padding: 15px;
+    }
+
+    .status-titulo {
+        flex-wrap: wrap;
+    }
+
+    .status-titulo h2 {
+        font-size: 18px;
+    }
+
+    .maximo {
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Atributos</h1>
+
+    <section class="status">
+        <div class="status-titulo">
+            <h2>Vida</h2>
+
+            <div class="valores">
+                <button onclick="alterarStatus('vida', -1)">−</button>
+                <span id="valorVida">10 / 10</span>
+                <button onclick="alterarStatus('vida', 1)">+</button>
+            </div>
+
+            <label class="maximo">
+                Máx.
+                <input
+                    type="number"
+                    id="maxVida"
+                    min="1"
+                    value="10"
+                    onchange="alterarMaximo('vida', this.value)"
+                >
+            </label>
+        </div>
+
+        <div class="barra-linha">
+            <div class="coracao">❤️</div>
+
+            <div class="barra">
+                <div class="preenchimento vida" id="barraVida"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="status">
+        <div class="status-titulo">
+            <h2>Sanidade</h2>
+
+            <div class="valores">
+                <button onclick="alterarStatus('sanidade', -1)">−</button>
+                <span id="valorSanidade">10 / 10</span>
+                <button onclick="alterarStatus('sanidade', 1)">+</button>
+            </div>
+
+            <label class="maximo">
+                Máx.
+                <input
+                    type="number"
+                    id="maxSanidade"
+                    min="1"
+                    value="10"
+                    onchange="alterarMaximo('sanidade', this.value)"
+                >
+            </label>
+        </div>
+
+        <div class="barra-linha">
+            <div class="barra">
+                <div class="preenchimento sanidade" id="barraSanidade"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="status">
+        <div class="status-titulo">
+            <h2>Pontos de Esforço</h2>
+
+            <div class="valores">
+                <button onclick="alterarStatus('esforco', -1)">−</button>
+                <span id="valorEsforco">5 / 5</span>
+                <button onclick="alterarStatus('esforco', 1)">+</button>
+            </div>
+
+            <label class="maximo">
+                Máx.
+                <input
+                    type="number"
+                    id="maxEsforco"
+                    min="1"
+                    value="5"
+                    onchange="alterarMaximo('esforco', this.value)"
+                >
+            </label>
+        </div>
+
+        <div class="barra-linha">
+            <div class="barra">
+                <div class="preenchimento esforco" id="barraEsforco"></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="menu">
+    <div class="menu-opcoes" id="menuOpcoes">
+        <a href="ficha-final.html">Ficha</a>
+        <a href="dados.html">Dados</a>
+        <a href="atributos.html">Atributos</a>
+    </div>
+
+    <button class="menu-botao" onclick="alternarMenu()">☰</button>
+</div>
+
+<script>
+const statusPadrao = {
+    vida: {
+        atual: 10,
+        maximo: 10
+    },
+    sanidade: {
+        atual: 10,
+        maximo: 10
+    },
+    esforco: {
+        atual: 5,
+        maximo: 5
+    }
+};
+
+let statusFicha = carregarStatus();
+
+function carregarStatus() {
+    try {
+        const salvo = JSON.parse(localStorage.getItem("statusFicha"));
+
+        if (salvo) {
+            return {
+                vida: {
+                    ...statusPadrao.vida,
+                    ...(salvo.vida || {})
+                },
+                sanidade: {
+                    ...statusPadrao.sanidade,
+                    ...(salvo.sanidade || {})
+                },
+                esforco: {
+                    ...statusPadrao.esforco,
+                    ...(salvo.esforco || {})
+                }
+            };
+        }
+    } catch (erro) {
+        console.error("Não foi possível carregar os status.", erro);
+    }
+
+    return JSON.parse(JSON.stringify(statusPadrao));
+}
+
+function salvarStatus() {
+    localStorage.setItem("statusFicha", JSON.stringify(statusFicha));
+}
+
+function atualizarTela() {
+    const tipos = ["vida", "sanidade", "esforco"];
+
+    tipos.forEach(tipo => {
+        const status = statusFicha[tipo];
+
+        status.maximo = Math.max(1, Number(status.maximo) || 1);
+        status.atual = Math.max(
+            0,
+            Math.min(status.maximo, Number(status.atual) || 0)
+        );
+
+        const porcentagem = (status.atual / status.maximo) * 100;
+
+        document.getElementById("valor" + capitalizar(tipo)).textContent =
+            status.atual + " / " + status.maximo;
+
+        document.getElementById("barra" + capitalizar(tipo)).style.width =
+            porcentagem + "%";
+
+        document.getElementById("max" + capitalizar(tipo)).value =
+            status.maximo;
+    });
+
+    salvarStatus();
+}
+
+function alterarStatus(tipo, quantidade) {
+    statusFicha[tipo].atual += quantidade;
+
+    statusFicha[tipo].atual = Math.max(
+        0,
+        Math.min(
+            statusFicha[tipo].maximo,
+            statusFicha[tipo].atual
+        )
+    );
+
+    atualizarTela();
+}
+
+function alterarMaximo(tipo, valor) {
+    const novoMaximo = Math.max(1, parseInt(valor, 10) || 1);
+
+    statusFicha[tipo].maximo = novoMaximo;
+
+    if (statusFicha[tipo].atual > novoMaximo) {
+        statusFicha[tipo].atual = novoMaximo;
+    }
+
+    atualizarTela();
+}
+
+function capitalizar(texto) {
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
+function alternarMenu() {
+    document.getElementById("menuOpcoes").classList.toggle("aberto");
+}
+
+atualizarTela();
+</script>
+
+</body>
+</html>
