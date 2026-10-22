@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atributos</title>
+<title>Atributos da Ficha</title>
 
 <style>
 * {
@@ -22,18 +22,158 @@ body {
 
 .container {
     width: 100%;
-    max-width: 650px;
+    max-width: 700px;
     margin: 0 auto;
 }
 
 h1 {
     text-align: center;
-    margin: 0 0 32px;
-    font-size: 28px;
+    margin: 0 0 25px;
+    font-size: 27px;
 }
 
+/* DESENHO DOS ATRIBUTOS */
+
+.diagrama {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 28px;
+}
+
+.centro {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 40%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border: 5px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #111;
+    z-index: 1;
+}
+
+.centro span {
+    font-family: Georgia, serif;
+    font-size: clamp(16px, 4.5vw, 30px);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.ligacao {
+    position: absolute;
+    height: 5px;
+    background: white;
+    transform-origin: left center;
+    z-index: 0;
+}
+
+.ligacao-agi {
+    width: 29%;
+    left: 50%;
+    top: 25%;
+    transform: rotate(120deg);
+}
+
+.ligacao-int {
+    width: 29%;
+    left: 50%;
+    top: 25%;
+    transform: rotate(60deg);
+}
+
+.ligacao-for {
+    width: 29%;
+    left: 50%;
+    top: 75%;
+    transform: rotate(240deg);
+}
+
+.ligacao-pre {
+    width: 29%;
+    left: 50%;
+    top: 75%;
+    transform: rotate(300deg);
+}
+
+.ligacao-vig {
+    width: 30%;
+    left: 50%;
+    top: 50%;
+    transform: rotate(90deg);
+}
+
+.no-atributo {
+    position: absolute;
+    width: 34%;
+    aspect-ratio: 1;
+    border: 4px solid white;
+    border-radius: 50%;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+}
+
+.no-atributo .numero {
+    font-size: clamp(28px, 8vw, 52px);
+    font-weight: normal;
+    line-height: 1;
+    margin-bottom: 9px;
+}
+
+.no-atributo .nome {
+    font-size: clamp(10px, 2.5vw, 17px);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.no-atributo .sigla {
+    font-family: Georgia, serif;
+    font-size: clamp(19px, 5vw, 31px);
+    font-weight: bold;
+}
+
+.agi {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.for {
+    top: 25%;
+    left: 0;
+}
+
+.int {
+    top: 25%;
+    right: 0;
+}
+
+.pre {
+    bottom: 0;
+    left: 10%;
+}
+
+.vig {
+    bottom: 0;
+    right: 10%;
+}
+
+/* BARRAS DE STATUS */
+
 .status {
-    margin-bottom: 34px;
+    margin-bottom: 28px;
 }
 
 .status-titulo {
@@ -48,17 +188,15 @@ h1 {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 0;
 }
 
 .nome-status h2 {
     margin: 0;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .icone-status {
-    font-size: 25px;
-    line-height: 1;
+    font-size: 24px;
 }
 
 .maximo {
@@ -93,14 +231,12 @@ h1 {
     height: 12px;
     background: #444;
     border: 2px solid #000;
-    border-radius: 0;
     overflow: hidden;
 }
 
 .preenchimento {
     width: 100%;
     height: 100%;
-    border-radius: 0;
     transition: width 0.2s ease;
 }
 
@@ -120,11 +256,10 @@ h1 {
     display: flex;
     align-items: center;
     gap: 5px;
-    flex-shrink: 0;
 }
 
 .botoes-status button {
-    width: 29px;
+    width: 27px;
     height: 27px;
     padding: 0;
     display: flex;
@@ -138,16 +273,14 @@ h1 {
     font-weight: bold;
 }
 
-.botoes-status button:hover {
-    background: #444;
-}
-
 .valor-atual {
-    min-width: 65px;
+    min-width: 58px;
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
 }
+
+/* MENU */
 
 .menu {
     position: fixed;
@@ -200,11 +333,19 @@ h1 {
 
 @media (max-width: 480px) {
     body {
-        padding: 15px;
+        padding: 12px;
     }
 
     h1 {
-        font-size: 25px;
+        font-size: 24px;
+    }
+
+    .no-atributo {
+        border-width: 3px;
+    }
+
+    .centro {
+        border-width: 3px;
     }
 
     .status-titulo {
@@ -212,33 +353,75 @@ h1 {
     }
 
     .nome-status h2 {
-        font-size: 16px;
-    }
-
-    .icone-status {
-        font-size: 22px;
+        font-size: 15px;
     }
 
     .barra-controles {
-        gap: 6px;
+        gap: 5px;
     }
 
     .valor-atual {
-        min-width: 58px;
-        font-size: 12px;
+        min-width: 49px;
+        font-size: 11px;
     }
 
     .botoes-status button {
-        width: 26px;
-        height: 26px;
+        width: 23px;
+        height: 25px;
     }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
+
     <h1>Atributos</h1>
+
+    <div class="diagrama">
+
+        <div class="ligacao ligacao-agi"></div>
+        <div class="ligacao ligacao-int"></div>
+        <div class="ligacao ligacao-for"></div>
+        <div class="ligacao ligacao-pre"></div>
+        <div class="ligacao ligacao-vig"></div>
+
+        <div class="centro">
+            <span>ATRIBUTOS</span>
+        </div>
+
+        <div class="no-atributo agi">
+            <div class="numero" id="valorAgilidade">0</div>
+            <div class="nome">Agilidade</div>
+            <div class="sigla">AGI</div>
+        </div>
+
+        <div class="no-atributo for">
+            <div class="numero" id="valorForca">0</div>
+            <div class="nome">Força</div>
+            <div class="sigla">FOR</div>
+        </div>
+
+        <div class="no-atributo int">
+            <div class="numero" id="valorIntelecto">0</div>
+            <div class="nome">Intelecto</div>
+            <div class="sigla">INT</div>
+        </div>
+
+        <div class="no-atributo pre">
+            <div class="numero" id="valorPresenca">0</div>
+            <div class="nome">Presença</div>
+            <div class="sigla">PRE</div>
+        </div>
+
+        <div class="no-atributo vig">
+            <div class="numero" id="valorVigor">0</div>
+            <div class="nome">Vigor</div>
+            <div class="sigla">VIG</div>
+        </div>
+
+    </div>
 
     <section class="status">
         <div class="status-titulo">
@@ -260,9 +443,9 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('vida', -1)" aria-label="Diminuir vida">−</button>
-                <span class="valor-atual" id="valorVida">10 / 10</span>
-                <button onclick="alterarStatus('vida', 1)" aria-label="Aumentar vida">+</button>
+                <button onclick="alterarStatus('vida', -1)">−</button>
+                <span class="valor-atual" id="valorVida">30 / 30</span>
+                <button onclick="alterarStatus('vida', 1)">+</button>
             </div>
         </div>
     </section>
@@ -287,9 +470,9 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('sanidade', -1)" aria-label="Diminuir sanidade">−</button>
-                <span class="valor-atual" id="valorSanidade">10 / 10</span>
-                <button onclick="alterarStatus('sanidade', 1)" aria-label="Aumentar sanidade">+</button>
+                <button onclick="alterarStatus('sanidade', -1)">−</button>
+                <span class="valor-atual" id="valorSanidade">33 / 33</span>
+                <button onclick="alterarStatus('sanidade', 1)">+</button>
             </div>
         </div>
     </section>
@@ -314,12 +497,13 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('esforco', -1)" aria-label="Diminuir pontos de esforço">−</button>
-                <span class="valor-atual" id="valorEsforco">5 / 5</span>
-                <button onclick="alterarStatus('esforco', 1)" aria-label="Aumentar pontos de esforço">+</button>
+                <button onclick="alterarStatus('esforco', -1)">−</button>
+                <span class="valor-atual" id="valorEsforco">52 / 52</span>
+                <button onclick="alterarStatus('esforco', 1)">+</button>
             </div>
         </div>
     </section>
+
 </div>
 
 <div class="menu">
@@ -359,6 +543,31 @@ function carregarStatus() {
 
 let statusFicha = carregarStatus();
 
+function atualizarAtributos() {
+    let atributos = {};
+
+    try {
+        atributos = JSON.parse(localStorage.getItem("atributos")) || {};
+    } catch (erro) {
+        console.error("Erro ao carregar atributos:", erro);
+    }
+
+    document.getElementById("valorAgilidade").textContent =
+        atributos.agilidade ?? 0;
+
+    document.getElementById("valorForca").textContent =
+        atributos.forca ?? 0;
+
+    document.getElementById("valorIntelecto").textContent =
+        atributos.intelecto ?? 0;
+
+    document.getElementById("valorPresenca").textContent =
+        atributos.presenca ?? 0;
+
+    document.getElementById("valorVigor").textContent =
+        atributos.vigor ?? 0;
+}
+
 function salvarStatus() {
     localStorage.setItem("statusFicha", JSON.stringify(statusFicha));
 }
@@ -371,10 +580,10 @@ function atualizarTela() {
     ["vida", "sanidade", "esforco"].forEach(tipo => {
         const status = statusFicha[tipo];
         status.maximo = Math.max(1, Number(status.maximo) || 1);
-        status.atual = Math.max(0, Math.min(
-            status.maximo,
-            Number(status.atual) || 0
-        ));
+        status.atual = Math.max(
+            0,
+            Math.min(status.maximo, Number(status.atual) || 0)
+        );
 
         const nome = capitalizar(tipo);
 
@@ -404,7 +613,9 @@ function alternarMenu() {
     document.getElementById("menuOpcoes").classList.toggle("aberto");
 }
 
+atualizarAtributos();
 atualizarTela();
 </script>
+
 </body>
 </html>
