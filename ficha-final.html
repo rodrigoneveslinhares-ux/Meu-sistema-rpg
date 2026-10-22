@@ -1,9 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Finalizar Ficha</title>
 
     <style>
@@ -54,37 +54,27 @@
             position: fixed;
             right: 20px;
             bottom: 20px;
-
             width: 55px;
             height: 55px;
-
             border-radius: 50%;
             background: #292929;
             color: white;
-
             border: 1px solid #666;
-
             font-size: 24px;
             cursor: pointer;
-
             z-index: 10;
         }
 
         .menu {
             display: none;
-
             position: fixed;
             right: 20px;
             bottom: 85px;
-
             width: 180px;
-
             background: #181818;
             border: 1px solid #444;
             border-radius: 10px;
-
             padding: 10px;
-
             z-index: 10;
         }
 
@@ -94,17 +84,21 @@
 
         .menu a {
             display: block;
-
             color: white;
             text-decoration: none;
-
             padding: 12px;
-
             border-radius: 6px;
         }
 
         .menu a:hover {
             background: #292929;
+        }
+
+        .salvo {
+            color: #aaa;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -114,81 +108,76 @@
     <h1>FINALIZAR FICHA</h1>
 
     <div class="campo">
-        <div class="titulo">
-            Nome do personagem:
-        </div>
-
+        <div class="titulo">Nome do personagem:</div>
         <input
             type="text"
             id="nomePersonagem"
             placeholder="Digite o nome do personagem"
+            autocomplete="off"
         >
     </div>
 
     <div class="campo">
-        <div class="titulo">
-            Nome do jogador:
-        </div>
-
+        <div class="titulo">Nome do jogador:</div>
         <input
             type="text"
             id="nomeJogador"
             placeholder="Digite o nome do jogador"
+            autocomplete="off"
         >
     </div>
 
     <div class="campo">
-        <div class="titulo">
-            Origem:
-        </div>
-
-        <div class="origem" id="origem">
-            -
-        </div>
+        <div class="titulo">Origem:</div>
+        <div class="origem" id="origem">-</div>
     </div>
 
+    <div class="salvo" id="avisoSalvo">
+        Alterações salvas automaticamente.
+    </div>
 
     <div class="menu" id="menu">
-
-        <a href="ficha-final.html">
-            📋 Ficha
-        </a>
-
-        <a href="atributos-ficha.html">
-            ❤️ Atributos
-        </a>
-
-        <a href="dados.html">
-            🎲 Dados
-        </a>
-
+        <a href="ficha-final.html">📋 Ficha</a>
+        <a href="atributos-ficha.html">❤️ Atributos</a>
+        <a href="dados.html">🎲 Perícias e dados</a>
     </div>
 
-
-    <button
-        class="menu-botao"
-        onclick="abrirMenu()"
-    >
-        ☰
-    </button>
-
+    <button class="menu-botao" onclick="abrirMenu()">☰</button>
 
     <script>
+        const campoPersonagem = document.getElementById("nomePersonagem");
+        const campoJogador = document.getElementById("nomeJogador");
+        const avisoSalvo = document.getElementById("avisoSalvo");
 
-        let origemEscolhida =
-            localStorage.getItem("origem");
+        // Recupera os nomes salvos.
+        campoPersonagem.value =
+            localStorage.getItem("nomePersonagem") || "";
 
+        campoJogador.value =
+            localStorage.getItem("nomeJogador") || "";
+
+        // Mostra a origem escolhida.
         document.getElementById("origem").textContent =
-            origemEscolhida || "Nenhuma";
+            localStorage.getItem("origem") || "Nenhuma";
 
+        // Salva automaticamente enquanto os campos são preenchidos.
+        campoPersonagem.addEventListener("input", function () {
+            localStorage.setItem("nomePersonagem", campoPersonagem.value);
+            mostrarSalvo();
+        });
 
-        function abrirMenu() {
+        campoJogador.addEventListener("input", function () {
+            localStorage.setItem("nomeJogador", campoJogador.value);
+            mostrarSalvo();
+        });
 
-            document
-                .getElementById("menu")
-                .classList.toggle("aberto");
+        function mostrarSalvo() {
+            avisoSalvo.textContent = "Alterações salvas automaticamente.";
         }
 
+        function abrirMenu() {
+            document.getElementById("menu").classList.toggle("aberto");
+        }
     </script>
 
 </body>
