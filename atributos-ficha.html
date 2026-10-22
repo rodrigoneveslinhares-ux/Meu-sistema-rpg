@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Atributos</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             background: #0b0b0b;
@@ -91,16 +94,64 @@
             transition: width 0.2s;
         }
 
-        .barra-vida .preenchimento {
-            background: #d90000;
-        }
-
         .barra-sanidade .preenchimento {
             background: #168cff;
         }
 
         .barra-esforco .preenchimento {
             background: #ff9d00;
+        }
+
+        /* BARRA DE VIDA PIXELADA */
+
+        .vida-barra-wrap {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 64px;
+        }
+
+        .coracao-pixel {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            flex: 0 0 64px;
+            z-index: 1;
+            margin-right: -8px;
+        }
+
+        .barra-vida {
+            flex: 1;
+            width: auto;
+            min-width: 0;
+            height: 30px;
+            border: 3px solid #000;
+            border-radius: 0;
+            background: #858585;
+            overflow: hidden;
+            clip-path: polygon(
+                0 0,
+                95% 0,
+                100% 50%,
+                95% 100%,
+                0 100%
+            );
+            image-rendering: pixelated;
+        }
+
+        .barra-vida .preenchimento {
+            height: 100%;
+            border-radius: 0;
+            background: #e31324;
+            clip-path: polygon(
+                0 0,
+                95% 0,
+                100% 50%,
+                95% 100%,
+                0 100%
+            );
+            transition: width 0.2s;
         }
 
         /* MENU */
@@ -148,6 +199,27 @@
         .menu a:hover {
             background: #292929;
         }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 14px;
+                padding-bottom: 90px;
+            }
+
+            .coracao-pixel {
+                width: 54px;
+                height: 54px;
+                flex-basis: 54px;
+            }
+
+            .barra-vida {
+                height: 25px;
+            }
+
+            .maximo {
+                flex-wrap: wrap;
+            }
+        }
     </style>
 </head>
 
@@ -155,38 +227,18 @@
 
     <h1>ATRIBUTOS</h1>
 
-
     <!-- VIDA -->
 
     <div class="status">
 
-        <div class="nome">
-            ❤️ Vida
-        </div>
+        <div class="nome">❤️ Vida</div>
 
         <div class="controles">
+            <button class="botao" onclick="alterar('vida', -1)">−</button>
 
-            <button
-                class="botao"
-                onclick="alterar('vida', -1)"
-            >
-                −
-            </button>
+            <div class="valor" id="vida">0 / 0</div>
 
-            <div
-                class="valor"
-                id="vida"
-            >
-                0 / 0
-            </div>
-
-            <button
-                class="botao"
-                onclick="alterar('vida', 1)"
-            >
-                +
-            </button>
-
+            <button class="botao" onclick="alterar('vida', 1)">+</button>
         </div>
 
         <div class="maximo">
@@ -200,47 +252,33 @@
             >
         </div>
 
-        <div class="barra barra-vida">
-            <div
-                class="preenchimento"
-                id="barraVida"
-            ></div>
+        <div class="vida-barra-wrap">
+
+            <img
+                class="coracao-pixel"
+                alt="Coração pixelado"
+                src="data:image/png;base64,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"
+            >
+
+            <div class="barra barra-vida">
+                <div class="preenchimento" id="barraVida"></div>
+            </div>
+
         </div>
-
     </div>
-
 
     <!-- SANIDADE -->
 
     <div class="status">
 
-        <div class="nome">
-            🧠 Sanidade
-        </div>
+        <div class="nome">🧠 Sanidade</div>
 
         <div class="controles">
+            <button class="botao" onclick="alterar('sanidade', -1)">−</button>
 
-            <button
-                class="botao"
-                onclick="alterar('sanidade', -1)"
-            >
-                −
-            </button>
+            <div class="valor" id="sanidade">0 / 0</div>
 
-            <div
-                class="valor"
-                id="sanidade"
-            >
-                0 / 0
-            </div>
-
-            <button
-                class="botao"
-                onclick="alterar('sanidade', 1)"
-            >
-                +
-            </button>
-
+            <button class="botao" onclick="alterar('sanidade', 1)">+</button>
         </div>
 
         <div class="maximo">
@@ -255,46 +293,23 @@
         </div>
 
         <div class="barra barra-sanidade">
-            <div
-                class="preenchimento"
-                id="barraSanidade"
-            ></div>
+            <div class="preenchimento" id="barraSanidade"></div>
         </div>
 
     </div>
-
 
     <!-- PONTOS DE ESFORÇO -->
 
     <div class="status">
 
-        <div class="nome">
-            ⚡ Pontos de Esforço
-        </div>
+        <div class="nome">⚡ Pontos de Esforço</div>
 
         <div class="controles">
+            <button class="botao" onclick="alterar('esforco', -1)">−</button>
 
-            <button
-                class="botao"
-                onclick="alterar('esforco', -1)"
-            >
-                −
-            </button>
+            <div class="valor" id="esforco">0 / 0</div>
 
-            <div
-                class="valor"
-                id="esforco"
-            >
-                0 / 0
-            </div>
-
-            <button
-                class="botao"
-                onclick="alterar('esforco', 1)"
-            >
-                +
-            </button>
-
+            <button class="botao" onclick="alterar('esforco', 1)">+</button>
         </div>
 
         <div class="maximo">
@@ -309,148 +324,84 @@
         </div>
 
         <div class="barra barra-esforco">
-            <div
-                class="preenchimento"
-                id="barraEsforco"
-            ></div>
+            <div class="preenchimento" id="barraEsforco"></div>
         </div>
 
     </div>
 
-
     <!-- MENU -->
 
-    <div
-        class="menu"
-        id="menu"
-    >
-
-        <a href="ficha-final.html">
-            📋 Ficha
-        </a>
-
-        <a href="atributos-ficha.html">
-            ❤️ Atributos
-        </a>
-
-        <a href="dados.html">
-            🎲 Dados
-        </a>
-
+    <div class="menu" id="menu">
+        <a href="ficha-final.html">📋 Ficha</a>
+        <a href="atributos-ficha.html">❤️ Atributos</a>
+        <a href="dados.html">🎲 Dados</a>
     </div>
 
-
-    <button
-        class="menu-botao"
-        onclick="abrirMenu()"
-    >
-        ☰
-    </button>
-
+    <button class="menu-botao" onclick="abrirMenu()">☰</button>
 
     <script>
+        let status = JSON.parse(localStorage.getItem("statusFicha")) || {
+            vida: { atual: 0, maximo: 0 },
+            sanidade: { atual: 0, maximo: 0 },
+            esforco: { atual: 0, maximo: 0 }
+        };
 
-        let status =
-            JSON.parse(
-                localStorage.getItem("statusFicha")
-            ) || {
+        ["vida", "sanidade", "esforco"].forEach(tipo => {
+            if (!status[tipo]) {
+                status[tipo] = { atual: 0, maximo: 0 };
+            }
 
-                vida: {
-                    atual: 0,
-                    maximo: 0
-                },
-
-                sanidade: {
-                    atual: 0,
-                    maximo: 0
-                },
-
-                esforco: {
-                    atual: 0,
-                    maximo: 0
-                }
-            };
-
+            status[tipo].atual = Number(status[tipo].atual) || 0;
+            status[tipo].maximo = Number(status[tipo].maximo) || 0;
+        });
 
         function alterar(tipo, valor) {
-
             status[tipo].atual += valor;
 
             if (status[tipo].atual < 0) {
                 status[tipo].atual = 0;
             }
 
-            if (
-                status[tipo].maximo > 0 &&
-                status[tipo].atual >
-                status[tipo].maximo
-            ) {
-                status[tipo].atual =
-                    status[tipo].maximo;
+            if (status[tipo].atual > status[tipo].maximo) {
+                status[tipo].atual = status[tipo].maximo;
             }
 
             salvar();
             atualizar();
         }
 
-
         function alterarMaximo(tipo) {
+            const input = document.getElementById(tipo + "Maxima");
 
-            const input =
-                document.getElementById(
-                    tipo + "Maxima"
-                );
-
-            let novoMaximo =
-                parseInt(input.value);
+            let novoMaximo = parseInt(input.value, 10);
 
             if (isNaN(novoMaximo) || novoMaximo < 0) {
                 novoMaximo = 0;
             }
 
-            status[tipo].maximo =
-                novoMaximo;
+            status[tipo].maximo = novoMaximo;
 
-            if (
-                status[tipo].atual >
-                status[tipo].maximo
-            ) {
-                status[tipo].atual =
-                    status[tipo].maximo;
+            if (status[tipo].atual > novoMaximo) {
+                status[tipo].atual = novoMaximo;
             }
 
             salvar();
             atualizar();
         }
 
-
         function salvar() {
-
-            localStorage.setItem(
-                "statusFicha",
-                JSON.stringify(status)
-            );
-
+            localStorage.setItem("statusFicha", JSON.stringify(status));
         }
 
-
         function atualizar() {
-
             document.getElementById("vida").textContent =
-                status.vida.atual +
-                " / " +
-                status.vida.maximo;
+                status.vida.atual + " / " + status.vida.maximo;
 
             document.getElementById("sanidade").textContent =
-                status.sanidade.atual +
-                " / " +
-                status.sanidade.maximo;
+                status.sanidade.atual + " / " + status.sanidade.maximo;
 
             document.getElementById("esforco").textContent =
-                status.esforco.atual +
-                " / " +
-                status.esforco.maximo;
-
+                status.esforco.atual + " / " + status.esforco.maximo;
 
             document.getElementById("vidaMaxima").value =
                 status.vida.maximo;
@@ -460,7 +411,6 @@
 
             document.getElementById("esforcoMaxima").value =
                 status.esforco.maximo;
-
 
             atualizarBarra(
                 "barraVida",
@@ -481,44 +431,22 @@
             );
         }
 
-
         function atualizarBarra(id, atual, maximo) {
+            const barra = document.getElementById(id);
 
-            const barra =
-                document.getElementById(id);
+            const porcentagem = maximo <= 0
+                ? 0
+                : Math.max(0, Math.min(100, (atual / maximo) * 100));
 
-            if (maximo <= 0) {
-                barra.style.width = "0%";
-                return;
-            }
-
-            let porcentagem =
-                (atual / maximo) * 100;
-
-            if (porcentagem < 0) {
-                porcentagem = 0;
-            }
-
-            if (porcentagem > 100) {
-                porcentagem = 100;
-            }
-
-            barra.style.width =
-                porcentagem + "%";
+            barra.style.width = porcentagem + "%";
         }
-
 
         function abrirMenu() {
-
-            document
-                .getElementById("menu")
-                .classList.toggle("aberto");
-
+            document.getElementById("menu").classList.toggle("aberto");
         }
 
-
+        salvar();
         atualizar();
-
     </script>
 
 </body>
