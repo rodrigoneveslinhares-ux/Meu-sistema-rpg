@@ -1,12 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Dados</title>
 
-  
     <style>
         body {
             margin: 0;
@@ -113,19 +112,7 @@
     </a>
 
     <script>
-
-        const atributosSalvos =
-            JSON.parse(
-                localStorage.getItem("atributos")
-            ) || {};
-
-        const bonusOrigem =
-            JSON.parse(
-                localStorage.getItem("bonusPericias")
-            ) || {};
-
         const pericias = [
-
             { nome: "Acrobacia", atributo: "agilidade" },
             { nome: "Adestramento", atributo: "presenca" },
             { nome: "Artes", atributo: "presenca" },
@@ -154,330 +141,207 @@
             { nome: "Tática", atributo: "intelecto" },
             { nome: "Tecnologia", atributo: "intelecto" },
             { nome: "Vontade", atributo: "presenca" }
-
         ];
 
-        const lista =
-            document.getElementById(
-                "listaPericias"
-            );
-
-        pericias.forEach(
-            (pericia, indice) => {
-
-                const bonusAtributo =
-                    Number(
-                        atributosSalvos[
-                            pericia.atributo
-                        ]
-                    ) || 0;
-
-                const bonusDaOrigem =
-                    Number(
-                        bonusOrigem[
-                            pericia.nome
-                        ]
-                    ) || 0;
-
-                const bonusAutomatico =
-                    bonusAtributo +
-                    bonusDaOrigem;
-
-                const div =
-                    document.createElement(
-                        "div"
-                    );
-
-                div.className =
-                    "pericia";
-
-                div.innerHTML = `
-
-                    <div class="nome">
-                        ${pericia.nome}
-                    </div>
-
-                    <div class="linha">
-
-                        <input
-                            class="caixa caixa-automatico"
-                            id="atributo-${indice}"
-                            value="${bonusAutomatico}"
-                            readonly
-                            title="Atributo + bônus da origem"
-                        >
-
-                        <input
-                            class="caixa"
-                            id="manual-${indice}"
-                            type="number"
-                            value="0"
-                            title="Bônus manual"
-                        >
-
-                        <button
-                            class="botao-dado"
-                            onclick="rolar(${indice})"
-                            title="Rolar 1d20"
-                        >
-                            🎲
-                        </button>
-
-                    </div>
-
-                    <div
-                        class="resultado"
-                        id="resultado-${indice}">
-                    </div>
-
-                `;
-
-                lista.appendChild(div);
-
+        function lerLocalStorage(chave, padrao = {}) {
+            try {
+                return JSON.parse(localStorage.getItem(chave)) || padrao;
+            } catch (erro) {
+                return padrao;
             }
-        );
+        }
 
+        let bonusManuais = lerLocalStorage("bonusManuaisPericias");
+        let resultadosSalvos = lerLocalStorage("resultadosPericias");
+
+        const lista = document.getElementById("listaPericias");
+
+        function obterAtributos() {
+            return lerLocalStorage("atributos");
+        }
+
+        function obterBonusOrigem() {
+            return lerLocalStorage("bonusPericias");
+        }
+
+        function obterBonusAutomatico(pericia) {
+            const atributos = obterAtributos();
+            const bonusOrigem = obterBonusOrigem();
+
+            const bonusAtributo = Number(atributos[pericia.atributo]) || 0;
+            const bonusDaOrigem = Number(bonusOrigem[pericia.nome]) || 0;
+
+            return {
+                bonusAtributo,
+                bonusDaOrigem,
+                total: bonusAtributo + bonusDaOrigem
+            };
+        }
+
+        function salvarBonusManuais() {
+            localStorage.setItem(
+                "bonusManuaisPericias",
+                JSON.stringify(bonusManuais)
+            );
+        }
+
+        function salvarResultados() {
+            localStorage.setItem(
+                "resultadosPericias",
+                JSON.stringify(resultadosSalvos)
+            );
+        }
+
+        pericias.forEach((pericia, indice) => {
+            const bonus = obterBonusAutomatico(pericia);
+            const chave = pericia.nome;
+            const manualSalvo = Number(bonusManuais[chave]) || 0;
+
+            const div = document.createElement("div");
+            div.className = "pericia";
+
+            const nome = document.createElement("div");
+            nome.className = "nome";
+            nome.textContent = pericia.nome;
+
+            const linha = document.createElement("div");
+            linha.className = "linha";
+
+            const caixaAutomatica = document.createElement("input");
+            caixaAutomatica.className = "caixa caixa-automatico";
+            caixaAutomatica.id = "automatico-" + indice;
+            caixaAutomatica.value = bonus.total;
+            caixaAutomatica.readOnly = true;
+            caixaAutomatica.title = "Atributo + bônus da origem";
+
+            const caixaManual = document.createElement("input");
+            caixaManual.className = "caixa";
+            caixaManual.id = "manual-" + indice;
+            caixaManual.type = "number";
+            caixaManual.value = manualSalvo;
+            caixaManual.title = "Bônus manual";
+
+            caixaManual.addEventListener("input", () => {
+                bonusManuais[chave] = Number(caixaManual.value) || 0;
+                salvarBonusManuais();
+            });
+
+            const botaoDado = document.createElement("button");
+            botaoDado.className = "botao-dado";
+            botaoDado.textContent = "🎲";
+            botaoDado.title = "Rolar 1d20";
+            botaoDado.addEventListener("click", () => rolar(indice));
+
+            linha.append(caixaAutomatica, caixaManual, botaoDado);
+
+            const resultado = document.createElement("div");
+            resultado.className = "resultado";
+            resultado.id = "resultado-" + indice;
+            resultado.textContent = resultadosSalvos[chave] || "";
+
+            div.append(nome, linha, resultado);
+            lista.appendChild(div);
+        });
+
+        function atualizarBonusAutomaticos() {
+            pericias.forEach((pericia, indice) => {
+                const bonus = obterBonusAutomatico(pericia);
+                document.getElementById("automatico-" + indice).value =
+                    bonus.total;
+            });
+        }
 
         function rolar(indice) {
-
-            const pericia =
-                pericias[indice];
-
-            const bonusAtributo =
-                Number(
-                    atributosSalvos[
-                        pericia.atributo
-                    ]
-                ) || 0;
-
-            const bonusDaOrigem =
-                Number(
-                    bonusOrigem[
-                        pericia.nome
-                    ]
-                ) || 0;
+            const pericia = pericias[indice];
+            const bonus = obterBonusAutomatico(pericia);
 
             const bonusManual =
-                Number(
-                    document.getElementById(
-                        "manual-" + indice
-                    ).value
-                ) || 0;
+                Number(document.getElementById("manual-" + indice).value) || 0;
 
-            const dado =
-                Math.floor(
-                    Math.random() * 20
-                ) + 1;
+            bonusManuais[pericia.nome] = bonusManual;
+            salvarBonusManuais();
 
-            const bonusAutomatico =
-                bonusAtributo +
-                bonusDaOrigem;
+            const dado = Math.floor(Math.random() * 20) + 1;
+            const total = dado + bonus.total + bonusManual;
 
-            const total =
-                dado +
-                bonusAutomatico +
-                bonusManual;
+            let texto = `🎲 ${dado} + ${bonus.bonusAtributo}`;
 
-            let resultadoTexto =
-                `🎲 ${dado} + ${bonusAtributo}`;
-
-            if (bonusDaOrigem > 0) {
-
-                resultadoTexto +=
-                    ` + ${bonusDaOrigem} origem`;
-
+            if (bonus.bonusDaOrigem !== 0) {
+                texto += ` + ${bonus.bonusDaOrigem} origem`;
             }
 
             if (bonusManual !== 0) {
-
-                resultadoTexto +=
-                    ` + ${bonusManual}`;
-
+                texto += ` + (${bonusManual})`;
             }
 
-            resultadoTexto +=
-                ` = ${total}`;
+            texto += ` = ${total}`;
 
-            const bonusTotal =
-                bonusAutomatico +
-                bonusManual;
-
-            const dificuldade =
-                descobrirResultado(
-                    dado,
-                    bonusTotal
-                );
+            const dificuldade = descobrirResultado(
+                dado,
+                bonus.total + bonusManual
+            );
 
             if (dificuldade) {
-
-                resultadoTexto +=
-                    ` — ${dificuldade}`;
-
+                texto += ` — ${dificuldade}`;
             }
 
-            document.getElementById(
-                "resultado-" + indice
-            ).textContent =
-                resultadoTexto;
+            document.getElementById("resultado-" + indice).textContent = texto;
 
+            resultadosSalvos[pericia.nome] = texto;
+            salvarResultados();
         }
 
-
-        function descobrirResultado(
-            dado,
-            bonus
-        ) {
-
-            if (bonus < 1) {
-                return null;
-            }
-
-            if (bonus > 18) {
-                bonus = 18;
-            }
+        function descobrirResultado(dado, bonus) {
+            if (bonus < 1) return null;
+            if (bonus > 18) bonus = 18;
 
             const tabela = {
-
-                1: {
-                    normal: 20,
-                    bom: null,
-                    extremo: null
-                },
-
-                2: {
-                    normal: 19,
-                    bom: 20,
-                    extremo: null
-                },
-
-                3: {
-                    normal: 18,
-                    bom: 20,
-                    extremo: null
-                },
-
-                4: {
-                    normal: 17,
-                    bom: 19,
-                    extremo: null
-                },
-
-                5: {
-                    normal: 16,
-                    bom: 19,
-                    extremo: 20
-                },
-
-                6: {
-                    normal: 15,
-                    bom: 18,
-                    extremo: 20
-                },
-
-                7: {
-                    normal: 14,
-                    bom: 18,
-                    extremo: 20
-                },
-
-                8: {
-                    normal: 13,
-                    bom: 17,
-                    extremo: 20
-                },
-
-                9: {
-                    normal: 12,
-                    bom: 17,
-                    extremo: 20
-                },
-
-                10: {
-                    normal: 11,
-                    bom: 16,
-                    extremo: 19
-                },
-
-                11: {
-                    normal: 10,
-                    bom: 16,
-                    extremo: 19
-                },
-
-                12: {
-                    normal: 9,
-                    bom: 15,
-                    extremo: 19
-                },
-
-                13: {
-                    normal: 8,
-                    bom: 15,
-                    extremo: 19
-                },
-
-                14: {
-                    normal: 7,
-                    bom: 14,
-                    extremo: 19
-                },
-
-                15: {
-                    normal: 6,
-                    bom: 14,
-                    extremo: 18
-                },
-
-                16: {
-                    normal: 5,
-                    bom: 13,
-                    extremo: 18
-                },
-
-                17: {
-                    normal: 4,
-                    bom: 13,
-                    extremo: 18
-                },
-
-                18: {
-                    normal: 3,
-                    bom: 12,
-                    extremo: 18
-                }
-
+                1:  { normal: 20, bom: null, extremo: null },
+                2:  { normal: 19, bom: 20, extremo: null },
+                3:  { normal: 18, bom: 20, extremo: null },
+                4:  { normal: 17, bom: 19, extremo: null },
+                5:  { normal: 16, bom: 19, extremo: 20 },
+                6:  { normal: 15, bom: 18, extremo: 20 },
+                7:  { normal: 14, bom: 18, extremo: 20 },
+                8:  { normal: 13, bom: 17, extremo: 20 },
+                9:  { normal: 12, bom: 17, extremo: 20 },
+                10: { normal: 11, bom: 16, extremo: 19 },
+                11: { normal: 10, bom: 16, extremo: 19 },
+                12: { normal: 9, bom: 15, extremo: 19 },
+                13: { normal: 8, bom: 15, extremo: 19 },
+                14: { normal: 7, bom: 14, extremo: 19 },
+                15: { normal: 6, bom: 14, extremo: 18 },
+                16: { normal: 5, bom: 13, extremo: 18 },
+                17: { normal: 4, bom: 13, extremo: 18 },
+                18: { normal: 3, bom: 12, extremo: 18 }
             };
 
-            const faixa =
-                tabela[bonus];
+            const faixa = tabela[bonus];
+            if (!faixa) return null;
 
-            if (!faixa) {
-                return null;
-            }
-
-            if (
-                faixa.extremo !== null &&
-                dado >= faixa.extremo
-            ) {
+            if (faixa.extremo !== null && dado >= faixa.extremo) {
                 return "EXTREMO";
             }
 
-            if (
-                faixa.bom !== null &&
-                dado >= faixa.bom
-            ) {
+            if (faixa.bom !== null && dado >= faixa.bom) {
                 return "BOM";
             }
 
-            if (
-                dado >= faixa.normal
-            ) {
+            if (dado >= faixa.normal) {
                 return "NORMAL";
             }
 
             return "FALHA";
         }
 
+        // Atualiza os bônus se os atributos forem alterados em outra página.
+        window.addEventListener("pageshow", atualizarBonusAutomaticos);
+
+        window.addEventListener("storage", evento => {
+            if (evento.key === "atributos" || evento.key === "bonusPericias") {
+                atualizarBonusAutomaticos();
+            }
+        });
     </script>
 
 </body>
