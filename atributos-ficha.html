@@ -32,7 +32,7 @@ button{width:100%;padding:13px;margin-top:12px;background:#00ff66;color:#000;bor
 </main>
 <script>
 const j=sessionStorage.getItem("jogadorAtual");
-if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
+if(!["baladas","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
 const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
 let status=JSON.parse(localStorage.getItem(key("statusFicha"))||'{"vida":30,"vidaMax":30,"sanidade":33,"sanidadeMax":33,"pe":52,"peMax":52}');
 const tipos=[
