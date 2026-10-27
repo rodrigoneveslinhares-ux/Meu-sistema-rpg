@@ -1,258 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atributos</title>
-
-    <style>
-        body {
-            margin: 0;
-            background: #0b0b0b;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #00ff66;
-        }
-
-        .origem {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 10px;
-        }
-
-        .origem strong {
-            color: #00ff66;
-        }
-
-        .pontos {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 18px;
-        }
-
-        .pontos strong {
-            color: #00ff66;
-        }
-
-        .atributo {
-            background: #181818;
-            border: 1px solid #00ff66;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nome {
-            font-size: 18px;
-        }
-
-        .controles {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .controles button {
-            width: 40px;
-            height: 40px;
-            background: #181818;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            border-radius: 6px;
-            font-size: 22px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .controles button:hover {
-            background: #00ff66;
-            color: #0b0b0b;
-        }
-
-        .valor {
-            width: 20px;
-            text-align: center;
-            font-size: 20px;
-            color: #00ff66;
-        }
-
-        .continuar {
-            width: 100%;
-            margin-top: 20px;
-            padding: 16px;
-            background: #181818;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .continuar:hover {
-            background: #00ff66;
-            color: #0b0b0b;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atributos</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:20px}
+h1{text-align:center;color:#00ff66}
+main{max-width:500px;margin:auto}
+.linha{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#151515;margin:10px 0;border:1px solid #333;border-radius:8px}
+button{background:#00ff66;color:#000;border:0;border-radius:6px;padding:9px 14px;font-weight:bold}
+.valor{margin:0 15px}
+.avancar{width:100%;padding:15px;margin-top:20px}
+</style>
 </head>
-
 <body>
+<main>
+<h1>Atributos</h1>
+<p>Pontos disponíveis: <strong id="restantes">4</strong></p>
+<div id="lista"></div>
+<button class="avancar" onclick="continuar()">Continuar</button>
+</main>
+<script>
+const j=sessionStorage.getItem("jogadorAtual");
+if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
+const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
+const nomes=["Intelecto","Agilidade","Força","Vigor","Presença"];
+const ids=["intelecto","agilidade","forca","vigor","presenca"];
+const origem=localStorage.getItem(key("origem"))||"";
+let valores=JSON.parse(localStorage.getItem(key("atributos"))||"null");
 
-    <h1>ATRIBUTOS</h1>
+if(!valores){
+valores={intelecto:0,agilidade:0,forca:0,vigor:0,presenca:0};
+const bonus={Lutador:"forca",Professor:"intelecto",Atleta:"vigor",Apresentador:"presenca"};
+if(bonus[origem])valores[bonus[origem]]=1;
+}
 
-    <div class="origem">
-        Origem: <strong id="nomeOrigem"></strong>
-    </div>
-
-    <div class="pontos">
-        Pontos disponíveis:
-        <strong id="pontos">4</strong>
-    </div>
-
-    <div class="atributo">
-        <span class="nome">Intelecto</span>
-        <div class="controles">
-            <button onclick="diminuir('intelecto')" aria-label="Diminuir Intelecto">−</button>
-            <span class="valor" id="intelecto">0</span>
-            <button onclick="aumentar('intelecto')" aria-label="Aumentar Intelecto">+</button>
-        </div>
-    </div>
-
-    <div class="atributo">
-        <span class="nome">Agilidade</span>
-        <div class="controles">
-            <button onclick="diminuir('agilidade')" aria-label="Diminuir Agilidade">−</button>
-            <span class="valor" id="agilidade">0</span>
-            <button onclick="aumentar('agilidade')" aria-label="Aumentar Agilidade">+</button>
-        </div>
-    </div>
-
-    <div class="atributo">
-        <span class="nome">Força</span>
-        <div class="controles">
-            <button onclick="diminuir('forca')" aria-label="Diminuir Força">−</button>
-            <span class="valor" id="forca">0</span>
-            <button onclick="aumentar('forca')" aria-label="Aumentar Força">+</button>
-        </div>
-    </div>
-
-    <div class="atributo">
-        <span class="nome">Vigor</span>
-        <div class="controles">
-            <button onclick="diminuir('vigor')" aria-label="Diminuir Vigor">−</button>
-            <span class="valor" id="vigor">0</span>
-            <button onclick="aumentar('vigor')" aria-label="Aumentar Vigor">+</button>
-        </div>
-    </div>
-
-    <div class="atributo">
-        <span class="nome">Presença</span>
-        <div class="controles">
-            <button onclick="diminuir('presenca')" aria-label="Diminuir Presença">−</button>
-            <span class="valor" id="presenca">0</span>
-            <button onclick="aumentar('presenca')" aria-label="Aumentar Presença">+</button>
-        </div>
-    </div>
-
-    <button class="continuar" onclick="continuar()">
-        CONTINUAR
-    </button>
-
-    <script>
-        let pontos = 4;
-
-        let atributos = {
-            intelecto: 0,
-            agilidade: 0,
-            forca: 0,
-            vigor: 0,
-            presenca: 0
-        };
-
-        let origem = localStorage.getItem("origem");
-
-        document.getElementById("nomeOrigem").textContent =
-            origem || "Nenhuma";
-
-        if (origem === "Lutador") {
-            atributos.forca = 1;
-        }
-
-        if (origem === "Professor") {
-            atributos.intelecto = 1;
-        }
-
-        if (origem === "Apresentador") {
-            atributos.presenca = 1;
-        }
-
-        if (origem === "Atleta") {
-            atributos.vigor = 1;
-        }
-
-        function aumentar(atributo) {
-            if (pontos > 0) {
-                atributos[atributo]++;
-                pontos--;
-                atualizar();
-            }
-        }
-
-        function diminuir(atributo) {
-            let minimo = 0;
-
-            if (origem === "Lutador" && atributo === "forca") {
-                minimo = 1;
-            }
-
-            if (origem === "Professor" && atributo === "intelecto") {
-                minimo = 1;
-            }
-
-            if (origem === "Apresentador" && atributo === "presenca") {
-                minimo = 1;
-            }
-
-            if (origem === "Atleta" && atributo === "vigor") {
-                minimo = 1;
-            }
-
-            if (atributos[atributo] > minimo) {
-                atributos[atributo]--;
-                pontos++;
-                atualizar();
-            }
-        }
-
-        function atualizar() {
-            document.getElementById("pontos").textContent = pontos;
-            document.getElementById("intelecto").textContent = atributos.intelecto;
-            document.getElementById("agilidade").textContent = atributos.agilidade;
-            document.getElementById("forca").textContent = atributos.forca;
-            document.getElementById("vigor").textContent = atributos.vigor;
-            document.getElementById("presenca").textContent = atributos.presenca;
-        }
-
-        function continuar() {
-            localStorage.setItem(
-                "atributos",
-                JSON.stringify(atributos)
-            );
-
-            window.location.href = "ficha-final.html";
-        }
-
-        atualizar();
-    </script>
-
+function total(){return Object.values(valores).reduce((a,b)=>a+b,0);}
+function render(){
+document.getElementById("lista").innerHTML=nomes.map((n,i)=>`
+<div class="linha">
+<strong>${n}</strong>
+<div>
+<button onclick="alterar('${ids[i]}',-1)">−</button>
+<strong class="valor">${valores[ids[i]]}</strong>
+<button onclick="alterar('${ids[i]}',1)">+</button>
+</div>
+</div>`).join("");
+document.getElementById("restantes").textContent=4-(total()-Object.values(valores).filter((v,i)=>false).length);
+}
+function alterar(id,d){
+const bonus={Lutador:"forca",Professor:"intelecto",Atleta:"vigor",Apresentador:"presenca"};
+const base=bonus[origem]===id?1:0;
+if(d>0&&total()>=4)return;
+if(d<0&&valores[id]<=base)return;
+valores[id]+=d;
+render();
+}
+function continuar(){
+if(total()!==4){alert("Distribua os 4 pontos disponíveis.");return;}
+localStorage.setItem(key("atributos"),JSON.stringify(valores));
+location.href="ficha-final.html";
+}
+render();
+</script>
 </body>
 </html>
