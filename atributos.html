@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,6 +16,7 @@
 
         h1 {
             text-align: center;
+            color: #00ff66;
         }
 
         .origem {
@@ -25,15 +25,23 @@
             margin-bottom: 10px;
         }
 
+        .origem strong {
+            color: #00ff66;
+        }
+
         .pontos {
             text-align: center;
             margin-bottom: 25px;
             font-size: 18px;
         }
 
+        .pontos strong {
+            color: #00ff66;
+        }
+
         .atributo {
             background: #181818;
-            border: 1px solid #444;
+            border: 1px solid #00ff66;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 12px;
@@ -55,28 +63,44 @@
         .controles button {
             width: 40px;
             height: 40px;
-            background: #292929;
-            color: white;
-            border: 1px solid #555;
+            background: #181818;
+            color: #00ff66;
+            border: 1px solid #00ff66;
             border-radius: 6px;
             font-size: 22px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .controles button:hover {
+            background: #00ff66;
+            color: #0b0b0b;
         }
 
         .valor {
             width: 20px;
             text-align: center;
             font-size: 20px;
+            color: #00ff66;
         }
 
         .continuar {
             width: 100%;
             margin-top: 20px;
             padding: 16px;
-            background: #292929;
-            color: white;
-            border: 1px solid #555;
+            background: #181818;
+            color: #00ff66;
+            border: 1px solid #00ff66;
             border-radius: 8px;
             font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .continuar:hover {
+            background: #00ff66;
+            color: #0b0b0b;
         }
     </style>
 </head>
@@ -97,45 +121,45 @@
     <div class="atributo">
         <span class="nome">Intelecto</span>
         <div class="controles">
-            <button onclick="diminuir('intelecto')">−</button>
+            <button onclick="diminuir('intelecto')" aria-label="Diminuir Intelecto">−</button>
             <span class="valor" id="intelecto">0</span>
-            <button onclick="aumentar('intelecto')">+</button>
+            <button onclick="aumentar('intelecto')" aria-label="Aumentar Intelecto">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Agilidade</span>
         <div class="controles">
-            <button onclick="diminuir('agilidade')">−</button>
+            <button onclick="diminuir('agilidade')" aria-label="Diminuir Agilidade">−</button>
             <span class="valor" id="agilidade">0</span>
-            <button onclick="aumentar('agilidade')">+</button>
+            <button onclick="aumentar('agilidade')" aria-label="Aumentar Agilidade">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Força</span>
         <div class="controles">
-            <button onclick="diminuir('forca')">−</button>
+            <button onclick="diminuir('forca')" aria-label="Diminuir Força">−</button>
             <span class="valor" id="forca">0</span>
-            <button onclick="aumentar('forca')">+</button>
+            <button onclick="aumentar('forca')" aria-label="Aumentar Força">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Vigor</span>
         <div class="controles">
-            <button onclick="diminuir('vigor')">−</button>
+            <button onclick="diminuir('vigor')" aria-label="Diminuir Vigor">−</button>
             <span class="valor" id="vigor">0</span>
-            <button onclick="aumentar('vigor')">+</button>
+            <button onclick="aumentar('vigor')" aria-label="Aumentar Vigor">+</button>
         </div>
     </div>
 
     <div class="atributo">
         <span class="nome">Presença</span>
         <div class="controles">
-            <button onclick="diminuir('presenca')">−</button>
+            <button onclick="diminuir('presenca')" aria-label="Diminuir Presença">−</button>
             <span class="valor" id="presenca">0</span>
-            <button onclick="aumentar('presenca')">+</button>
+            <button onclick="aumentar('presenca')" aria-label="Aumentar Presença">+</button>
         </div>
     </div>
 
