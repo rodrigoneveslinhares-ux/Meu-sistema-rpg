@@ -15,7 +15,7 @@ body {
     margin: 0;
     min-height: 100vh;
     padding: 20px;
-    background: #111;
+    background: #0b0b0b;
     color: white;
     font-family: Arial, sans-serif;
 }
@@ -30,6 +30,8 @@ h1 {
     text-align: center;
     margin: 0 0 25px;
     font-size: 27px;
+    color: #00ff66;
+    text-shadow: 0 0 10px #00ff6640;
 }
 
 /* DESENHO DOS ATRIBUTOS */
@@ -49,14 +51,15 @@ h1 {
     width: 40%;
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
-    border: 5px solid white;
+    border: 5px solid #00ff66;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: #111;
+    background: #0b0b0b;
     z-index: 1;
+    box-shadow: 0 0 15px #00ff6620;
 }
 
 .centro span {
@@ -64,12 +67,13 @@ h1 {
     font-size: clamp(16px, 4.5vw, 30px);
     font-weight: bold;
     letter-spacing: 1px;
+    color: #00ff66;
 }
 
 .ligacao {
     position: absolute;
     height: 5px;
-    background: white;
+    background: #00ff66;
     transform-origin: left center;
     z-index: 0;
 }
@@ -113,7 +117,7 @@ h1 {
     position: absolute;
     width: 34%;
     aspect-ratio: 1;
-    border: 4px solid white;
+    border: 4px solid #00ff66;
     border-radius: 50%;
     background: #111;
     display: flex;
@@ -122,6 +126,7 @@ h1 {
     align-items: center;
     text-align: center;
     z-index: 2;
+    box-shadow: 0 0 12px #00ff6618;
 }
 
 .no-atributo .numero {
@@ -129,6 +134,7 @@ h1 {
     font-weight: normal;
     line-height: 1;
     margin-bottom: 9px;
+    color: #00ff66;
 }
 
 .no-atributo .nome {
@@ -142,6 +148,7 @@ h1 {
     font-family: Georgia, serif;
     font-size: clamp(19px, 5vw, 31px);
     font-weight: bold;
+    color: #00ff66;
 }
 
 .agi {
@@ -211,11 +218,17 @@ h1 {
 .maximo input {
     width: 55px;
     padding: 5px;
-    background: #222;
-    color: white;
-    border: 1px solid #555;
+    background: #181818;
+    color: #00ff66;
+    border: 1px solid #00ff66;
+    border-radius: 4px;
     text-align: center;
     font-size: 14px;
+    outline: none;
+}
+
+.maximo input:focus {
+    box-shadow: 0 0 6px #00ff6660;
 }
 
 .barra-controles {
@@ -229,9 +242,10 @@ h1 {
     flex: 1;
     min-width: 0;
     height: 12px;
-    background: #444;
-    border: 2px solid #000;
+    background: #333;
+    border: 1px solid #555;
     overflow: hidden;
+    border-radius: 3px;
 }
 
 .preenchimento {
@@ -265,12 +279,19 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #292929;
-    color: white;
-    border: 1px solid #555;
+    background: #181818;
+    color: #00ff66;
+    border: 1px solid #00ff66;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
+    transition: 0.2s;
+}
+
+.botoes-status button:hover {
+    background: #00ff66;
+    color: #000;
 }
 
 .valor-atual {
@@ -292,12 +313,18 @@ h1 {
 .menu-botao {
     width: 52px;
     height: 52px;
-    border: 2px solid #555;
+    border: 2px solid #00ff66;
     border-radius: 50%;
-    background: #222;
-    color: white;
+    background: #181818;
+    color: #00ff66;
     font-size: 25px;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-botao:hover {
+    background: #00ff66;
+    color: #000;
 }
 
 .menu-opcoes {
@@ -307,8 +334,10 @@ h1 {
     bottom: 62px;
     width: 160px;
     padding: 8px;
-    background: #222;
-    border: 1px solid #555;
+    background: #181818;
+    border: 1px solid #00ff66;
+    border-radius: 6px;
+    box-shadow: 0 0 12px #00ff6620;
 }
 
 .menu-opcoes.aberto {
@@ -320,7 +349,8 @@ h1 {
     padding: 12px;
     color: white;
     text-decoration: none;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #333;
+    transition: 0.2s;
 }
 
 .menu-opcoes a:last-child {
@@ -328,7 +358,8 @@ h1 {
 }
 
 .menu-opcoes a:hover {
-    background: #383838;
+    background: #00ff66;
+    color: #000;
 }
 
 @media (max-width: 480px) {
@@ -368,6 +399,11 @@ h1 {
     .botoes-status button {
         width: 23px;
         height: 25px;
+    }
+
+    .menu {
+        right: 12px;
+        bottom: 12px;
     }
 }
 </style>
@@ -443,9 +479,9 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('vida', -1)">−</button>
+                <button type="button" onclick="alterarStatus('vida', -1)">−</button>
                 <span class="valor-atual" id="valorVida">30 / 30</span>
-                <button onclick="alterarStatus('vida', 1)">+</button>
+                <button type="button" onclick="alterarStatus('vida', 1)">+</button>
             </div>
         </div>
     </section>
@@ -470,9 +506,9 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('sanidade', -1)">−</button>
+                <button type="button" onclick="alterarStatus('sanidade', -1)">−</button>
                 <span class="valor-atual" id="valorSanidade">33 / 33</span>
-                <button onclick="alterarStatus('sanidade', 1)">+</button>
+                <button type="button" onclick="alterarStatus('sanidade', 1)">+</button>
             </div>
         </div>
     </section>
@@ -497,9 +533,9 @@ h1 {
             </div>
 
             <div class="botoes-status">
-                <button onclick="alterarStatus('esforco', -1)">−</button>
+                <button type="button" onclick="alterarStatus('esforco', -1)">−</button>
                 <span class="valor-atual" id="valorEsforco">52 / 52</span>
-                <button onclick="alterarStatus('esforco', 1)">+</button>
+                <button type="button" onclick="alterarStatus('esforco', 1)">+</button>
             </div>
         </div>
     </section>
@@ -513,7 +549,7 @@ h1 {
         <a href="atributos.html">Atributos</a>
     </div>
 
-    <button class="menu-botao" onclick="alternarMenu()">☰</button>
+    <button type="button" class="menu-botao" onclick="alternarMenu()">☰</button>
 </div>
 
 <script>
