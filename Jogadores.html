@@ -2,286 +2,189 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desastre Natural</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desastre Natural</title>
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-h1 {
-    margin: 0;
-    padding: 35px 15px;
-    text-align: center;
-    color: #00ff66;
-    font-family: Georgia, serif;
-    font-size: clamp(30px, 6vw, 54px);
-    font-weight: normal;
-    letter-spacing: 2px;
-    text-shadow: 0 0 12px #00ff6640;
-}
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
 
-.conteudo {
-    display: flex;
-    min-height: calc(100vh - 130px);
-}
+        h1 {
+            color: #00ff66;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
 
-.lateral {
-    width: 280px;
-    flex-shrink: 0;
-    padding: 25px 20px;
-    border-right: 1px solid #00ff66;
-}
+        p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
 
-.lateral h2 {
-    color: #00ff66;
-    font-size: 18px;
-    margin: 0 0 20px;
-}
+        .jogador,
+        .entrar {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #181818;
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-.jogador {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 12px;
-    text-align: left;
-    background: #101010;
-    color: #fff;
-    border: 1px solid #333;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-}
+        .jogador:hover,
+        .jogador.selecionado,
+        .entrar:hover {
+            background: #00ff66;
+            color: #0b0b0b;
+        }
 
-.jogador:hover,
-.jogador.selecionado {
-    color: #00ff66;
-    border-color: #00ff66;
-    background: #101a13;
-}
+        #painel {
+            display: none;
+            margin-top: 15px;
+        }
 
-.jogador.selecionado::before {
-    content: "▸ ";
-}
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            background: #181818;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 17px;
+        }
 
-.area-login {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 25px;
-}
+        input:focus {
+            outline: none;
+            border-color: #00ff66;
+        }
 
-.login {
-    display: none;
-    width: 100%;
-    max-width: 360px;
-    padding: 28px;
-    background: #0b0b0b;
-    border: 1px solid #00ff66;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 0 20px #00ff6610;
-}
-
-.login.visivel {
-    display: block;
-}
-
-.login h2 {
-    color: #00ff66;
-    margin-top: 0;
-    font-size: 24px;
-}
-
-.login p {
-    color: #aaa;
-    font-size: 14px;
-}
-
-.login input {
-    width: 100%;
-    padding: 13px;
-    margin: 12px 0;
-    background: #151515;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-}
-
-.login input:focus {
-    border-color: #00ff66;
-    box-shadow: 0 0 6px #00ff6630;
-}
-
-.login button {
-    width: 100%;
-    padding: 13px;
-    margin-top: 8px;
-    background: #00ff66;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.login button:hover {
-    background: #00cc52;
-}
-
-.mensagem {
-    min-height: 20px;
-    margin-top: 12px;
-    color: #ff5555;
-    font-size: 14px;
-}
-
-@media (max-width: 600px) {
-    h1 {
-        padding: 25px 10px;
-    }
-
-    .conteudo {
-        flex-direction: column;
-    }
-
-    .lateral {
-        width: 100%;
-        padding: 20px;
-        border-right: none;
-        border-bottom: 1px solid #00ff66;
-    }
-
-    .jogador {
-        margin-bottom: 8px;
-    }
-
-    .area-login {
-        padding: 25px 18px;
-        align-items: flex-start;
-    }
-}
-</style>
+        #mensagem {
+            min-height: 22px;
+            color: #ff6666;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
+    <main class="container">
+        <h1>𝔇𝔢𝔰𝔞𝔰𝔱𝔯𝔢 𝔑𝔞𝔱𝔲𝔯𝔞𝔩</h1>
 
-<h1>𝔇𝔢𝔰𝔞𝔰𝔱𝔯𝔢 𝔑𝔞𝔱𝔲𝔯𝔞𝔩</h1>
+        <p>Selecione seu jogador para entrar.</p>
 
-<div class="conteudo">
-
-    <aside class="lateral">
-        <h2>ESCOLHA SEU JOGADOR</h2>
-
-        <button type="button" class="jogador"
+        <button class="jogador" type="button"
             onclick="selecionarJogador('Brayan', this)">
             Brayan
         </button>
 
-        <button type="button" class="jogador"
+        <button class="jogador" type="button"
             onclick="selecionarJogador('Vitor', this)">
             Vitor
         </button>
 
-        <button type="button" class="jogador"
+        <button class="jogador" type="button"
             onclick="selecionarJogador('Sofia', this)">
             Sofia
         </button>
-    </aside>
 
-    <main class="area-login">
+        <div id="painel">
+            <input
+                id="senha"
+                type="password"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+            >
 
-        <section class="login" id="login">
-            <h2 id="tituloLogin">Entrar</h2>
-            <p>Digite sua senha para continuar.</p>
+            <button class="entrar" type="button"
+                onclick="verificarSenha()">
+                ENTRAR
+            </button>
+        </div>
 
-            <form onsubmit="event.preventDefault(); verificarSenha();">
-                <input
-                    type="password"
-                    id="senha"
-                    placeholder="Digite sua senha"
-                    autocomplete="current-password"
-                    required
-                >
-
-                <button type="submit">ENTRAR</button>
-            </form>
-
-            <div class="mensagem" id="mensagem"></div>
-        </section>
-
+        <div id="mensagem"></div>
     </main>
 
-</div>
+    <script>
+        const senhas = {
+            Brayan: "brayan123",
+            Vitor: "vitor123",
+            Sofia: "sofia123"
+        };
 
-<script>
-/*
-  SENHAS TEMPORÁRIAS.
-  Altere os valores conforme as senhas escolhidas.
-*/
+        let jogadorSelecionado = "";
 
-const senhas = {
-    Brayan: "brayan123",
-    Vitor: "vitor123",
-    Sofia: "sofia123"
-};
+        function selecionarJogador(nome, botao) {
+            jogadorSelecionado = nome;
 
-let jogadorSelecionado = "";
+            document.querySelectorAll(".jogador").forEach(function (item) {
+                item.classList.remove("selecionado");
+            });
 
-function selecionarJogador(nome, botao) {
-    jogadorSelecionado = nome;
+            botao.classList.add("selecionado");
 
-    document.querySelectorAll(".jogador").forEach(jogador => {
-        jogador.classList.remove("selecionado");
-    });
+            document.getElementById("painel").style.display = "block";
+            document.getElementById("senha").value = "";
+            document.getElementById("mensagem").textContent = "";
 
-    botao.classList.add("selecionado");
+            document.getElementById("senha").focus();
+        }
 
-    document.getElementById("login").classList.add("visivel");
-    document.getElementById("tituloLogin").textContent = nome;
-    document.getElementById("senha").value = "";
-    document.getElementById("mensagem").textContent = "";
+        function verificarSenha() {
+            const senhaDigitada =
+                document.getElementById("senha").value;
 
-    document.getElementById("senha").focus();
-}
+            const mensagem =
+                document.getElementById("mensagem");
 
-function verificarSenha() {
-    const senhaDigitada = document.getElementById("senha").value;
-    const mensagem = document.getElementById("mensagem");
+            if (!jogadorSelecionado) {
+                mensagem.textContent = "Selecione um jogador.";
+                return;
+            }
 
-    if (!jogadorSelecionado) {
-        mensagem.textContent = "Escolha um jogador primeiro.";
-        return;
-    }
+            if (senhas[jogadorSelecionado] === senhaDigitada) {
+                sessionStorage.setItem(
+                    "jogadorAtual",
+                    jogadorSelecionado
+                );
 
-    if (senhas[jogadorSelecionado] === senhaDigitada) {
-        sessionStorage.setItem("jogadorAtual", jogadorSelecionado);
+                window.location.href = "index.html";
+            } else {
+                mensagem.textContent = "Senha incorreta.";
+            }
+        }
 
-        // Abre o index.html original após a senha correta.
-        window.location.href = "index.html";
-    } else {
-        mensagem.textContent = "Senha incorreta. Tente novamente.";
-        document.getElementById("senha").value = "";
-        document.getElementById("senha").focus();
-    }
-}
-</script>
-
+        document.getElementById("senha").addEventListener(
+            "keydown",
+            function (evento) {
+                if (evento.key === "Enter") {
+                    verificarSenha();
+                }
+            }
+        );
+    </script>
 </body>
 </html>
