@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desastre Natural</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin: 0;
+    padding: 35px 15px;
+    text-align: center;
+    color: #00ff66;
+    font-family: Georgia, serif;
+    font-size: clamp(30px, 6vw, 54px);
+    font-weight: normal;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px #00ff6640;
+}
+
+.conteudo {
+    display: flex;
+    min-height: calc(100vh - 130px);
+}
+
+.lateral {
+    width: 280px;
+    flex-shrink: 0;
+    padding: 25px 20px;
+    border-right: 1px solid #00ff66;
+}
+
+.lateral h2 {
+    color: #00ff66;
+    font-size: 18px;
+    margin: 0 0 20px;
+}
+
+.jogador {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 12px;
+    text-align: left;
+    background: #101010;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.jogador:hover,
+.jogador.selecionado {
+    color: #00ff66;
+    border-color: #00ff66;
+    background: #101a13;
+}
+
+.jogador.selecionado::before {
+    content: "▸ ";
+}
+
+.area-login {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+
+.login {
+    display: none;
+    width: 100%;
+    max-width: 360px;
+    padding: 28px;
+    background: #0b0b0b;
+    border: 1px solid #00ff66;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 20px #00ff6610;
+}
+
+.login.visivel {
+    display: block;
+}
+
+.login h2 {
+    color: #00ff66;
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.login p {
+    color: #aaa;
+    font-size: 14px;
+}
+
+.login input {
+    width: 100%;
+    padding: 13px;
+    margin: 12px 0;
+    background: #151515;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.login input:focus {
+    border-color: #00ff66;
+    box-shadow: 0 0 6px #00ff6630;
+}
+
+.login button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    background: #00ff66;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.login button:hover {
+    background: #00cc52;
+}
+
+.mensagem {
+    min-height: 20px;
+    margin-top: 12px;
+    color: #ff5555;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        padding: 25px 10px;
+    }
+
+    .conteudo {
+        flex-direction: column;
+    }
+
+    .lateral {
+        width: 100%;
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid #00ff66;
+    }
+
+    .jogador {
+        margin-bottom: 8px;
+    }
+
+    .area-login {
+        padding: 25px 18px;
+        align-items: flex-start;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>𝔇𝔢𝔰𝔞𝔰𝔱𝔯𝔢 𝔑𝔞𝔱𝔲𝔯𝔞𝔩</h1>
+
+<div class="conteudo">
+
+    <aside class="lateral">
+        <h2>ESCOLHA SEU JOGADOR</h2>
+
+        <button type="button" class="jogador"
+            onclick="selecionarJogador('Brayan', this)">
+            Brayan
+        </button>
+
+        <button type="button" class="jogador"
+            onclick="selecionarJogador('Vitor', this)">
+            Vitor
+        </button>
+
+        <button type="button" class="jogador"
+            onclick="selecionarJogador('Sofia', this)">
+            Sofia
+        </button>
+    </aside>
+
+    <main class="area-login">
+
+        <section class="login" id="login">
+            <h2 id="tituloLogin">Entrar</h2>
+            <p>Digite sua senha para continuar.</p>
+
+            <form onsubmit="event.preventDefault(); verificarSenha();">
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit">ENTRAR</button>
+            </form>
+
+            <div class="mensagem" id="mensagem"></div>
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+/*
+  SENHAS TEMPORÁRIAS.
+  Altere os valores conforme as senhas escolhidas.
+*/
+
+const senhas = {
+    Brayan: "brayan123",
+    Vitor: "vitor123",
+    Sofia: "sofia123"
+};
+
+let jogadorSelecionado = "";
+
+function selecionarJogador(nome, botao) {
+    jogadorSelecionado = nome;
+
+    document.querySelectorAll(".jogador").forEach(jogador => {
+        jogador.classList.remove("selecionado");
+    });
+
+    botao.classList.add("selecionado");
+
+    document.getElementById("login").classList.add("visivel");
+    document.getElementById("tituloLogin").textContent = nome;
+    document.getElementById("senha").value = "";
+    document.getElementById("mensagem").textContent = "";
+
+    document.getElementById("senha").focus();
+}
+
+function verificarSenha() {
+    const senhaDigitada = document.getElementById("senha").value;
+    const mensagem = document.getElementById("mensagem");
+
+    if (!jogadorSelecionado) {
+        mensagem.textContent = "Escolha um jogador primeiro.";
+        return;
+    }
+
+    if (senhas[jogadorSelecionado] === senhaDigitada) {
+        sessionStorage.setItem("jogadorAtual", jogadorSelecionado);
+
+        // Abre o index.html original após a senha correta.
+        window.location.href = "index.html";
+    } else {
+        mensagem.textContent = "Senha incorreta. Tente novamente.";
+        document.getElementById("senha").value = "";
+        document.getElementById("senha").focus();
+    }
+}
+</script>
+
+</body>
+</html>
