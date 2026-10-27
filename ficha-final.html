@@ -19,6 +19,7 @@
         h1 {
             text-align: center;
             margin-bottom: 30px;
+            color: #00ff66;
         }
 
         .campo {
@@ -142,14 +143,22 @@
         <a href="dados.html">🎲 Perícias e dados</a>
     </div>
 
-    <button class="menu-botao" onclick="abrirMenu()">☰</button>
+    <button
+        class="menu-botao"
+        id="botaoMenu"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+    >☰</button>
 
     <script>
         const campoPersonagem = document.getElementById("nomePersonagem");
         const campoJogador = document.getElementById("nomeJogador");
         const avisoSalvo = document.getElementById("avisoSalvo");
+        const menu = document.getElementById("menu");
+        const botaoMenu = document.getElementById("botaoMenu");
 
-        // Recupera os nomes salvos.
+        // Recupera os nomes salvos anteriormente.
         campoPersonagem.value =
             localStorage.getItem("nomePersonagem") || "";
 
@@ -160,24 +169,42 @@
         document.getElementById("origem").textContent =
             localStorage.getItem("origem") || "Nenhuma";
 
-        // Salva automaticamente enquanto os campos são preenchidos.
+        // Salva automaticamente o nome do personagem.
         campoPersonagem.addEventListener("input", function () {
-            localStorage.setItem("nomePersonagem", campoPersonagem.value);
+            localStorage.setItem(
+                "nomePersonagem",
+                campoPersonagem.value
+            );
+
             mostrarSalvo();
         });
 
+        // Salva automaticamente o nome do jogador.
         campoJogador.addEventListener("input", function () {
-            localStorage.setItem("nomeJogador", campoJogador.value);
+            localStorage.setItem(
+                "nomeJogador",
+                campoJogador.value
+            );
+
             mostrarSalvo();
         });
 
         function mostrarSalvo() {
-            avisoSalvo.textContent = "Alterações salvas automaticamente.";
+            avisoSalvo.textContent =
+                "Alterações salvas automaticamente.";
         }
 
+        // Abre e fecha o menu.
         function abrirMenu() {
-            document.getElementById("menu").classList.toggle("aberto");
+            const aberto = menu.classList.toggle("aberto");
+
+            botaoMenu.setAttribute(
+                "aria-expanded",
+                aberto ? "true" : "false"
+            );
         }
+
+        botaoMenu.addEventListener("click", abrirMenu);
     </script>
 
 </body>
