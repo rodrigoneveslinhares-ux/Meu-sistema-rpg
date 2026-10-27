@@ -6,14 +6,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desastre Milenar</title>
 
-  <meta http-equiv="refresh" content="0; url=jogadores.html">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050505;
+      color: #00ff66;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      border: 1px solid #00ff66;
+      border-radius: 12px;
+      padding: 30px 20px;
+      box-shadow: 0 0 20px #00ff6622;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin: 0 0 12px;
+      text-shadow: 0 0 12px #00ff6680;
+    }
+
+    .jogador {
+      color: #b5b5b5;
+      margin-bottom: 28px;
+    }
+
+    .botao {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin-top: 14px;
+      border: 1px solid #00ff66;
+      border-radius: 7px;
+      background: #00ff66;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .botao.secundario {
+      background: transparent;
+      color: #00ff66;
+    }
+
+    .botao:hover {
+      box-shadow: 0 0 14px #00ff6680;
+    }
+
+    .trocar {
+      display: inline-block;
+      margin-top: 25px;
+      color: #999;
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>DESASTRE MILENAR</h1>
+
+    <p class="jogador">
+      Jogador: <strong id="nomeJogador"></strong>
+    </p>
+
+    <a class="botao" href="origens.html">CRIAR FICHA</a>
+    <a class="botao secundario" href="ficha-final.html">ABRIR FICHA</a>
+
+    <button class="trocar" id="trocarJogador">
+      Trocar de jogador
+    </button>
+  </main>
 
   <script>
-    window.location.replace("jogadores.html");
+    const jogadoresValidos = ["Brayan", "Vitor", "Sofia"];
+    const jogadorAtual = sessionStorage.getItem("jogadorAtual");
+
+    if (!jogadoresValidos.includes(jogadorAtual)) {
+      window.location.replace("jogadores.html");
+    } else {
+      document.getElementById("nomeJogador").textContent = jogadorAtual;
+    }
+
+    document.getElementById("trocarJogador").addEventListener("click", function () {
+      sessionStorage.removeItem("jogadorAtual");
+      window.location.href = "jogadores.html";
+    });
   </script>
-</head>
-<body>
-  <p>Redirecionando para a página de jogadores...</p>
-  <a href="jogadores.html">Clique aqui se não for redirecionado.</a>
 </body>
 </html>
