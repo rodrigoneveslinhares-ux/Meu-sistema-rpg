@@ -1,380 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dados</title>
-
-    <style>
-        body {
-            margin: 0;
-            background: #0b0b0b;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            padding-bottom: 100px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 8px;
-            color: #00ff66;
-        }
-
-        .subtitulo {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 25px;
-        }
-
-        .pericia {
-            background: #181818;
-            border: 1px solid #00ff66;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
-        }
-
-        .nome {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #00ff66;
-        }
-
-        .linha {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .caixa {
-            width: 48px;
-            height: 42px;
-            box-sizing: border-box;
-            background: #0b0b0b;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .caixa:focus {
-            outline: none;
-            border-color: #00ff66;
-            box-shadow: 0 0 5px #00ff6644;
-        }
-
-        .caixa-automatico {
-            color: #00ff66;
-            border-color: #00ff6655;
-        }
-
-        .botao-dado {
-            width: 48px;
-            height: 42px;
-            background: #181818;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            border-radius: 6px;
-            font-size: 22px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .botao-dado:hover {
-            background: #00ff66;
-            color: #0b0b0b;
-        }
-
-        .resultado {
-            margin-top: 10px;
-            color: #00ff66;
-            min-height: 20px;
-            overflow-wrap: anywhere;
-        }
-
-        .menu-voltar {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            padding: 15px;
-            background: #181818;
-            color: #00ff66;
-            border: 1px solid #00ff66;
-            border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 17px;
-            transition: 0.2s;
-        }
-
-        .menu-voltar:hover {
-            background: #00ff66;
-            color: #0b0b0b;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dados e Perícias</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:15px}
+main{max-width:700px;margin:auto}
+h1{color:#00ff66;text-align:center}
+.pericia{background:#151515;border:1px solid #333;border-radius:8px;padding:12px;margin:10px 0}
+.topo{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.valores{display:flex;gap:8px;margin-top:10px}
+label{flex:1;font-size:13px}
+input{width:100%;padding:9px;background:#080808;color:white;border:1px solid #555;border-radius:5px;margin-top:5px}
+button{padding:12px;background:#00ff66;color:#000;border:0;border-radius:6px;font-weight:bold;cursor:pointer}
+.rolar{margin-top:10px;width:100%}
+.resultado{color:#00ff66;margin-top:8px}
+.menu{width:100%;margin-top:12px;background:#191919;color:#00ff66;border:1px solid #00ff66}
+</style>
 </head>
-
 <body>
-
-    <h1>🎲 DADOS</h1>
-
-    <div class="subtitulo">
-        Role 1d20 + atributo + bônus de origem + bônus manual
-    </div>
-
-    <div id="listaPericias"></div>
-
-    <a class="menu-voltar" href="ficha-final.html">
-        ← Voltar para a ficha
-    </a>
-
-    <script>
-        const pericias = [
-            { nome: "Acrobacia", atributo: "agilidade" },
-            { nome: "Adestramento", atributo: "presenca" },
-            { nome: "Artes", atributo: "presenca" },
-            { nome: "Atletismo", atributo: "forca" },
-            { nome: "Atualidades", atributo: "intelecto" },
-            { nome: "Ciências", atributo: "intelecto" },
-            { nome: "Crime", atributo: "agilidade" },
-            { nome: "Diplomacia", atributo: "presenca" },
-            { nome: "Enganação", atributo: "presenca" },
-            { nome: "Fortitude", atributo: "vigor" },
-            { nome: "Furtividade", atributo: "agilidade" },
-            { nome: "Iniciativa", atributo: "agilidade" },
-            { nome: "Intimidação", atributo: "presenca" },
-            { nome: "Intuição", atributo: "presenca" },
-            { nome: "Investigação", atributo: "intelecto" },
-            { nome: "Luta", atributo: "forca" },
-            { nome: "Medicina", atributo: "intelecto" },
-            { nome: "Ocultismo", atributo: "intelecto" },
-            { nome: "Percepção", atributo: "presenca" },
-            { nome: "Pilotagem", atributo: "agilidade" },
-            { nome: "Pontaria", atributo: "agilidade" },
-            { nome: "Profissão", atributo: "intelecto" },
-            { nome: "Reflexos", atributo: "agilidade" },
-            { nome: "Religião", atributo: "presenca" },
-            { nome: "Sobrevivência", atributo: "intelecto" },
-            { nome: "Tática", atributo: "intelecto" },
-            { nome: "Tecnologia", atributo: "intelecto" },
-            { nome: "Vontade", atributo: "presenca" }
-        ];
-
-        function lerLocalStorage(chave, padrao = {}) {
-            try {
-                return JSON.parse(localStorage.getItem(chave)) || padrao;
-            } catch (erro) {
-                return padrao;
-            }
-        }
-
-        let bonusManuais = lerLocalStorage("bonusManuaisPericias");
-        let resultadosSalvos = lerLocalStorage("resultadosPericias");
-
-        const lista = document.getElementById("listaPericias");
-
-        function obterAtributos() {
-            return lerLocalStorage("atributos");
-        }
-
-        function obterBonusOrigem() {
-            return lerLocalStorage("bonusPericias");
-        }
-
-        function obterBonusAutomatico(pericia) {
-            const atributos = obterAtributos();
-            const bonusOrigem = obterBonusOrigem();
-
-            const bonusAtributo =
-                Number(atributos[pericia.atributo]) || 0;
-
-            const bonusDaOrigem =
-                Number(bonusOrigem[pericia.nome]) || 0;
-
-            return {
-                bonusAtributo,
-                bonusDaOrigem,
-                total: bonusAtributo + bonusDaOrigem
-            };
-        }
-
-        function salvarBonusManuais() {
-            localStorage.setItem(
-                "bonusManuaisPericias",
-                JSON.stringify(bonusManuais)
-            );
-        }
-
-        function salvarResultados() {
-            localStorage.setItem(
-                "resultadosPericias",
-                JSON.stringify(resultadosSalvos)
-            );
-        }
-
-        pericias.forEach((pericia, indice) => {
-            const bonus = obterBonusAutomatico(pericia);
-            const chave = pericia.nome;
-            const manualSalvo = Number(bonusManuais[chave]) || 0;
-
-            const div = document.createElement("div");
-            div.className = "pericia";
-
-            const nome = document.createElement("div");
-            nome.className = "nome";
-            nome.textContent = pericia.nome;
-
-            const linha = document.createElement("div");
-            linha.className = "linha";
-
-            const caixaAutomatica = document.createElement("input");
-            caixaAutomatica.className = "caixa caixa-automatico";
-            caixaAutomatica.id = "automatico-" + indice;
-            caixaAutomatica.value = bonus.total;
-            caixaAutomatica.readOnly = true;
-            caixaAutomatica.title = "Atributo + bônus da origem";
-            caixaAutomatica.setAttribute("aria-label", "Bônus automático de " + pericia.nome);
-
-            const caixaManual = document.createElement("input");
-            caixaManual.className = "caixa";
-            caixaManual.id = "manual-" + indice;
-            caixaManual.type = "number";
-            caixaManual.value = manualSalvo;
-            caixaManual.title = "Bônus manual";
-            caixaManual.setAttribute("aria-label", "Bônus manual de " + pericia.nome);
-
-            caixaManual.addEventListener("input", () => {
-                bonusManuais[chave] = Number(caixaManual.value) || 0;
-                salvarBonusManuais();
-            });
-
-            const botaoDado = document.createElement("button");
-            botaoDado.className = "botao-dado";
-            botaoDado.textContent = "🎲";
-            botaoDado.title = "Rolar 1d20";
-            botaoDado.setAttribute("aria-label", "Rolar dado para " + pericia.nome);
-            botaoDado.type = "button";
-            botaoDado.addEventListener("click", () => rolar(indice));
-
-            linha.append(caixaAutomatica, caixaManual, botaoDado);
-
-            const resultado = document.createElement("div");
-            resultado.className = "resultado";
-            resultado.id = "resultado-" + indice;
-            resultado.textContent = resultadosSalvos[chave] || "";
-
-            div.append(nome, linha, resultado);
-            lista.appendChild(div);
-        });
-
-        function atualizarBonusAutomaticos() {
-            pericias.forEach((pericia, indice) => {
-                const bonus = obterBonusAutomatico(pericia);
-
-                document.getElementById("automatico-" + indice).value =
-                    bonus.total;
-            });
-        }
-
-        function rolar(indice) {
-            const pericia = pericias[indice];
-            const bonus = obterBonusAutomatico(pericia);
-
-            const bonusManual =
-                Number(document.getElementById("manual-" + indice).value) || 0;
-
-            bonusManuais[pericia.nome] = bonusManual;
-            salvarBonusManuais();
-
-            const dado = Math.floor(Math.random() * 20) + 1;
-            const total = dado + bonus.total + bonusManual;
-
-            let texto = `🎲 ${dado} + ${bonus.bonusAtributo}`;
-
-            if (bonus.bonusDaOrigem !== 0) {
-                texto += ` + ${bonus.bonusDaOrigem} origem`;
-            }
-
-            if (bonusManual !== 0) {
-                texto += ` + (${bonusManual})`;
-            }
-
-            texto += ` = ${total}`;
-
-            const dificuldade = descobrirResultado(
-                dado,
-                bonus.total + bonusManual
-            );
-
-            if (dificuldade) {
-                texto += ` — ${dificuldade}`;
-            }
-
-            document.getElementById("resultado-" + indice).textContent = texto;
-
-            resultadosSalvos[pericia.nome] = texto;
-            salvarResultados();
-        }
-
-        function descobrirResultado(dado, bonus) {
-            if (bonus < 1) return null;
-            if (bonus > 18) bonus = 18;
-
-            const tabela = {
-                1:  { normal: 20, bom: null, extremo: null },
-                2:  { normal: 19, bom: 20, extremo: null },
-                3:  { normal: 18, bom: 20, extremo: null },
-                4:  { normal: 17, bom: 19, extremo: null },
-                5:  { normal: 16, bom: 19, extremo: 20 },
-                6:  { normal: 15, bom: 18, extremo: 20 },
-                7:  { normal: 14, bom: 18, extremo: 20 },
-                8:  { normal: 13, bom: 17, extremo: 20 },
-                9:  { normal: 12, bom: 17, extremo: 20 },
-                10: { normal: 11, bom: 16, extremo: 19 },
-                11: { normal: 10, bom: 16, extremo: 19 },
-                12: { normal: 9, bom: 15, extremo: 19 },
-                13: { normal: 8, bom: 15, extremo: 19 },
-                14: { normal: 7, bom: 14, extremo: 19 },
-                15: { normal: 6, bom: 14, extremo: 18 },
-                16: { normal: 5, bom: 13, extremo: 18 },
-                17: { normal: 4, bom: 13, extremo: 18 },
-                18: { normal: 3, bom: 12, extremo: 18 }
-            };
-
-            const faixa = tabela[bonus];
-            if (!faixa) return null;
-
-            if (faixa.extremo !== null && dado >= faixa.extremo) {
-                return "EXTREMO";
-            }
-
-            if (faixa.bom !== null && dado >= faixa.bom) {
-                return "BOM";
-            }
-
-            if (dado >= faixa.normal) {
-                return "NORMAL";
-            }
-
-            return "FALHA";
-        }
-
-        // Atualiza os bônus se os atributos forem alterados em outra página.
-        window.addEventListener("pageshow", atualizarBonusAutomaticos);
-
-        window.addEventListener("storage", evento => {
-            if (
-                evento.key === "atributos" ||
-                evento.key === "bonusPericias"
-            ) {
-                atualizarBonusAutomaticos();
-            }
-        });
-    </script>
-
+<main>
+<h1>Dados e Perícias</h1>
+<p>Role 1d20 + atributo + bônus da origem + bônus manual.</p>
+<div id="lista"></div>
+<button class="menu" onclick="location.href='ficha-final.html'">Voltar à ficha</button>
+<script>
+const j=sessionStorage.getItem("jogadorAtual");
+if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
+const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
+const atributos=JSON.parse(localStorage.getItem(key("atributos"))||"{}");
+const origem=localStorage.getItem(key("origem"))||"";
+const skills=[
+["Acrobacia","agilidade"],["Adestramento","presenca"],["Artesanato","intelecto"],
+["Atletismo","forca"],["Atualidades","intelecto"],["Ciências","intelecto"],
+["Crime","agilidade"],["Diplomacia","presenca"],["Enganação","presenca"],
+["Fortitude","vigor"],["Furtividade","agilidade"],["Iniciativa","agilidade"],
+["Intimidação","presenca"],["Intuição","presenca"],["Investigação","intelecto"],
+["Luta","forca"],["Medicina","intelecto"],["Ocultismo","intelecto"],
+["Percepção","presenca"],["Pilotagem","agilidade"],["Pontaria","agilidade"],
+["Profissão","intelecto"],["Reflexos","agilidade"],["Religião","presenca"],
+["Sobrevivência","intelecto"],["Tática","intelecto"],["Tecnologia","intelecto"],
+["Vontade","presenca"]
+];
+let manuais=JSON.parse(localStorage.getItem(key("bonusManuaisPericias"))||"{}");
+let bonusOrigem=JSON.parse(localStorage.getItem(key("bonusPericias"))||"{}");
+const lista=document.getElementById("lista");
+skills.forEach(([nome,attr],i)=>{
+const div=document.createElement("div");
+div.className="pericia";
+div.innerHTML=`
+<div class="topo"><strong>${nome}</strong><span>Atributo: ${atributos[attr]||0}</span></div>
+<div class="valores">
+<label>Bônus do atributo<input readonly value="${atributos[attr]||0}"></label>
+<label>Bônus da origem<input readonly value="${bonusOrigem[nome]||0}"></label>
+<label>Bônus manual<input id="manual${i}" type="number" value="${manuais[nome]||0}"></label>
+</div>
+<button class="rolar">Rolar d20</button>
+<div class="resultado" id="resultado${i}"></div>`;
+const input=div.querySelector("input[id^=manual]");
+input.addEventListener("change",()=>{
+manuais[nome]=Number(input.value)||0;
+localStorage.setItem(key("bonusManuaisPericias"),JSON.stringify(manuais));
+});
+div.querySelector("button").onclick=()=>{
+const dado=Math.floor(Math.random()*20)+1;
+const total=dado+(Number(atributos[attr])||0)+(Number(bonusOrigem[nome])||0)+(Number(manuais[nome])||0);
+let grau=total>=20?"Extremo":total>=15?"Bom":"Normal";
+document.getElementById("resultado"+i).textContent=`Dado: ${dado} | Total: ${total} | ${grau}`;
+};
+lista.appendChild(div);
+});
+</script>
+</main>
 </body>
 </html>
