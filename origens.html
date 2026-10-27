@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,6 +20,7 @@
         h1 {
             text-align: center;
             margin-bottom: 25px;
+            color: #00ff66;
         }
 
         .origem {
@@ -68,23 +70,26 @@
         }
 
         .origem.selecionada {
-            border: 2px solid white;
+            border: 2px solid #00ff66;
         }
 
         .continuar {
             width: 100%;
             padding: 16px;
             margin-top: 15px;
-            background: #292929;
-            color: green;
-            border: 1px solid #555;
+            background: #181818;
+            color: #00ff66;
+            border: 1px solid #00ff66;
             border-radius: 8px;
             font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .continuar:hover {
-            background: #3a3a3a;
+            background: #00ff66;
+            color: #0b0b0b;
         }
     </style>
 </head>
@@ -100,490 +105,228 @@
     </button>
 
     <script>
-
         const origens = [
-
             {
                 nome: "Acadêmico",
                 pericias: ["Ciências", "Investigação"],
                 descricao: "Saber é Poder — Gaste 2 PE para receber +5 em um teste de Intelecto ou de uma perícia baseada em Intelecto."
             },
-
             {
                 nome: "Agente de Saúde",
                 pericias: ["Intuição", "Medicina"],
                 descricao: "Técnica Medicinal — Quando você cura um personagem com a perícia Medicina, ele recupera +2 PV por dado."
             },
-
             {
                 nome: "Amnésico",
                 pericias: ["Intuição", "Investigação"],
                 descricao: "Vislumbres do Passado — Gaste 1 PE para fazer um teste de Intelecto e tentar se lembrar de uma informação útil."
             },
-
             {
                 nome: "Artista",
                 pericias: ["Artes", "Enganação"],
                 descricao: "Magnum Opus — Uma vez por missão, ganhe +5 em testes de Presença contra um NPC específico após realizar uma performance."
             },
-
             {
                 nome: "Atleta",
                 pericias: ["Acrobacia", "Atletismo"],
                 descricao: "110% — Gaste 2 PE para receber +5 em um teste de Atletismo ou Acrobacia."
             },
-
             {
                 nome: "Chef",
                 pericias: ["Fortitude", "Profissão"],
                 descricao: "Ingrediente Secreto — Durante interlúdios, você cozinha uma refeição que ajuda na recuperação do grupo."
             },
-
             {
                 nome: "Criminoso",
                 pericias: ["Crime", "Furtividade"],
                 descricao: "O Crime Compensa — Você recebe benefícios relacionados a Crime e Furtividade."
             },
-
             {
                 nome: "Cultista Arrependido",
                 pericias: ["Ocultismo", "Religião"],
                 descricao: "Traços do Outro Lado — Você possui conhecimentos relacionados ao paranormal."
             },
-
             {
                 nome: "Desgarrado",
                 pericias: ["Fortitude", "Sobrevivência"],
                 descricao: "Calejado — Você recebe benefícios relacionados à resistência e sobrevivência."
             },
-
             {
                 nome: "Engenheiro",
                 pericias: ["Profissão", "Tecnologia"],
                 descricao: "Ferramenta Favorita — Você possui conhecimentos e facilidade com ferramentas e tecnologia."
             },
-
             {
                 nome: "Executivo",
                 pericias: ["Diplomacia", "Profissão"],
                 descricao: "Processo Otimizado — Você possui experiência profissional e administrativa."
             },
-
             {
                 nome: "Investigador",
                 pericias: ["Investigação", "Percepção"],
                 descricao: "Faro para Pistas — Você possui facilidade para encontrar e interpretar pistas."
             },
-
             {
                 nome: "Lutador",
                 pericias: ["Luta", "Reflexos"],
                 descricao: "Mão Pesada — Você recebe benefícios relacionados a combate corpo a corpo."
             },
-
             {
                 nome: "Magnata",
                 pericias: ["Diplomacia", "Pilotagem"],
                 descricao: "Patrocinador da Ordem — Você possui recursos financeiros e influência."
             },
-
             {
                 nome: "Mercenário",
                 pericias: ["Iniciativa", "Intimidação"],
                 descricao: "Posição de Combate — Você possui experiência em situações de combate."
             },
-
             {
                 nome: "Militar",
                 pericias: ["Pontaria", "Tática"],
                 descricao: "Para Bellum — Você possui treinamento militar."
             },
-
             {
                 nome: "Operário",
                 pericias: ["Fortitude", "Profissão"],
                 descricao: "Ferramenta de Trabalho — Você possui experiência com trabalhos manuais."
             },
-
             {
                 nome: "Policial",
                 pericias: ["Percepção", "Pontaria"],
                 descricao: "Patrulha — Você possui experiência em patrulhamento e observação."
             },
-
             {
                 nome: "Religioso",
                 pericias: ["Religião", "Vontade"],
                 descricao: "Acalentar — Você possui experiência religiosa e força de vontade."
             },
-
             {
                 nome: "Servidor Público",
                 pericias: ["Intuição", "Vontade"],
                 descricao: "Espírito Cívico — Você possui experiência trabalhando com o público."
             },
-
             {
                 nome: "Teórico da Conspiração",
                 pericias: ["Investigação", "Ocultismo"],
                 descricao: "Eu Já Sabia! — Você possui conhecimentos sobre teorias e fenômenos paranormais."
             },
-
             {
                 nome: "T.I.",
                 pericias: ["Investigação", "Tecnologia"],
                 descricao: "Motor de Busca — Você possui experiência com computadores e tecnologia."
             },
-
             {
                 nome: "Trabalhador Rural",
                 pericias: ["Adestramento", "Sobrevivência"],
                 descricao: "Desbravador — Você possui experiência em ambientes rurais e naturais."
             },
-
             {
                 nome: "Trambiqueiro",
                 pericias: ["Crime", "Enganação"],
                 descricao: "Impostor — Você possui experiência em golpes e enganação."
             },
-
             {
                 nome: "Universitário",
                 pericias: ["Atualidades", "Investigação"],
                 descricao: "Dedicação — Você possui experiência acadêmica."
             },
-
             {
                 nome: "Vítima",
                 pericias: ["Reflexos", "Vontade"],
                 descricao: "Cicatrizes Psicológicas — Você desenvolveu resistência após experiências difíceis."
             },
-
             {
                 nome: "Amigo dos Animais",
                 pericias: ["Adestramento", "Percepção"],
                 descricao: "Vínculo de Fera — Você possui facilidade para lidar com animais."
             },
-
             {
                 nome: "Astronauta",
                 pericias: ["Ciências", "Fortitude"],
                 descricao: "Isolamento Espacial — Você está acostumado a ambientes extremos."
             },
-
             {
                 nome: "Chef do Outro Lado",
                 pericias: ["Ocultismo", "Profissão"],
                 descricao: "Banquete Macabro — Você possui conhecimentos culinários e paranormais."
             },
-
             {
                 nome: "Colegial",
                 pericias: ["Atualidades", "Tecnologia"],
                 descricao: "Lição de Casa — Você possui conhecimentos gerais e tecnológicos."
             },
-
             {
                 nome: "Cosplayer",
                 pericias: ["Artes", "Vontade"],
                 descricao: "Identidade Secreta — Você possui experiência com criação de personagens e performances."
             },
-
             {
                 nome: "Diplomata",
                 pericias: ["Atualidades", "Diplomacia"],
                 descricao: "Imunidade Política — Você possui experiência em relações diplomáticas."
             },
-
             {
                 nome: "Explorador",
                 pericias: ["Fortitude", "Sobrevivência"],
                 descricao: "Sentido de Direção — Você possui experiência explorando ambientes desconhecidos."
             },
-
             {
                 nome: "Experimento",
                 pericias: ["Atletismo", "Fortitude"],
                 descricao: "Mutação Instável — Seu corpo passou por experiências incomuns."
             },
-
             {
                 nome: "Fanático por Criaturas",
                 pericias: ["Investigação", "Ocultismo"],
                 descricao: "Fé Cega — Você possui conhecimento sobre criaturas paranormais."
             },
-
             {
                 nome: "Fotógrafo",
                 pericias: ["Artes", "Percepção"],
                 descricao: "Enquadramento Perfeito — Você possui experiência com fotografia e observação."
             },
-
             {
                 nome: "Inventor Paranormal",
                 pericias: ["Profissão", "Vontade"],
                 descricao: "Engenhoca Improvisada — Você cria soluções usando conhecimentos técnicos."
             },
-
             {
                 nome: "Jovem Místico",
                 pericias: ["Ocultismo", "Religião"],
                 descricao: "Sexto Sentido — Você possui conhecimentos sobre o paranormal."
             },
-
             {
                 nome: "Legista do Turno da Noite",
                 pericias: ["Ciências", "Medicina"],
                 descricao: "Autópsia Visual — Você possui conhecimento médico e forense."
             },
-
             {
                 nome: "Mateiro",
                 pericias: ["Percepção", "Sobrevivência"],
                 descricao: "Camuflagem Natural — Você possui experiência em matas e ambientes naturais."
             },
-
             {
                 nome: "Mergulhador",
                 pericias: ["Atletismo", "Fortitude"],
                 descricao: "Pulmões de Aço — Você está acostumado a ambientes subaquáticos."
             },
-
             {
                 nome: "Motorista",
                 pericias: ["Pilotagem", "Reflexos"],
                 descricao: "Direção Defensiva — Você possui experiência dirigindo veículos."
             },
-
             {
                 nome: "Nerd Entusiasta",
                 pericias: ["Ciências", "Tecnologia"],
                 descricao: "Hiperfoco — Você possui grande conhecimento em áreas específicas."
             },
-
             {
                 nome: "Profetizado",
                 pericias: ["Vontade", "Investigação"],
                 descricao: "Estava Escrito — Você possui uma ligação especial com previsões e presságios."
             },
-
             {
                 nome: "Psicólogo",
                 pericias: ["Intuição", "Profissão"],
-                descricao: "Terapia de Choque — Você possui experiência ajudando pessoas em situações psicológicas difíceis."
-            },
-
-            {
-                nome: "Repórter Investigativo",
-                pericias: ["Atualidades", "Investigação"],
-                descricao: "Furo de Reportagem — Você possui experiência investigando e divulgando informações."
-            },
-
-            {
-                nome: "Cientista Forense",
-                pericias: ["Ciências", "Investigação"],
-                descricao: "Investigação Científica — Você possui conhecimentos científicos e investigativos."
-            },
-
-            {
-                nome: "Jornalista",
-                pericias: ["Atualidades", "Investigação"],
-                descricao: "Furo de Reportagem — Você possui experiência jornalística."
-            },
-
-            {
-                nome: "Escritor",
-                pericias: ["Artes", "Atualidades"],
-                descricao: "Escrita Criativa — Você possui experiência com escrita e conhecimento geral."
-            },
-
-            {
-                nome: "Professor",
-                pericias: ["Ciências", "Intuição"],
-                descricao: "Aula de Campo — Você possui experiência ensinando e lidando com pessoas."
-            },
-
-            {
-                nome: "Dublê",
-                pericias: ["Pilotagem", "Reflexos"],
-                descricao: "Amortecer Queda — Você possui treinamento físico e experiência com cenas de ação."
-            },
-
-            {
-                nome: "Gaudério Abutre",
-                pericias: ["Luta", "Pilotagem"],
-                descricao: "Espírito Macanudo — Você possui experiência em combate e veículos."
-            },
-
-            {
-                nome: "Revoltado",
-                pericias: ["Furtividade", "Vontade"],
-                descricao: "Contra o Sistema — Você possui resistência e experiência em situações de conflito."
-            },
-
-            {
-                nome: "Ginasta",
-                pericias: ["Acrobacia", "Reflexos"],
-                descricao: "Flexibilidade Extrema — Você possui treinamento físico e coordenação."
-            },
-
-            {
-                nome: "Blaster",
-                pericias: ["Ciências", "Profissão"],
-                descricao: "Granadeiro Técnico — Você possui conhecimentos técnicos e químicos."
-            },
-
-            {
-                nome: "Body Builder",
-                pericias: ["Atletismo", "Fortitude"],
-                descricao: "Hipertrofia — Você possui treinamento físico intenso."
-            },
-
-            {
-                nome: "Personal Trainer",
-                pericias: ["Atletismo", "Ciências"],
-                descricao: "Treino de Resiliência — Você possui conhecimentos de treinamento físico."
-            },
-
-            {
-                nome: "Legista",
-                pericias: ["Ciências", "Medicina"],
-                descricao: "Autópsia Visual — Você possui conhecimento médico e forense."
-            }
-
-        ];
-
-        const lista =
-            document.getElementById("listaOrigens");
-
-        origens.forEach((origem) => {
-
-            const div =
-                document.createElement("div");
-
-            div.className = "origem";
-
-            div.innerHTML = `
-
-                <div
-                    class="cabecalho-origem"
-                    onclick="selecionar(this.parentElement)"
-                >
-
-                    <span class="nome-origem">
-                        ${origem.nome}
-                    </span>
-
-                    <span
-                        class="seta"
-                        onclick="abrirDescricao(event, this)"
-                    >
-                        ▼
-                    </span>
-
-                </div>
-
-                <div class="descricao">
-
-                    <strong>${origem.descricao.split(" — ")[0]}</strong>
-
-                    ${
-                        origem.descricao.includes(" — ")
-                        ? " — " +
-                          origem.descricao
-                          .split(" — ")
-                          .slice(1)
-                          .join(" — ")
-                        : ""
-                    }
-
-                    <div class="pericias-origem">
-                        Perícias: +1 ${origem.pericias[0]} e +1 ${origem.pericias[1]}
-                    </div>
-
-                </div>
-            `;
-
-            lista.appendChild(div);
-
-        });
-
-        function abrirDescricao(evento, seta) {
-
-            evento.stopPropagation();
-
-            const origem =
-                seta.parentElement.parentElement;
-
-            origem.classList.toggle("aberta");
-
-        }
-
-        function selecionar(elemento) {
-
-            document
-                .querySelectorAll(".origem")
-                .forEach(origem => {
-                    origem.classList.remove("selecionada");
-                });
-
-            elemento.classList.add("selecionada");
-
-            const nome =
-                elemento
-                .querySelector(".nome-origem")
-                .textContent
-                .trim();
-
-            const origemEscolhida =
-                origens.find(
-                    origem => origem.nome === nome
-                );
-
-            localStorage.setItem(
-                "origem",
-                nome
-            );
-
-            const bonusPericias = {};
-
-            if (origemEscolhida) {
-
-                origemEscolhida.pericias.forEach(
-                    pericia => {
-                        bonusPericias[pericia] = 1;
-                    }
-                );
-
-            }
-
-            localStorage.setItem(
-                "bonusPericias",
-                JSON.stringify(bonusPericias)
-            );
-
-        }
-
-        function continuar() {
-
-            const origemSelecionada =
-                localStorage.getItem("origem");
-
-            if (!origemSelecionada) {
-
-                alert(
-                    "Escolha uma origem antes de continuar."
-                );
-
-                return;
-            }
-
-            window.location.href =
-                "atributos.html";
-
-        }
-
-    </script>
-
-</body>
-</html>
+                descricao: "
