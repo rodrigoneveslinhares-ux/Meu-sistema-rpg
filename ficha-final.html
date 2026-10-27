@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -24,7 +23,7 @@
 
         .campo {
             background: #181818;
-            border: 1px solid #444;
+            border: 1px solid #00ff66;
             border-radius: 10px;
             padding: 18px;
             margin-bottom: 15px;
@@ -33,6 +32,7 @@
         .titulo {
             font-size: 18px;
             margin-bottom: 10px;
+            color: #00ff66;
         }
 
         input {
@@ -44,11 +44,17 @@
             border: 1px solid #555;
             border-radius: 6px;
             font-size: 17px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #00ff66;
+            box-shadow: 0 0 5px #00ff6644;
         }
 
         .origem {
             font-size: 18px;
-            color: #ddd;
+            color: #00ff66;
         }
 
         .menu-botao {
@@ -58,12 +64,18 @@
             width: 55px;
             height: 55px;
             border-radius: 50%;
-            background: #292929;
-            color: white;
-            border: 1px solid #666;
+            background: #181818;
+            color: #00ff66;
+            border: 1px solid #00ff66;
             font-size: 24px;
             cursor: pointer;
             z-index: 10;
+            transition: 0.2s;
+        }
+
+        .menu-botao:hover {
+            background: #00ff66;
+            color: #0b0b0b;
         }
 
         .menu {
@@ -73,7 +85,7 @@
             bottom: 85px;
             width: 180px;
             background: #181818;
-            border: 1px solid #444;
+            border: 1px solid #00ff66;
             border-radius: 10px;
             padding: 10px;
             z-index: 10;
@@ -89,14 +101,16 @@
             text-decoration: none;
             padding: 12px;
             border-radius: 6px;
+            transition: 0.2s;
         }
 
         .menu a:hover {
-            background: #292929;
+            background: #00ff66;
+            color: #0b0b0b;
         }
 
         .salvo {
-            color: #aaa;
+            color: #00ff66;
             font-size: 12px;
             text-align: center;
             margin-top: 15px;
