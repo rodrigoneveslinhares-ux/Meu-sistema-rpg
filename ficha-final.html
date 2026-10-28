@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha do Personagem</title>
+<title>Ficha do Personagem - Desastre Milenar</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:20px}
@@ -11,38 +13,89 @@ main{max-width:500px;margin:auto}
 h1{color:#00ff66;text-align:center}
 label{display:block;margin-top:18px}
 input{width:100%;padding:13px;background:#171717;color:white;border:1px solid #00ff66;border-radius:7px;margin-top:7px}
-button{width:100%;padding:14px;margin-top:15px;background:#00ff66;color:#000;border:0;border-radius:7px;font-weight:bold}
+button,.botao{display:block;width:100%;padding:14px;margin-top:15px;background:#00ff66;color:#000;border:0;border-radius:7px;font-weight:bold;text-align:center;text-decoration:none;cursor:pointer;font-size:14px}
 .menu{background:#171717;color:#00ff66;border:1px solid #00ff66}
+#mensagem{text-align:center;color:#00ff66;min-height:18px}
 </style>
 </head>
+
 <body>
 <main>
 <h1>Ficha do Personagem</h1>
-<label>Nome do jogador</label>
+
+<label for="jogador">Nome do jogador</label>
 <input id="jogador" readonly>
-<label>Nome do personagem</label>
-<input id="personagem" placeholder="Digite o nome do personagem">
-<label>Origem</label>
+
+<label for="personagem">Nome do personagem</label>
+<input id="personagem" maxlength="50" placeholder="Digite o nome do personagem">
+
+<label for="origem">Origem</label>
 <input id="origem" readonly>
-<button onclick="salvar()">Salvar ficha</button>
-<button class="menu" onclick="location.href='atributos-ficha.html'">Ficha e atributos</button>
-<button class="menu" onclick="location.href='dados.html'">Dados e perícias</button>
-<button class="menu" onclick="location.href='atributos.html'">Editar atributos</button>
-<button class="menu" onclick="location.href='origens.html'">Trocar origem</button>
-<button class="menu" onclick="location.href='index.html'">Início</button>
+
+<p id="mensagem" aria-live="polite"></p>
+
+<button id="botaoSalvar" type="button">Salvar ficha</button>
+
+<a class="botao menu" href="atributos-ficha.html">Ficha e atributos</a>
+<a class="botao menu" href="dados.html">Dados e perícias</a>
+<a class="botao menu" href="atributos.html">Editar atributos</a>
+<a class="botao menu" href="origens.html">Trocar origem</a>
+<a class="botao menu" href="index.html">Início</a>
 </main>
+
 <script>
-const j=sessionStorage.getItem("jogadorAtual");
-if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
-const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
-document.getElementById("jogador").value=localStorage.getItem(key("nomeJogador"))||j;
-document.getElementById("personagem").value=localStorage.getItem(key("nomePersonagem"))||"";
-document.getElementById("origem").value=localStorage.getItem(key("origem"))||"Não selecionada";
-function salvar(){
-localStorage.setItem(key("nomeJogador"),j);
-localStorage.setItem(key("nomePersonagem"),document.getElementById("personagem").value);
-alert("Ficha salva!");
-}
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
+
+    if(!jogador){
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    const chave = nome =>
+        "jogador_" + jogador.toLowerCase() + "_" + nome;
+
+    const campoJogador = document.getElementById("jogador");
+    const campoPersonagem = document.getElementById("personagem");
+    const campoOrigem = document.getElementById("origem");
+    const mensagem = document.getElementById("mensagem");
+
+    campoJogador.value =
+        localStorage.getItem(chave("nomeJogador")) || jogador;
+
+    campoPersonagem.value =
+        localStorage.getItem(chave("nomePersonagem")) || "";
+
+    function atualizarOrigem(){
+        campoOrigem.value =
+            localStorage.getItem(chave("origem")) || "Não selecionada";
+    }
+
+    function salvar(silencioso){
+        localStorage.setItem(chave("nomeJogador"), jogador);
+        localStorage.setItem(
+            chave("nomePersonagem"),
+            campoPersonagem.value.trim()
+        );
+
+        if(!silencioso){
+            mensagem.textContent = "Ficha salva!";
+        }
+    }
+
+    campoPersonagem.addEventListener("input", () => {
+        salvar(true);
+        mensagem.textContent = "Alterações salvas automaticamente.";
+    });
+
+    document.getElementById("botaoSalvar").addEventListener("click", () => {
+        salvar(false);
+    });
+
+    atualizarOrigem();
+
+    window.addEventListener("pageshow", atualizarOrigem);
+})();
 </script>
 </body>
 </html>
