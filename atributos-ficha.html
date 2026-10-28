@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Status da Ficha</title>
+<title>Status da Ficha - Desastre Milenar</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:20px}
@@ -11,55 +13,214 @@ main{max-width:550px;margin:auto}
 h1,h2{color:#00ff66}
 .barra{margin:20px 0}
 .info{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.campos{display:flex;align-items:center;gap:5px}
 input{width:65px;padding:8px;background:#171717;color:white;border:1px solid #555;border-radius:5px}
 progress{width:100%;height:12px;appearance:none}
 progress::-webkit-progress-bar{background:#252525;border-radius:8px}
-#vida::-webkit-progress-value{background:#ff3333}
-#sanidade::-webkit-progress-value{background:#3399ff}
-#pe::-webkit-progress-value{background:#ffb000}
-button{width:100%;padding:13px;margin-top:12px;background:#00ff66;color:#000;border:0;border-radius:7px;font-weight:bold}
+#vida::-webkit-progress-value,#vidaBar::-webkit-progress-value{background:#ff3333}
+#sanidade::-webkit-progress-value,#sanidadeBar::-webkit-progress-value{background:#3399ff}
+#pe::-webkit-progress-value,#peBar::-webkit-progress-value{background:#ffb000}
+button{width:100%;padding:13px;margin-top:12px;background:#00ff66;color:#000;border:0;border-radius:7px;font-weight:bold;cursor:pointer}
+.menu{display:block;text-align:center;text-decoration:none;background:#171717;color:#00ff66;border:1px solid #00ff66}
+#atributos p{padding:10px;background:#151515;border-radius:6px}
+#mensagem{color:#00ff66;text-align:center}
+@media(max-width:390px){
+    .info{align-items:flex-start;flex-direction:column}
+}
 </style>
 </head>
+
 <body>
 <main>
 <h1>Status do personagem</h1>
+<p id="jogadorInfo"></p>
+
 <div id="status"></div>
+
 <h2>Atributos</h2>
 <div id="atributos"></div>
-<button onclick="salvar()">Salvar status</button>
-<button onclick="location.href='ficha-final.html'">Voltar à ficha</button>
-<button onclick="location.href='dados.html'">Dados e perícias</button>
+
+<p id="mensagem" aria-live="polite"></p>
+
+<button id="botaoSalvar" type="button">Salvar status</button>
+<a class="menu" href="ficha-final.html" style="margin-top:12px;padding:13px;border-radius:7px">Voltar à ficha</a>
+<a class="menu" href="dados.html" style="margin-top:12px;padding:13px;border-radius:7px">Dados e perícias</a>
+<a class="menu" href="index.html" style="margin-top:12px;padding:13px;border-radius:7px">Início</a>
 </main>
+
 <script>
-const j=sessionStorage.getItem("jogadorAtual");
-if(!["baladas","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
-const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
-let status=JSON.parse(localStorage.getItem(key("statusFicha"))||'{"vida":30,"vidaMax":30,"sanidade":33,"sanidadeMax":33,"pe":52,"peMax":52}');
-const tipos=[
-["vida","Vida","#ff3333"],["sanidade","Sanidade","#3399ff"],["pe","Pontos de Esforço","#ffb000"]
-];
-document.getElementById("status").innerHTML=tipos.map(([id,nome])=>`
-<div class="barra">
-<div class="info"><strong>${nome}</strong>
-<div><input id="${id}" type="number" min="0" value="${status[id]}"> /
-<input id="${id}Max" type="number" min="1" value="${status[id+"Max"]}"></div></div>
-<progress id="${id}Bar" max="${status[id+"Max"]}" value="${status[id]}"></progress>
-</div>`).join("");
-tipos.forEach(([id])=>{
-const atual=document.getElementById(id),max=document.getElementById(id+"Max"),bar=document.getElementById(id+"Bar");
-function update(){bar.max=Math.max(1,Number(max.value));bar.value=Math.min(Number(atual.value),bar.max);}
-atual.addEventListener("input",update);max.addEventListener("input",update);
-});
-const attrs=JSON.parse(localStorage.getItem(key("atributos"))||"{}");
-document.getElementById("atributos").innerHTML=Object.entries(attrs).map(([n,v])=>`<p>${n.charAt(0).toUpperCase()+n.slice(1)}: ${v}</p>`).join("")||"Nenhum atributo salvo.";
-function salvar(){
-tipos.forEach(([id])=>{
-status[id]=Math.max(0,Number(document.getElementById(id).value)||0);
-status[id+"Max"]=Math.max(1,Number(document.getElementById(id+"Max").value)||1);
-});
-localStorage.setItem(key("statusFicha"),JSON.stringify(status));
-alert("Status salvos!");
-}
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
+
+    if(!jogador){
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    document.getElementById("jogadorInfo").textContent =
+        "Jogador: " + jogador;
+
+    const chave = nome =>
+        "jogador_" + jogador.toLowerCase() + "_" + nome;
+
+    function lerObjeto(nome, padrao){
+        try{
+            const valor = JSON.parse(
+                localStorage.getItem(chave(nome)) || "null"
+            );
+
+            return valor && typeof valor === "object" &&
+                !Array.isArray(valor) ? valor : padrao;
+        }catch(e){
+            return padrao;
+        }
+    }
+
+    const padraoStatus = {
+        vida:30,
+        vidaMax:30,
+        sanidade:33,
+        sanidadeMax:33,
+        pe:52,
+        peMax:52
+    };
+
+    let status = {
+        ...padraoStatus,
+        ...lerObjeto("statusFicha", {})
+    };
+
+    const tipos = [
+        ["vida","Vida"],
+        ["sanidade","Sanidade"],
+        ["pe","Pontos de Esforço"]
+    ];
+
+    tipos.forEach(([id]) => {
+        status[id] = Math.max(0, Number(status[id]) || 0);
+        status[id + "Max"] = Math.max(
+            1,
+            Number(status[id + "Max"]) || padraoStatus[id + "Max"]
+        );
+        status[id] = Math.min(status[id], status[id + "Max"]);
+    });
+
+    const areaStatus = document.getElementById("status");
+
+    areaStatus.innerHTML = tipos.map(([id,nome]) => `
+        <div class="barra">
+            <div class="info">
+                <strong>${nome}</strong>
+                <div class="campos">
+                    <input id="${id}" type="number" min="0"
+                        aria-label="${nome} atual" value="${status[id]}">
+                    <span>/</span>
+                    <input id="${id}Max" type="number" min="1"
+                        aria-label="${nome} máximo" value="${status[id+"Max"]}">
+                </div>
+            </div>
+            <progress id="${id}Bar" max="${status[id+"Max"]}"
+                value="${status[id]}"></progress>
+        </div>
+    `).join("");
+
+    function atualizarBarra(id){
+        const atual = document.getElementById(id);
+        const maximo = document.getElementById(id + "Max");
+        const barra = document.getElementById(id + "Bar");
+
+        const max = Math.max(1, Number(maximo.value) || 1);
+        const valor = Math.max(0, Number(atual.value) || 0);
+
+        barra.max = max;
+        barra.value = Math.min(valor, max);
+    }
+
+    function coletarStatus(){
+        tipos.forEach(([id]) => {
+            const atual = Math.max(
+                0,
+                Number(document.getElementById(id).value) || 0
+            );
+
+            const maximo = Math.max(
+                1,
+                Number(document.getElementById(id + "Max").value) || 1
+            );
+
+            status[id + "Max"] = maximo;
+            status[id] = Math.min(atual, maximo);
+
+            document.getElementById(id).value = status[id];
+            document.getElementById(id + "Max").value = maximo;
+
+            atualizarBarra(id);
+        });
+    }
+
+    function salvar(silencioso){
+        coletarStatus();
+
+        localStorage.setItem(
+            chave("statusFicha"),
+            JSON.stringify(status)
+        );
+
+        if(!silencioso){
+            document.getElementById("mensagem").textContent =
+                "Status salvos!";
+        }
+    }
+
+    tipos.forEach(([id]) => {
+        document.getElementById(id).addEventListener("input", () => {
+            atualizarBarra(id);
+            salvar(true);
+            document.getElementById("mensagem").textContent =
+                "Alterações salvas automaticamente.";
+        });
+
+        document.getElementById(id + "Max").addEventListener("input", () => {
+            atualizarBarra(id);
+            salvar(true);
+            document.getElementById("mensagem").textContent =
+                "Alterações salvas automaticamente.";
+        });
+    });
+
+    document.getElementById("botaoSalvar").addEventListener("click", () => {
+        salvar(false);
+    });
+
+    const atributos = lerObjeto("atributos", {});
+    const nomesAtributos = {
+        intelecto:"Intelecto",
+        agilidade:"Agilidade",
+        forca:"Força",
+        vigor:"Vigor",
+        presenca:"Presença"
+    };
+
+    const areaAtributos = document.getElementById("atributos");
+    const idsAtributos = Object.keys(nomesAtributos);
+
+    const existemAtributos = idsAtributos.some(
+        id => Number.isFinite(Number(atributos[id]))
+    );
+
+    if(existemAtributos){
+        areaAtributos.innerHTML = idsAtributos.map(id => {
+            const paragrafo = document.createElement("p");
+            paragrafo.textContent =
+                nomesAtributos[id] + ": " + (Number(atributos[id]) || 0);
+            return paragrafo.outerHTML;
+        }).join("");
+    }else{
+        areaAtributos.textContent = "Nenhum atributo salvo.";
+    }
+
+    salvar(true);
+})();
 </script>
 </body>
 </html>
