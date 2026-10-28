@@ -1,78 +1,196 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dados e Perícias</title>
+<title>Dados e Perícias - Desastre Milenar</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:15px}
 main{max-width:700px;margin:auto}
 h1{color:#00ff66;text-align:center}
+.subtitulo{text-align:center;color:#aaa;line-height:1.5}
 .pericia{background:#151515;border:1px solid #333;border-radius:8px;padding:12px;margin:10px 0}
 .topo{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .valores{display:flex;gap:8px;margin-top:10px}
-label{flex:1;font-size:13px}
+label{flex:1;font-size:13px;min-width:0}
 input{width:100%;padding:9px;background:#080808;color:white;border:1px solid #555;border-radius:5px;margin-top:5px}
 button{padding:12px;background:#00ff66;color:#000;border:0;border-radius:6px;font-weight:bold;cursor:pointer}
 .rolar{margin-top:10px;width:100%}
-.resultado{color:#00ff66;margin-top:8px}
-.menu{width:100%;margin-top:12px;background:#191919;color:#00ff66;border:1px solid #00ff66}
+.resultado{color:#00ff66;margin-top:8px;line-height:1.5}
+.menu{display:block;width:100%;margin-top:12px;background:#191919;color:#00ff66;border:1px solid #00ff66;text-align:center;text-decoration:none;padding:12px;border-radius:6px}
+@media(max-width:430px){
+    .valores{flex-wrap:wrap}
+    .valores label{flex:1 1 28%}
+    .topo{align-items:flex-start}
+}
 </style>
 </head>
+
 <body>
 <main>
 <h1>Dados e Perícias</h1>
-<p>Role 1d20 + atributo + bônus da origem + bônus manual.</p>
+<p class="subtitulo" id="jogadorInfo"></p>
+<p class="subtitulo">Role 1d20 + atributo + bônus da origem + bônus manual.</p>
+
 <div id="lista"></div>
-<button class="menu" onclick="location.href='ficha-final.html'">Voltar à ficha</button>
-<script>
-const j=sessionStorage.getItem("jogadorAtual");
-if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
-const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
-const atributos=JSON.parse(localStorage.getItem(key("atributos"))||"{}");
-const origem=localStorage.getItem(key("origem"))||"";
-const skills=[
-["Acrobacia","agilidade"],["Adestramento","presenca"],["Artesanato","intelecto"],
-["Atletismo","forca"],["Atualidades","intelecto"],["Ciências","intelecto"],
-["Crime","agilidade"],["Diplomacia","presenca"],["Enganação","presenca"],
-["Fortitude","vigor"],["Furtividade","agilidade"],["Iniciativa","agilidade"],
-["Intimidação","presenca"],["Intuição","presenca"],["Investigação","intelecto"],
-["Luta","forca"],["Medicina","intelecto"],["Ocultismo","intelecto"],
-["Percepção","presenca"],["Pilotagem","agilidade"],["Pontaria","agilidade"],
-["Profissão","intelecto"],["Reflexos","agilidade"],["Religião","presenca"],
-["Sobrevivência","intelecto"],["Tática","intelecto"],["Tecnologia","intelecto"],
-["Vontade","presenca"]
-];
-let manuais=JSON.parse(localStorage.getItem(key("bonusManuaisPericias"))||"{}");
-let bonusOrigem=JSON.parse(localStorage.getItem(key("bonusPericias"))||"{}");
-const lista=document.getElementById("lista");
-skills.forEach(([nome,attr],i)=>{
-const div=document.createElement("div");
-div.className="pericia";
-div.innerHTML=`
-<div class="topo"><strong>${nome}</strong><span>Atributo: ${atributos[attr]||0}</span></div>
-<div class="valores">
-<label>Bônus do atributo<input readonly value="${atributos[attr]||0}"></label>
-<label>Bônus da origem<input readonly value="${bonusOrigem[nome]||0}"></label>
-<label>Bônus manual<input id="manual${i}" type="number" value="${manuais[nome]||0}"></label>
-</div>
-<button class="rolar">Rolar d20</button>
-<div class="resultado" id="resultado${i}"></div>`;
-const input=div.querySelector("input[id^=manual]");
-input.addEventListener("change",()=>{
-manuais[nome]=Number(input.value)||0;
-localStorage.setItem(key("bonusManuaisPericias"),JSON.stringify(manuais));
-});
-div.querySelector("button").onclick=()=>{
-const dado=Math.floor(Math.random()*20)+1;
-const total=dado+(Number(atributos[attr])||0)+(Number(bonusOrigem[nome])||0)+(Number(manuais[nome])||0);
-let grau=total>=20?"Extremo":total>=15?"Bom":"Normal";
-document.getElementById("resultado"+i).textContent=`Dado: ${dado} | Total: ${total} | ${grau}`;
-};
-lista.appendChild(div);
-});
-</script>
+
+<a class="menu" href="ficha-final.html">Voltar à ficha</a>
+<a class="menu" href="atributos.html">Editar atributos</a>
+<a class="menu" href="index.html">Início</a>
+
 </main>
+
+<script>
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
+
+    if(!jogador){
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    document.getElementById("jogadorInfo").textContent =
+        "Jogador: " + jogador;
+
+    const chave = nome =>
+        "jogador_" + jogador.toLowerCase() + "_" + nome;
+
+    function lerObjeto(nome){
+        try{
+            const dados = JSON.parse(localStorage.getItem(chave(nome)) || "{}");
+            return dados && typeof dados === "object" && !Array.isArray(dados)
+                ? dados
+                : {};
+        }catch(e){
+            return {};
+        }
+    }
+
+    const atributos = lerObjeto("atributos");
+    const origem = localStorage.getItem(chave("origem")) || "";
+    const manuais = lerObjeto("bonusManuaisPericias");
+    const bonusOrigem = lerObjeto("bonusPericias");
+
+    const skills = [
+        ["Acrobacia","agilidade"],
+        ["Adestramento","presenca"],
+        ["Artesanato","intelecto"],
+        ["Atletismo","forca"],
+        ["Atualidades","intelecto"],
+        ["Ciências","intelecto"],
+        ["Crime","agilidade"],
+        ["Diplomacia","presenca"],
+        ["Enganação","presenca"],
+        ["Fortitude","vigor"],
+        ["Furtividade","agilidade"],
+        ["Iniciativa","agilidade"],
+        ["Intimidação","presenca"],
+        ["Intuição","presenca"],
+        ["Investigação","intelecto"],
+        ["Luta","forca"],
+        ["Medicina","intelecto"],
+        ["Ocultismo","intelecto"],
+        ["Percepção","presenca"],
+        ["Pilotagem","agilidade"],
+        ["Pontaria","agilidade"],
+        ["Profissão","intelecto"],
+        ["Reflexos","agilidade"],
+        ["Religião","presenca"],
+        ["Sobrevivência","intelecto"],
+        ["Tática","intelecto"],
+        ["Tecnologia","intelecto"],
+        ["Vontade","presenca"]
+    ];
+
+    const lista = document.getElementById("lista");
+
+    skills.forEach(([nome, atributo], indice) => {
+        const div = document.createElement("section");
+        div.className = "pericia";
+
+        const valorAtributo = Number(atributos[atributo]) || 0;
+        const valorOrigem = Number(bonusOrigem[nome]) || 0;
+        const valorManual = Number(manuais[nome]) || 0;
+
+        div.innerHTML = `
+            <div class="topo">
+                <strong class="nome-pericia"></strong>
+                <span>Atributo: ${valorAtributo}</span>
+            </div>
+
+            <div class="valores">
+                <label>
+                    Bônus do atributo
+                    <input type="number" readonly value="${valorAtributo}">
+                </label>
+
+                <label>
+                    Bônus da origem
+                    <input type="number" readonly value="${valorOrigem}">
+                </label>
+
+                <label>
+                    Bônus manual
+                    <input class="manual" type="number" value="${valorManual}">
+                </label>
+            </div>
+
+            <button class="rolar" type="button">Rolar d20</button>
+            <div class="resultado" aria-live="polite"></div>
+        `;
+
+        div.querySelector(".nome-pericia").textContent = nome;
+
+        const inputManual = div.querySelector(".manual");
+        const resultado = div.querySelector(".resultado");
+
+        inputManual.addEventListener("change", () => {
+            const valor = Number(inputManual.value) || 0;
+            manuais[nome] = valor;
+            inputManual.value = valor;
+
+            localStorage.setItem(
+                chave("bonusManuaisPericias"),
+                JSON.stringify(manuais)
+            );
+        });
+
+        div.querySelector(".rolar").addEventListener("click", () => {
+            const dado = Math.floor(Math.random() * 20) + 1;
+            const bonusAtributoAtual = Number(atributos[atributo]) || 0;
+            const bonusOrigemAtual = Number(bonusOrigem[nome]) || 0;
+            const bonusManualAtual = Number(inputManual.value) || 0;
+
+            manuais[nome] = bonusManualAtual;
+
+            localStorage.setItem(
+                chave("bonusManuaisPericias"),
+                JSON.stringify(manuais)
+            );
+
+            const total = dado + bonusAtributoAtual +
+                bonusOrigemAtual + bonusManualAtual;
+
+            let grau;
+
+            if(total >= 20){
+                grau = "Extremo";
+            }else if(total >= 15){
+                grau = "Bom";
+            }else{
+                grau = "Normal";
+            }
+
+            resultado.textContent =
+                `Dado: ${dado} | Total: ${total} | ${grau}`;
+        });
+
+        lista.appendChild(div);
+    });
+})();
+</script>
 </body>
 </html>
