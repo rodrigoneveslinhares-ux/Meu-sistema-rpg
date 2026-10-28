@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Selecionar Jogador - Desastre Milenar</title>
 
 <style>
@@ -13,14 +14,15 @@
 
 body {
   margin: 0;
+  padding: 25px 15px;
+  min-height: 100vh;
   background: #080808;
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+  justify-content: center;
 }
 
 main {
@@ -35,12 +37,15 @@ main {
 
 h1 {
   color: #00ff66;
+  text-shadow: 0 0 12px #00ff6680;
+  font-size: 28px;
+  margin-top: 0;
 }
 
 #jogadores button {
   width: 100%;
   padding: 14px;
-  margin: 8px 0;
+  margin: 7px 0;
   border-radius: 8px;
   font-size: 16px;
   background: #181818;
@@ -48,7 +53,7 @@ h1 {
   color: #00ff66;
   font-weight: bold;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 #jogadores button.selecionado {
@@ -60,7 +65,7 @@ h1 {
 input {
   width: 100%;
   padding: 14px;
-  margin: 12px 0;
+  margin: 14px 0 8px;
   border-radius: 8px;
   font-size: 16px;
   background: #181818;
@@ -81,13 +86,192 @@ input {
   cursor: pointer;
 }
 
+.entrar:hover {
+  box-shadow: 0 0 15px #00ff6680;
+}
+
 #mensagem {
   color: #ff5555;
+  min-height: 20px;
+}
+
+/* ÁREA DAS PROPAGANDAS */
+
+.anuncios {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 28px;
+  text-align: center;
+}
+
+.titulo-anuncios {
+  color: #00ff66;
+  font-size: 13px;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-shadow: 0 0 8px #00ff6680;
+}
+
+.banner {
+  display: none;
+  position: relative;
+  min-height: 135px;
+  padding: 17px 15px;
+  overflow: hidden;
+  border: 2px solid #00ff66;
+  box-shadow: 0 0 12px #00ff6625;
+  text-decoration: none;
+  color: white;
+  animation: aparecer 0.5s ease;
+}
+
+.banner.ativo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.banner h2 {
+  margin: 0 0 8px;
+  font-size: 23px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.banner p {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.banner .chamada {
+  margin-top: 10px;
+  padding: 7px 12px;
+  font-weight: bold;
+  border: 2px solid currentColor;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.banner-computador {
+  background: repeating-linear-gradient(
+    135deg,
+    #111 0px,
+    #111 10px,
+    #192b16 10px,
+    #192b16 20px
+  );
+  color: #59ff64;
+}
+
+.banner-internet {
+  background: linear-gradient(120deg, #062b65, #087ed0, #07172c);
+  color: white;
+}
+
+.banner-internet h2 {
+  color: #fff500;
+}
+
+.banner-misterio {
+  background: radial-gradient(circle, #38205c, #100817 75%);
+  color: #e3b4ff;
+}
+
+.banner-misterio h2 {
+  color: #ff4bff;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.banner-sorte {
+  background: repeating-linear-gradient(
+    45deg,
+    #6c0909,
+    #6c0909 12px,
+    #a82012 12px,
+    #a82012 24px
+  );
+  color: #fff36a;
+}
+
+.banner .aviso {
+  font-size: 10px;
+  margin-top: 9px;
+  opacity: 0.8;
+}
+
+.controles-anuncios {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 12px;
+}
+
+.controles-anuncios button {
+  background: transparent;
+  border: 1px solid #00ff66;
+  color: #00ff66;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.pontos {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ponto {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #00ff66;
+  border-radius: 50%;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.ponto.ativo {
+  background: #00ff66;
+  box-shadow: 0 0 8px #00ff66;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 360px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .banner h2 {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <main>
   <h1>Selecionar jogador</h1>
 
@@ -100,10 +284,54 @@ input {
     autocomplete="current-password"
   >
 
-  <button class="entrar" id="botaoEntrar">Entrar</button>
+  <button class="entrar" id="botaoEntrar" type="button">
+    Entrar
+  </button>
 
-  <p id="mensagem"></p>
+  <p id="mensagem" aria-live="polite"></p>
 </main>
+
+<section class="anuncios" aria-label="Propagandas fictícias">
+  <div class="titulo-anuncios">— ANÚNCIOS —</div>
+
+  <div id="listaAnuncios">
+
+    <div class="banner banner-computador ativo">
+      <h2>💻 PC DOS SONHOS</h2>
+      <p>Seu computador aguenta até o próximo milênio!</p>
+      <div class="chamada">Só hoje: R$ 999,90*</div>
+      <p class="aviso">*Preço e produto fictícios.</p>
+    </div>
+
+    <div class="banner banner-internet">
+      <h2>⚡ INTERNET ULTRARRÁPIDA</h2>
+      <p>Baixe um arquivo antes de terminar de ler!</p>
+      <div class="chamada">Clique e acelere!</div>
+      <p class="aviso">Propaganda fictícia. Nenhum serviço disponível.</p>
+    </div>
+
+    <div class="banner banner-misterio">
+      <h2>👁️ SEGREDO MILENAR</h2>
+      <p>Você foi escolhido para descobrir o impossível.</p>
+      <div class="chamada">Revelar o mistério</div>
+      <p class="aviso">Não existe prêmio ou inscrição real.</p>
+    </div>
+
+    <div class="banner banner-sorte">
+      <h2>🎁 VOCÊ FOI SORTEADO!</h2>
+      <p>Parabéns! Você ganhou 1 milhão de moedas imaginárias!</p>
+      <div class="chamada">Prêmio totalmente inventado</div>
+      <p class="aviso">Anúncio de brincadeira — sem sorteio real.</p>
+    </div>
+
+  </div>
+
+  <div class="controles-anuncios">
+    <button type="button" id="anterior" aria-label="Anúncio anterior">❮</button>
+    <div class="pontos" id="pontosAnuncios"></div>
+    <button type="button" id="proximo" aria-label="Próximo anúncio">❯</button>
+  </div>
+</section>
 
 <script>
 const jogadores = {
@@ -137,6 +365,7 @@ Object.keys(jogadores).forEach(nome => {
 
     botao.classList.add("selecionado");
     mensagem.textContent = "";
+    campoSenha.value = "";
   });
 
   area.appendChild(botao);
@@ -149,17 +378,81 @@ function entrar() {
   }
 
   sessionStorage.setItem("jogadorAtual", selecionado);
-
-  window.location.href = "./index.html";
+  window.location.href = "index.html";
 }
 
-document.getElementById("botaoEntrar").addEventListener("click", entrar);
+document.getElementById("botaoEntrar")
+  .addEventListener("click", entrar);
 
 campoSenha.addEventListener("keydown", event => {
   if (event.key === "Enter") {
     entrar();
   }
 });
+
+/* CARROSSEL AUTOMÁTICO DE PROPAGANDAS */
+
+const banners = document.querySelectorAll(".banner");
+const areaPontos = document.getElementById("pontosAnuncios");
+
+let anuncioAtual = 0;
+let intervaloAnuncios;
+
+banners.forEach((banner, indice) => {
+  const ponto = document.createElement("button");
+
+  ponto.type = "button";
+  ponto.className = "ponto";
+  ponto.setAttribute("aria-label", "Mostrar anúncio " + (indice + 1));
+
+  ponto.addEventListener("click", () => {
+    mostrarAnuncio(indice);
+    reiniciarIntervalo();
+  });
+
+  areaPontos.appendChild(ponto);
+});
+
+const pontos = areaPontos.querySelectorAll(".ponto");
+
+function mostrarAnuncio(indice) {
+  anuncioAtual = (indice + banners.length) % banners.length;
+
+  banners.forEach((banner, i) => {
+    banner.classList.toggle("ativo", i === anuncioAtual);
+  });
+
+  pontos.forEach((ponto, i) => {
+    ponto.classList.toggle("ativo", i === anuncioAtual);
+  });
+}
+
+function proximoAnuncio() {
+  mostrarAnuncio(anuncioAtual + 1);
+}
+
+function anuncioAnterior() {
+  mostrarAnuncio(anuncioAtual - 1);
+}
+
+function reiniciarIntervalo() {
+  clearInterval(intervaloAnuncios);
+  intervaloAnuncios = setInterval(proximoAnuncio, 4000);
+}
+
+document.getElementById("proximo").addEventListener("click", () => {
+  proximoAnuncio();
+  reiniciarIntervalo();
+});
+
+document.getElementById("anterior").addEventListener("click", () => {
+  anuncioAnterior();
+  reiniciarIntervalo();
+});
+
+mostrarAnuncio(0);
+reiniciarIntervalo();
 </script>
+
 </body>
 </html>
