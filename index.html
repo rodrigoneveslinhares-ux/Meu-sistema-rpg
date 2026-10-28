@@ -1,10 +1,20 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Desastre Milenar</title>
+
+<script>
+(function () {
+    const jogador = sessionStorage.getItem("jogadorAtual");
+
+    if (!jogador) {
+        window.location.replace("Jogadores.html");
+    }
+})();
+</script>
 
 <style>
 *{box-sizing:border-box}
@@ -73,10 +83,6 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
     document.getElementById("criarPersonagem").addEventListener("click", function(event){
         event.preventDefault();
 
-        /*
-         * Começa uma ficha nova sem apagar as fichas já salvas.
-         * Os dados de trabalho são limpos para não copiar a ficha anterior.
-         */
         for(let i = localStorage.length - 1; i >= 0; i--){
             const chave = localStorage.key(i);
 
@@ -105,3 +111,4 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 </script>
 </body>
 </html>
+```
