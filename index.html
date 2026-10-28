@@ -2,120 +2,166 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desastre Milenar</title>
 
-  <title>Desastre Milenar</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #050505;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #050505;
-      color: #00ff66;
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
+header {
+    padding: 28px 16px;
+    border-bottom: 1px solid #39ff14;
+}
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      border: 1px solid #00ff66;
-      border-radius: 12px;
-      padding: 30px 20px;
-      box-shadow: 0 0 20px #00ff6622;
-    }
+h1 {
+    color: #39ff14;
+    text-shadow: 0 0 12px #39ff1470;
+    margin: 0;
+}
 
-    h1 {
-      font-size: 30px;
-      margin: 0 0 12px;
-      text-shadow: 0 0 12px #00ff6680;
-    }
+main {
+    width: 100%;
+    max-width: 650px;
+    margin: 35px auto;
+    padding: 20px;
+}
 
-    .jogador {
-      color: #b5b5b5;
-      margin-bottom: 28px;
-    }
+#nomeJogador {
+    color: #39ff14;
+    font-size: 21px;
+    margin-bottom: 28px;
+    overflow-wrap: anywhere;
+}
 
-    .botao {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      margin-top: 14px;
-      border: 1px solid #00ff66;
-      border-radius: 7px;
-      background: #00ff66;
-      color: #000;
-      font-size: 16px;
-      font-weight: bold;
-      text-decoration: none;
-      cursor: pointer;
-    }
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-    .botao.secundario {
-      background: transparent;
-      color: #00ff66;
-    }
+.menu a,
+.botao-trocar {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #39ff14;
+    border-radius: 10px;
+    background: #101010;
+    color: #39ff14;
+    font-size: 17px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
 
-    .botao:hover {
-      box-shadow: 0 0 14px #00ff6680;
-    }
+.menu a:hover,
+.botao-trocar:hover {
+    background: #183016;
+    transform: scale(1.02);
+}
 
-    .trocar {
-      display: inline-block;
-      margin-top: 25px;
-      color: #999;
-      font-size: 14px;
-      text-decoration: underline;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
-  </style>
+.botao-trocar {
+    margin-top: 28px;
+    border-color: #666;
+    color: #ddd;
+    font-size: 14px;
+}
+
+footer {
+    margin-top: 35px;
+    padding: 15px;
+    color: #666;
+    font-size: 12px;
+}
+</style>
 </head>
 
 <body>
-  <main class="container">
+
+<header>
     <h1>DESASTRE MILENAR</h1>
+</header>
 
-    <p class="jogador">
-      Jogador: <strong id="nomeJogador"></strong>
-    </p>
+<main>
+    <p id="nomeJogador">Carregando jogador...</p>
 
-    <a class="botao" href="origens.html">CRIAR FICHA</a>
+    <nav class="menu">
+        <a href="origens.html">Criar personagem</a>
+        <a href="ficha-final.html">Minha ficha</a>
+    </nav>
 
-    <a class="botao secundario" href="ficha-final.html">
-      ABRIR FICHA
-    </a>
-
-    <button class="trocar" id="trocarJogador">
-      Trocar de jogador
+    <button class="botao-trocar" onclick="trocarJogador()">
+        Trocar de jogador
     </button>
-  </main>
+</main>
 
-  <script>
-    const jogadoresValidos = ["Brayan", "Vitor", "Sofia"];
+<footer>
+    Desastre Milenar
+</footer>
 
+<script>
+(function() {
     const jogadorAtual = sessionStorage.getItem("jogadorAtual");
 
-    if (!jogadoresValidos.includes(jogadorAtual)) {
-      window.location.replace("Jogadores.html");
-    } else {
-      document.getElementById("nomeJogador").textContent = jogadorAtual;
+    const jogadoresFixos = {
+        "Brayan": "brayan123",
+        "Vitor": "vitor123",
+        "Sofia": "sofia123"
+    };
+
+    let jogadoresPersonalizados = {};
+
+    try {
+        jogadoresPersonalizados = JSON.parse(
+            localStorage.getItem("jogadoresPersonalizados") || "{}"
+        );
+
+        if (
+            !jogadoresPersonalizados ||
+            typeof jogadoresPersonalizados !== "object" ||
+            Array.isArray(jogadoresPersonalizados)
+        ) {
+            jogadoresPersonalizados = {};
+        }
+    } catch (erro) {
+        jogadoresPersonalizados = {};
     }
 
-    document.getElementById("trocarJogador").addEventListener("click", function () {
-      sessionStorage.removeItem("jogadorAtual");
-      window.location.href = "Jogadores.html";
-    });
-  </script>
+    const jogadoresValidos = {
+        ...jogadoresFixos,
+        ...jogadoresPersonalizados
+    };
+
+    if (
+        !jogadorAtual ||
+        !Object.prototype.hasOwnProperty.call(jogadoresValidos, jogadorAtual)
+    ) {
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    document.getElementById("nomeJogador").textContent =
+        "Jogador: " + jogadorAtual;
+})();
+
+function trocarJogador() {
+    sessionStorage.removeItem("jogadorAtual");
+    window.location.href = "Jogadores.html";
+}
+</script>
+
 </body>
 </html>
