@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichas Salvas - Desastre Milenar</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#080808;color:white;font-family:Arial,sans-serif}
+main{max-width:600px;margin:auto}
+h1{color:#00ff66;text-align:center}
+.subtitulo{text-align:center;color:#aaa}
+.ficha{
+    background:#151515;border:1px solid #333;border-radius:9px;
+    padding:15px;margin:12px 0
+}
+.nome{font-size:18px;color:#00ff66;font-weight:bold;overflow-wrap:anywhere}
+.detalhes{font-size:13px;color:#aaa;margin-top:7px}
+.acoes{display:flex;gap:8px;margin-top:12px}
+button,.botao{
+    display:block;width:100%;padding:12px;border:0;border-radius:6px;
+    background:#00ff66;color:#000;font-weight:bold;text-align:center;
+    text-decoration:none;cursor:pointer
+}
+.excluir{background:#311414;color:#ff7777;border:1px solid #773333}
+.voltar{margin-top:20px;background:#171717;color:#00ff66;border:1px solid #00ff66}
+.vazio{text-align:center;color:#aaa;padding:25px 10px}
+</style>
+</head>
+
+<body>
+<main>
+<h1>Fichas salvas</h1>
+<p class="subtitulo" id="jogadorInfo"></p>
+
+<div id="lista"></div>
+
+<a class="botao voltar" href="index.html">Voltar ao menu</a>
+</main>
+
+<script>
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
+
+    if(!jogador){
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    const slug = jogador.toLowerCase();
+    const chaveLista = "fichas_lista_" + slug;
+    const chaveDados = id => "ficha_dados_" + slug + "_" + id;
+
+    document.getElementById("jogadorInfo").textContent =
+        "Jogador: " + jogador;
+
+    const lista = document.getElementById("lista");
+
+    function lerLista(){
+        try{
+            const dados = JSON.parse(localStorage.getItem(chaveLista) || "[]");
+            return Array.isArray(dados) ? dados : [];
+        }catch(e){
+            return [];
+        }
+    }
+
+    function desenhar(){
+        const fichas = lerLista();
+        lista.replaceChildren();
+
+        if(fichas.length === 0){
+            const vazio = document.createElement("p");
+            vazio.className = "vazio";
+            vazio.textContent =
+                "Tu ainda não tem fichas salvas. Cria um personagem e salva a ficha para ele aparecer aqui.";
+            lista.appendChild(vazio);
+            return;
+        }
+
+        fichas.sort((a,b) => (b.atualizada || 0) - (a.atualizada || 0));
+
+        fichas.forEach(ficha => {
+            const card = document.createElement("section");
+            card.className = "ficha";
+
+            const nome = document.createElement("div");
+            nome.className = "nome";
+            nome.textContent = ficha.nome || "Personagem sem nome";
+
+            const detalhes = document.createElement("div");
+            detalhes.className = "detalhes";
+            detalhes.textContent =
+                "Origem: " + (ficha.origem || "Não selecionada");
+
+            const acoes = document.createElement("div");
+            acoes.className = "acoes";
+
+            const abrir = document.createElement("button");
+            abrir.type = "button";
+            abrir.textContent = "Abrir ficha";
+            abrir.addEventListener("click", () => {
+                if(!localStorage.getItem(chaveDados(ficha.id))){
+                    alert("Os dados salvos desta ficha não foram encontrados.");
+                    return;
+                }
+
+                sessionStorage.setItem("fichaAtivaId", ficha.id);
+                sessionStorage.setItem("restaurarFichaSalva", "sim");
+                window.location.href = "ficha-final.html";
+            });
+
+            const excluir = document.createElement("button");
+            excluir.type = "button";
+            excluir.className = "excluir";
+            excluir.textContent = "Excluir";
+            excluir.addEventListener("click", () => {
+                if(!confirm('Excluir a ficha "' +
+                    (ficha.nome || "Personagem sem nome") +
+                    '" permanentemente?')){
+                    return;
+                }
+
+                localStorage.removeItem(chaveDados(ficha.id));
+
+                const restantes = lerLista().filter(item =>
+                    item.id !== ficha.id
+                );
+
+                localStorage.setItem(chaveLista, JSON.stringify(restantes));
+                desenhar();
+            });
+
+            acoes.appendChild(abrir);
+            acoes.appendChild(excluir);
+
+            card.appendChild(nome);
+            card.appendChild(detalhes);
+            card.appendChild(acoes);
+            lista.appendChild(card);
+        });
+    }
+
+    desenhar();
+})();
+</script>
+</body>
+</html>
