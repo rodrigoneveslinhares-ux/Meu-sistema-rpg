@@ -1,615 +1,793 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogadores - Desastre Milenar</title>
+<title>Jogadores</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    min-height:100vh;
-    padding:20px 15px 125px;
-    background:#080808;
-    color:#fff;
-    font-family:Arial,sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-header{
-    text-align:center;
-    padding:20px 0;
-    border-bottom:1px solid #39ff14;
+body {
+    margin: 0;
+    padding: 24px 18px 130px;
+    background: #0b0b0b;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
 
-h1{
-    color:#39ff14;
-    text-shadow:0 0 12px #39ff1470;
-    margin:0;
+h1 {
+    text-align: center;
+    font-size: 27px;
+    margin: 8px 0 30px;
 }
 
-main{
-    width:100%;
-    max-width:440px;
-    margin:25px auto;
+.cabecalho-lista {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
-h2{
-    color:#39ff14;
-    font-size:20px;
+.cabecalho-lista h2 {
+    font-size: 19px;
+    margin: 0;
 }
 
-.card{
-    padding:18px;
-    margin-bottom:18px;
-    background:#121212;
-    border:1px solid #333;
-    border-radius:10px;
+.botao-adicionar {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: #e0e0e0;
+    color: #111;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform .2s, background .2s;
 }
 
-label{
-    display:block;
-    margin-top:12px;
-    font-size:14px;
+.botao-adicionar:hover {
+    background: #fff;
+    transform: scale(1.06);
 }
 
-input{
-    width:100%;
-    margin-top:6px;
-    padding:12px;
-    border:1px solid #444;
-    border-radius:6px;
-    background:#080808;
-    color:white;
-    font-size:16px;
+#lista-jogadores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-button{
-    width:100%;
-    margin-top:15px;
-    padding:13px;
-    border:0;
-    border-radius:7px;
-    background:#39ff14;
-    color:#000;
-    font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
+.jogador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid #292929;
+    border-radius: 12px;
+    background: #141414;
 }
 
-button:disabled{
-    opacity:.6;
-    cursor:wait;
+.avatar-jogador {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #292929;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 }
 
-#mensagem{
-    min-height:22px;
-    text-align:center;
-    overflow-wrap:anywhere;
-    line-height:1.4;
+.info-jogador {
+    flex: 1;
+    min-width: 0;
 }
 
-.sucesso{color:#39ff14}
-.erro{color:#ff5555}
-
-#listaJogadores{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+.nome-jogador {
+    font-size: 16px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
 }
 
-.jogador-item{
-    padding:12px;
-    border:1px solid #333;
-    border-radius:6px;
-    background:#191919;
-    overflow-wrap:anywhere;
+.status-jogador {
+    color: #999;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
-.aviso{
-    color:#aaa;
-    font-size:12px;
-    line-height:1.5;
+.botao-entrar {
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 9px 12px;
+    background: #242424;
+    color: white;
+    cursor: pointer;
 }
 
-/* FAIXA DE PROPAGANDAS */
-#barra-propagandas{
-    position:fixed;
-    z-index:9999;
-    left:0;
-    right:0;
-    bottom:0;
-    height:100px;
-    overflow:hidden;
-    background:#090909;
-    border-top:2px solid #39ff14;
-    box-shadow:0 -4px 20px #000;
+.botao-entrar:hover {
+    background: #353535;
 }
 
-.rotulo-publicidade{
-    position:absolute;
-    z-index:3;
-    top:3px;
-    right:8px;
-    padding:2px 5px;
-    border-radius:3px;
-    background:#090909;
-    color:#999;
-    font-size:9px;
-    letter-spacing:1px;
+.lista-vazia {
+    padding: 25px 15px;
+    text-align: center;
+    color: #888;
+    background: #121212;
+    border: 1px dashed #333;
+    border-radius: 12px;
+    line-height: 1.5;
 }
 
-#trilho-propagandas{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    width:max-content;
-    height:100%;
-    padding:12px;
-    animation:deslizar 36s linear infinite;
+#mensagem {
+    display: none;
+    margin: 14px 0;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
-#barra-propagandas:hover #trilho-propagandas{
-    animation-play-state:paused;
+#mensagem.erro {
+    display: block;
+    background: #351414;
+    color: #ffb5b5;
 }
 
-.anuncio{
-    display:flex;
-    align-items:center;
-    flex:0 0 270px;
-    width:270px;
-    height:70px;
-    gap:11px;
-    padding:7px;
-    overflow:hidden;
-    border:1px solid #343434;
-    border-radius:8px;
-    background:#151515;
-    color:white;
-    text-decoration:none;
-    transition:border-color .2s,transform .2s;
+#mensagem.sucesso {
+    display: block;
+    background: #12351b;
+    color: #b5ffc2;
 }
 
-.anuncio:hover{
-    border-color:#39ff14;
-    transform:translateY(-2px);
+/* FORMULÁRIO EM JANELA */
+
+#modal-jogador {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, .78);
+    padding: 18px;
+    align-items: center;
+    justify-content: center;
 }
 
-.arte{
-    position:relative;
-    display:flex;
-    flex:0 0 88px;
-    width:88px;
-    height:54px;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    border-radius:5px;
-    background:#10200d;
+#modal-jogador.aberto {
+    display: flex;
 }
 
-.arte::before{
-    content:"";
-    position:absolute;
-    width:65px;
-    height:65px;
-    border:1px solid #ffffff30;
-    transform:rotate(45deg);
+.caixa-modal {
+    width: 100%;
+    max-width: 390px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
 }
 
-.arte-icone{
-    position:relative;
-    z-index:1;
-    font-size:29px;
-    filter:drop-shadow(0 0 7px #000);
+.topo-modal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-.arte-1{background:linear-gradient(135deg,#09240b,#39ff14)}
-.arte-2{background:linear-gradient(135deg,#071a30,#167bd8)}
-.arte-3{background:linear-gradient(135deg,#250b31,#a52ee8)}
-.arte-4{background:linear-gradient(135deg,#35140a,#e87822)}
-.arte-5{background:linear-gradient(135deg,#101010,#777)}
-.arte-6{background:linear-gradient(135deg,#310912,#e32949)}
-
-.anuncio-texto{
-    min-width:0;
-    flex:1;
-    overflow:hidden;
+.topo-modal h2 {
+    margin: 0;
+    font-size: 21px;
 }
 
-.anuncio-titulo{
-    display:block;
-    margin-bottom:5px;
-    color:#39ff14;
-    font-size:13px;
-    font-weight:bold;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.fechar-modal {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #292929;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
 }
 
-.anuncio-descricao{
-    display:block;
-    color:#ccc;
-    font-size:11px;
-    line-height:1.3;
+.abas {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
 }
 
-@keyframes deslizar{
-    from{transform:translateX(0)}
-    to{transform:translateX(-50%)}
+.aba {
+    flex: 1;
+    padding: 11px 8px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #aaa;
+    cursor: pointer;
 }
 
-@media(max-width:480px){
-    body{padding:12px 12px 115px}
-    header{padding:18px 0}
-    .card{padding:14px}
-    #barra-propagandas{height:90px}
-    #trilho-propagandas{gap:8px}
-    .anuncio{
-        flex-basis:245px;
-        width:245px;
-        height:64px;
+.aba.ativa {
+    background: #e0e0e0;
+    color: #111;
+    border-color: #e0e0e0;
+}
+
+.formulario {
+    display: none;
+}
+
+.formulario.ativo {
+    display: block;
+}
+
+.formulario label {
+    display: block;
+    margin: 13px 0 7px;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #3c3c3c;
+    background: #0b0b0b;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.formulario input:focus {
+    border-color: #aaa;
+}
+
+.botao-principal {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #e0e0e0;
+    color: #111;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-principal:disabled {
+    opacity: .5;
+    cursor: wait;
+}
+
+/* ANÚNCIOS INFERIORES */
+
+#barra-propagandas {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 105px;
+    background: #080808;
+    border-top: 1px solid #292929;
+    z-index: 20;
+    overflow: hidden;
+    padding: 8px 0;
+}
+
+.rotulo-publicidade {
+    position: absolute;
+    top: 3px;
+    right: 8px;
+    color: #777;
+    font-size: 9px;
+    letter-spacing: 1px;
+    z-index: 2;
+}
+
+#trilho-propagandas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    height: 100%;
+    animation: deslizar 42s linear infinite;
+    padding-top: 8px;
+}
+
+#trilho-propagandas:hover {
+    animation-play-state: paused;
+}
+
+.anuncio {
+    width: 260px;
+    height: 70px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+    background: #171717;
+    border: 1px solid #303030;
+    border-radius: 10px;
+}
+
+.arte {
+    width: 70px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.arte-verde {
+    background: linear-gradient(135deg, #173d2b, #367d52);
+}
+
+.arte-azul {
+    background: linear-gradient(135deg, #162a4c, #386eae);
+}
+
+.arte-roxa {
+    background: linear-gradient(135deg, #39204d, #8752a5);
+}
+
+.arte-laranja {
+    background: linear-gradient(135deg, #59301a, #c47a36);
+}
+
+.arte-cinza {
+    background: linear-gradient(135deg, #282828, #666);
+}
+
+.arte-vermelha {
+    background: linear-gradient(135deg, #4b1717, #a83232);
+}
+
+.texto-anuncio {
+    min-width: 0;
+}
+
+.texto-anuncio strong {
+    display: block;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.texto-anuncio span {
+    display: block;
+    font-size: 10px;
+    line-height: 1.3;
+    color: #bbb;
+}
+
+@keyframes deslizar {
+    from {
+        transform: translateX(0);
     }
-    .arte{
-        flex-basis:78px;
-        width:78px;
-        height:50px;
+    to {
+        transform: translateX(-50%);
     }
 }
 
-@media(prefers-reduced-motion:reduce){
-    #trilho-propagandas{animation:none}
+@media (max-width: 480px) {
+    body {
+        padding: 18px 13px 125px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .anuncio {
+        width: 240px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>DESASTRE MILENAR</h1>
-</header>
+<h1>JOGADORES</h1>
 
-<main>
-    <section class="card">
-        <h2>Entrar</h2>
-        <form id="formEntrar">
-            <label for="nomeEntrar">Nome do jogador</label>
-            <input id="nomeEntrar" type="text" maxlength="50"
-                   autocomplete="username" required>
+<div class="cabecalho-lista">
+    <h2>Jogadores cadastrados</h2>
+    <button class="botao-adicionar" id="abrir-modal" aria-label="Adicionar jogador" title="Adicionar jogador">+</button>
+</div>
 
-            <label for="senhaEntrar">Senha</label>
-            <input id="senhaEntrar" type="password"
-                   autocomplete="current-password" required>
+<div id="mensagem"></div>
 
-            <button id="botaoEntrar" type="submit">Entrar</button>
+<div id="lista-jogadores">
+    <div class="lista-vazia">Carregando jogadores...</div>
+</div>
+
+<!-- JANELA PARA ADICIONAR JOGADOR -->
+<div id="modal-jogador">
+    <div class="caixa-modal">
+        <div class="topo-modal">
+            <h2>Adicionar jogador</h2>
+            <button class="fechar-modal" id="fechar-modal" aria-label="Fechar">×</button>
+        </div>
+
+        <div class="abas">
+            <button class="aba ativa" id="aba-criar" type="button">Criar jogador</button>
+            <button class="aba" id="aba-entrar" type="button">Entrar</button>
+        </div>
+
+        <form class="formulario ativo" id="form-criar">
+            <label for="nome-criar">Nome do jogador</label>
+            <input id="nome-criar" type="text" maxlength="40" autocomplete="username" required>
+
+            <label for="senha-criar">Senha</label>
+            <input id="senha-criar" type="password" minlength="4" autocomplete="new-password" required>
+
+            <button class="botao-principal" type="submit">Criar jogador</button>
         </form>
-    </section>
 
-    <section class="card">
-        <h2>Criar jogador</h2>
-        <form id="formCriar">
-            <label for="nomeCriar">Nome do jogador</label>
-            <input id="nomeCriar" type="text" maxlength="50"
-                   autocomplete="username" required>
+        <form class="formulario" id="form-entrar">
+            <label for="nome-entrar">Nome do jogador</label>
+            <input id="nome-entrar" type="text" maxlength="40" autocomplete="username" required>
 
-            <label for="senhaCriar">Criar senha</label>
-            <input id="senhaCriar" type="password" minlength="6"
-                   autocomplete="new-password" required>
+            <label for="senha-entrar">Senha</label>
+            <input id="senha-entrar" type="password" autocomplete="current-password" required>
 
-            <label for="confirmarSenha">Confirmar senha</label>
-            <input id="confirmarSenha" type="password"
-                   minlength="6" autocomplete="new-password" required>
-
-            <button id="botaoCriar" type="submit">Criar conta</button>
+            <button class="botao-principal" type="submit">Entrar</button>
         </form>
-        <p class="aviso">Use uma senha com pelo menos 6 caracteres.</p>
-    </section>
+    </div>
+</div>
 
-    <section class="card">
-        <h2>Jogadores cadastrados</h2>
-        <div id="listaJogadores">Carregando jogadores...</div>
-    </section>
-
-    <p id="mensagem" aria-live="polite"></p>
-</main>
-
-<!-- PROPAGANDAS INTEGRADAS AO PRÓPRIO ARQUIVO -->
-<aside id="barra-propagandas" aria-label="Propagandas">
+<!-- SEIS ANÚNCIOS INCLUÍDOS NO PRÓPRIO ARQUIVO -->
+<div id="barra-propagandas">
     <span class="rotulo-publicidade">PUBLICIDADE</span>
-    <div id="trilho-propagandas"></div>
-</aside>
+
+    <div id="trilho-propagandas">
+        <a class="anuncio" href="index.html">
+            <div class="arte arte-verde">⚔️</div>
+            <div class="texto-anuncio">
+                <strong>DESASTRE MILENAR</strong>
+                <span>Conheça o universo do nosso RPG.</span>
+            </div>
+        </a>
+
+        <a class="anuncio" href="index.html">
+            <div class="arte arte-azul">🧙</div>
+            <div class="texto-anuncio">
+                <strong>CRIE SEU PERSONAGEM</strong>
+                <span>Dê vida ao seu próximo protagonista.</span>
+            </div>
+        </a>
+
+        <a class="anuncio" href="origens.html">
+            <div class="arte arte-roxa">📜</div>
+            <div class="texto-anuncio">
+                <strong>ESCOLHA SUA ORIGEM</strong>
+                <span>Descubra o passado do personagem.</span>
+            </div>
+        </a>
+
+        <a class="anuncio" href="atributos.html">
+            <div class="arte arte-laranja">🛡️</div>
+            <div class="texto-anuncio">
+                <strong>PREPARE-SE PARA O COMBATE</strong>
+                <span>Organize seus atributos e habilidades.</span>
+            </div>
+        </a>
+
+        <a class="anuncio" href="dados.html">
+            <div class="arte arte-cinza">🎲</div>
+            <div class="texto-anuncio">
+                <strong>ROLE OS DADOS</strong>
+                <span>A sorte pode mudar tudo.</span>
+            </div>
+        </a>
+
+        <a class="anuncio" href="index.html">
+            <div class="arte arte-vermelha">🔥</div>
+            <div class="texto-anuncio">
+                <strong>A AVENTURA TE ESPERA</strong>
+                <span>Reúna seu grupo e jogue.</span>
+            </div>
+        </a>
+    </div>
+</div>
 
 <script>
-const ENDPOINT =
-"https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
+const FUNCAO_URL = "https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
 
-/* SEIS PROPAGANDAS COM ARTES CRIADAS NO PRÓPRIO SITE */
-const propagandas=[
-    {
-        titulo:"DESASTRE MILENAR",
-        descricao:"Conheça o universo do nosso RPG.",
-        icone:"⚔️",
-        arte:"arte-1",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
-    },
-    {
-        titulo:"CRIE SEU PERSONAGEM",
-        descricao:"Dê vida ao seu próximo protagonista.",
-        icone:"🧙",
-        arte:"arte-2",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/origens.html"
-    },
-    {
-        titulo:"ESCOLHA SUA ORIGEM",
-        descricao:"Descubra o passado do personagem.",
-        icone:"📜",
-        arte:"arte-3",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/origens.html"
-    },
-    {
-        titulo:"PREPARE-SE PARA O COMBATE",
-        descricao:"Organize seus atributos e habilidades.",
-        icone:"🛡️",
-        arte:"arte-4",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/atributos.html"
-    },
-    {
-        titulo:"ROLE OS DADOS",
-        descricao:"A sorte pode mudar tudo.",
-        icone:"🎲",
-        arte:"arte-5",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/dados.html"
-    },
-    {
-        titulo:"A AVENTURA TE ESPERA",
-        descricao:"Reúna seu grupo e jogue.",
-        icone:"🔥",
-        arte:"arte-6",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
-    }
-];
+const modal = document.getElementById("modal-jogador");
+const lista = document.getElementById("lista-jogadores");
+const mensagem = document.getElementById("mensagem");
 
-function montarPropagandas(){
-    const trilho=document.getElementById("trilho-propagandas");
-
-    // Duas sequências iguais garantem a repetição contínua.
-    for(let repeticao=0;repeticao<2;repeticao++){
-        propagandas.forEach(anuncio=>{
-            const link=document.createElement("a");
-            link.className="anuncio";
-            link.href=anuncio.link;
-            link.setAttribute("aria-label",anuncio.titulo);
-
-            const arte=document.createElement("span");
-            arte.className="arte "+anuncio.arte;
-            arte.setAttribute("aria-hidden","true");
-
-            const icone=document.createElement("span");
-            icone.className="arte-icone";
-            icone.textContent=anuncio.icone;
-            arte.appendChild(icone);
-
-            const texto=document.createElement("span");
-            texto.className="anuncio-texto";
-
-            const titulo=document.createElement("span");
-            titulo.className="anuncio-titulo";
-            titulo.textContent=anuncio.titulo;
-
-            const descricao=document.createElement("span");
-            descricao.className="anuncio-descricao";
-            descricao.textContent=anuncio.descricao;
-
-            texto.append(titulo,descricao);
-            link.append(arte,texto);
-            trilho.appendChild(link);
-        });
-    }
+function mostrarMensagem(texto, tipo = "erro") {
+    mensagem.textContent = texto;
+    mensagem.className = tipo;
+    mensagem.style.display = "block";
 }
 
-montarPropagandas();
-
-function mostrarMensagem(texto,tipo=""){
-    const mensagem=document.getElementById("mensagem");
-    mensagem.textContent=texto;
-    mensagem.className=tipo;
+function limparMensagem() {
+    mensagem.textContent = "";
+    mensagem.className = "";
+    mensagem.style.display = "none";
 }
 
-async function chamarFuncao(dados,token=""){
-    const headers={"Content-Type":"application/json"};
+function abrirModal() {
+    limparMensagem();
+    modal.classList.add("aberto");
+}
 
-    if(token){
-        headers.Authorization="Bearer "+token;
-    }
+function fecharModal() {
+    modal.classList.remove("aberto");
+}
 
-    const resposta=await fetch(ENDPOINT,{
-        method:"POST",
-        headers,
-        body:JSON.stringify(dados)
+document.getElementById("abrir-modal").addEventListener("click", abrirModal);
+document.getElementById("fechar-modal").addEventListener("click", fecharModal);
+
+modal.addEventListener("click", function(event) {
+    if (event.target === modal) fecharModal();
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") fecharModal();
+});
+
+function selecionarAba(aba) {
+    const criarAtivo = aba === "criar";
+
+    document.getElementById("aba-criar").classList.toggle("ativa", criarAtivo);
+    document.getElementById("aba-entrar").classList.toggle("ativa", !criarAtivo);
+
+    document.getElementById("form-criar").classList.toggle("ativo", criarAtivo);
+    document.getElementById("form-entrar").classList.toggle("ativo", !criarAtivo);
+
+    limparMensagem();
+}
+
+document.getElementById("aba-criar").addEventListener("click", function() {
+    selecionarAba("criar");
+});
+
+document.getElementById("aba-entrar").addEventListener("click", function() {
+    selecionarAba("entrar");
+});
+
+async function chamarFuncao(acao, dados = {}) {
+    const token = sessionStorage.getItem("access_token");
+
+    const cabecalhos = {
+        "Content-Type": "application/json",
+        "apikey": "",
+        "Authorization": token ? "Bearer " + token : "Bearer "
+    };
+
+    const resposta = await fetch(FUNCAO_URL, {
+        method: "POST",
+        headers: cabecalhos,
+        body: JSON.stringify({
+            acao: acao,
+            ...dados
+        })
     });
 
-    const texto=await resposta.text();
+    const texto = await resposta.text();
     let resultado;
 
-    try{
-        resultado=texto?JSON.parse(texto):{};
-    }catch{
-        throw new Error("O servidor retornou uma resposta inválida.");
+    try {
+        resultado = texto ? JSON.parse(texto) : {};
+    } catch {
+        resultado = { mensagem: texto };
     }
 
-    if(!resposta.ok){
+    if (!resposta.ok) {
         throw new Error(
-            resultado.erro||
-            resultado.error||
-            resultado.mensagem||
-            "Erro na comunicação com o servidor."
+            resultado.erro ||
+            resultado.error ||
+            resultado.mensagem ||
+            "Não foi possível concluir a operação. Verifique a configuração da função Supabase."
         );
-    }
-
-    if(resultado.erro||resultado.error){
-        throw new Error(resultado.erro||resultado.error);
     }
 
     return resultado;
 }
 
-/* LISTA DE JOGADORES */
-async function carregarJogadores(){
-    const lista=document.getElementById("listaJogadores");
-    lista.textContent="Carregando jogadores...";
+function obterLista(resultado) {
+    if (Array.isArray(resultado)) return resultado;
+    if (Array.isArray(resultado.jogadores)) return resultado.jogadores;
+    if (Array.isArray(resultado.participantes)) return resultado.participantes;
+    if (Array.isArray(resultado.data)) return resultado.data;
+    return [];
+}
 
-    try{
-        const resultado=await chamarFuncao({acao:"listar"});
+function nomeDoJogador(jogador) {
+    return jogador.nome ||
+           jogador.nome_jogador ||
+           jogador.username ||
+           jogador.usuario ||
+           jogador.name ||
+           "Jogador";
+}
 
-        const jogadores=
-            resultado.jogadores||
-            resultado.participantes||
-            resultado.data||
-            [];
+function criarCartaoJogador(jogador) {
+    const cartao = document.createElement("div");
+    cartao.className = "jogador";
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar-jogador";
+    avatar.textContent = "🎭";
+
+    const info = document.createElement("div");
+    info.className = "info-jogador";
+
+    const nome = document.createElement("div");
+    nome.className = "nome-jogador";
+    nome.textContent = nomeDoJogador(jogador);
+
+    const status = document.createElement("div");
+    status.className = "status-jogador";
+    status.textContent = "Jogador cadastrado";
+
+    info.appendChild(nome);
+    info.appendChild(status);
+
+    const botao = document.createElement("button");
+    botao.className = "botao-entrar";
+    botao.type = "button";
+    botao.textContent = "Entrar";
+
+    botao.addEventListener("click", function() {
+        document.getElementById("nome-entrar").value = nomeDoJogador(jogador);
+        selecionarAba("entrar");
+        abrirModal();
+        document.getElementById("senha-entrar").focus();
+    });
+
+    cartao.appendChild(avatar);
+    cartao.appendChild(info);
+    cartao.appendChild(botao);
+
+    return cartao;
+}
+
+async function carregarJogadores() {
+    try {
+        const resultado = await chamarFuncao("listar");
+        const jogadores = obterLista(resultado);
 
         lista.replaceChildren();
 
-        if(!Array.isArray(jogadores)||jogadores.length===0){
-            lista.textContent="Nenhum jogador cadastrado ainda.";
+        if (jogadores.length === 0) {
+            const vazio = document.createElement("div");
+            vazio.className = "lista-vazia";
+            vazio.textContent = "Nenhum jogador cadastrado ainda. Toque no + para adicionar o primeiro.";
+            lista.appendChild(vazio);
             return;
         }
 
-        jogadores.forEach(item=>{
-            const nome=typeof item==="string"
-                ?item
-                :item.nome||item.name||item.username;
-
-            if(!nome)return;
-
-            const linha=document.createElement("div");
-            linha.className="jogador-item";
-            linha.textContent=nome;
-            lista.appendChild(linha);
+        jogadores.forEach(function(jogador) {
+            lista.appendChild(criarCartaoJogador(jogador));
         });
+    } catch (erro) {
+        lista.replaceChildren();
 
-        if(!lista.childElementCount){
-            lista.textContent="Nenhum jogador disponível.";
-        }
-    }catch(erro){
-        lista.textContent=
-            "Não foi possível carregar a lista. Tu ainda pode tentar entrar ou criar uma conta.";
-        console.error("Erro ao listar jogadores:",erro);
+        const vazio = document.createElement("div");
+        vazio.className = "lista-vazia";
+        vazio.textContent = "Não foi possível carregar a lista de jogadores.";
+        lista.appendChild(vazio);
+
+        mostrarMensagem(erro.message);
     }
 }
 
-/* CRIAR CONTA */
-document.getElementById("formCriar").addEventListener("submit",async evento=>{
-    evento.preventDefault();
+function definirCarregamento(formulario, carregando) {
+    const botao = formulario.querySelector('button[type="submit"]');
+    botao.disabled = carregando;
+    botao.textContent = carregando ? "Aguarde..." :
+        (formulario.id === "form-criar" ? "Criar jogador" : "Entrar");
+}
 
-    const nome=document.getElementById("nomeCriar").value.trim();
-    const senha=document.getElementById("senhaCriar").value;
-    const confirmar=document.getElementById("confirmarSenha").value;
-    const botao=document.getElementById("botaoCriar");
+document.getElementById("form-criar").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    limparMensagem();
 
-    if(!nome){
-        mostrarMensagem("Digite um nome de jogador.","erro");
+    const formulario = this;
+    const nome = document.getElementById("nome-criar").value.trim();
+    const senha = document.getElementById("senha-criar").value;
+
+    if (!nome || !senha) {
+        mostrarMensagem("Preencha o nome e a senha.");
         return;
     }
 
-    if(senha.length<6){
-        mostrarMensagem("A senha precisa ter pelo menos 6 caracteres.","erro");
-        return;
-    }
+    definirCarregamento(formulario, true);
 
-    if(senha!==confirmar){
-        mostrarMensagem("As senhas não coincidem.","erro");
-        return;
-    }
-
-    botao.disabled=true;
-    botao.textContent="Criando conta...";
-    mostrarMensagem("");
-
-    try{
-        const resultado=await chamarFuncao({
-            acao:"criar",
-            nome,
-            senha
+    try {
+        const resultado = await chamarFuncao("criar", {
+            nome: nome,
+            senha: senha
         });
 
-        if(resultado.sucesso===false){
-            throw new Error(
-                resultado.mensagem||"Não foi possível criar a conta."
-            );
+        if (resultado.access_token) {
+            sessionStorage.setItem("access_token", resultado.access_token);
+        }
+        if (resultado.refresh_token) {
+            sessionStorage.setItem("refresh_token", resultado.refresh_token);
+        }
+        if (resultado.user_id || resultado.id) {
+            sessionStorage.setItem("user_id", resultado.user_id || resultado.id);
         }
 
-        mostrarMensagem(
-            resultado.mensagem||"Conta criada! Agora tu pode entrar.",
-            "sucesso"
-        );
+        sessionStorage.setItem("jogadorAtual", nome);
 
-        document.getElementById("formCriar").reset();
+        mostrarMensagem("Jogador criado com sucesso!", "sucesso");
         await carregarJogadores();
-    }catch(erro){
-        mostrarMensagem(erro.message||"Erro ao criar a conta.","erro");
-    }finally{
-        botao.disabled=false;
-        botao.textContent="Criar conta";
+
+        setTimeout(function() {
+            window.location.href = "index.html";
+        }, 700);
+    } catch (erro) {
+        mostrarMensagem(erro.message);
+    } finally {
+        definirCarregamento(formulario, false);
     }
 });
 
-/* ENTRAR */
-document.getElementById("formEntrar").addEventListener("submit",async evento=>{
-    evento.preventDefault();
+document.getElementById("form-entrar").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    limparMensagem();
 
-    const nome=document.getElementById("nomeEntrar").value.trim();
-    const senha=document.getElementById("senhaEntrar").value;
-    const botao=document.getElementById("botaoEntrar");
+    const formulario = this;
+    const nome = document.getElementById("nome-entrar").value.trim();
+    const senha = document.getElementById("senha-entrar").value;
 
-    if(!nome||!senha){
-        mostrarMensagem("Preencha o nome e a senha.","erro");
+    if (!nome || !senha) {
+        mostrarMensagem("Preencha o nome e a senha.");
         return;
     }
 
-    botao.disabled=true;
-    botao.textContent="Entrando...";
-    mostrarMensagem("");
+    definirCarregamento(formulario, true);
 
-    try{
-        const resultado=await chamarFuncao({
-            acao:"entrar",
-            nome,
-            senha
+    try {
+        const resultado = await chamarFuncao("entrar", {
+            nome: nome,
+            senha: senha
         });
 
-        if(resultado.sucesso===false){
-            throw new Error(resultado.mensagem||"Nome ou senha incorretos.");
+        if (resultado.access_token) {
+            sessionStorage.setItem("access_token", resultado.access_token);
+        }
+        if (resultado.refresh_token) {
+            sessionStorage.setItem("refresh_token", resultado.refresh_token);
+        }
+        if (resultado.user_id || resultado.id) {
+            sessionStorage.setItem("user_id", resultado.user_id || resultado.id);
         }
 
-        sessionStorage.setItem("jogadorAtual",nome);
+        sessionStorage.setItem("jogadorAtual", nome);
 
-        if(resultado.access_token){
-            sessionStorage.setItem("access_token",resultado.access_token);
-        }else{
-            sessionStorage.removeItem("access_token");
-        }
+        mostrarMensagem("Entrada realizada com sucesso!", "sucesso");
 
-        if(resultado.refresh_token){
-            sessionStorage.setItem("refresh_token",resultado.refresh_token);
-        }else{
-            sessionStorage.removeItem("refresh_token");
-        }
-
-        if(resultado.user_id){
-            sessionStorage.setItem("user_id",resultado.user_id);
-        }else{
-            sessionStorage.removeItem("user_id");
-        }
-
-        window.location.href="index.html";
-    }catch(erro){
-        mostrarMensagem(erro.message||"Não foi possível entrar.","erro");
-    }finally{
-        botao.disabled=false;
-        botao.textContent="Entrar";
+        setTimeout(function() {
+            window.location.href = "index.html";
+        }, 500);
+    } catch (erro) {
+        mostrarMensagem(erro.message);
+    } finally {
+        definirCarregamento(formulario, false);
     }
 });
 
@@ -618,4 +796,3 @@ carregarJogadores();
 
 </body>
 </html>
-```
