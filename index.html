@@ -7,85 +7,32 @@
 <title>Desastre Milenar</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+    margin:0;min-height:100vh;background:#050505;color:#fff;
+    font-family:Arial,sans-serif;text-align:center
 }
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    background: #050505;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    text-align: center;
+header{padding:28px 16px;border-bottom:1px solid #39ff14}
+h1{color:#39ff14;text-shadow:0 0 12px #39ff1470;margin:0}
+main{width:100%;max-width:650px;margin:35px auto;padding:20px}
+#nomeJogador{
+    color:#39ff14;font-size:21px;margin-bottom:28px;
+    overflow-wrap:anywhere
 }
-
-header {
-    padding: 28px 16px;
-    border-bottom: 1px solid #39ff14;
+.menu{display:flex;flex-direction:column;gap:15px}
+.menu a,.botao-trocar{
+    display:block;width:100%;padding:16px;border:1px solid #39ff14;
+    border-radius:10px;background:#101010;color:#39ff14;
+    font-size:17px;font-weight:bold;text-decoration:none;cursor:pointer;
+    transition:background .2s,transform .2s
 }
-
-h1 {
-    color: #39ff14;
-    text-shadow: 0 0 12px #39ff1470;
-    margin: 0;
+.menu a:hover,.botao-trocar:hover{
+    background:#183016;transform:scale(1.02)
 }
-
-main {
-    width: 100%;
-    max-width: 650px;
-    margin: 35px auto;
-    padding: 20px;
+.botao-trocar{
+    margin-top:28px;border-color:#666;color:#ddd;font-size:14px
 }
-
-#nomeJogador {
-    color: #39ff14;
-    font-size: 21px;
-    margin-bottom: 28px;
-    overflow-wrap: anywhere;
-}
-
-.menu {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.menu a,
-.botao-trocar {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    border: 1px solid #39ff14;
-    border-radius: 10px;
-    background: #101010;
-    color: #39ff14;
-    font-size: 17px;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background .2s, transform .2s;
-}
-
-.menu a:hover,
-.botao-trocar:hover {
-    background: #183016;
-    transform: scale(1.02);
-}
-
-.botao-trocar {
-    margin-top: 28px;
-    border-color: #666;
-    color: #ddd;
-    font-size: 14px;
-}
-
-footer {
-    margin-top: 35px;
-    padding: 15px;
-    color: #666;
-    font-size: 12px;
-}
+footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 </style>
 </head>
 
@@ -96,71 +43,42 @@ footer {
 </header>
 
 <main>
-    <p id="nomeJogador">Carregando jogador...</p>
+    <p id="nomeJogador">Verificando sessão...</p>
 
     <nav class="menu">
         <a href="origens.html">Criar personagem</a>
         <a href="ficha-final.html">Minha ficha</a>
     </nav>
 
-    <button class="botao-trocar" onclick="trocarJogador()">
+    <button class="botao-trocar" id="botaoTrocar" type="button">
         Trocar de jogador
     </button>
 </main>
 
-<footer>
-    Desastre Milenar
-</footer>
+<footer>Desastre Milenar</footer>
 
 <script>
 (function() {
     const jogadorAtual = sessionStorage.getItem("jogadorAtual");
+    const accessToken = sessionStorage.getItem("access_token");
 
-    const jogadoresFixos = {
-        "Brayan": "brayan123",
-        "Vitor": "vitor123",
-        "Sofia": "sofia123"
-    };
-
-    let jogadoresPersonalizados = {};
-
-    try {
-        jogadoresPersonalizados = JSON.parse(
-            localStorage.getItem("jogadoresPersonalizados") || "{}"
-        );
-
-        if (
-            !jogadoresPersonalizados ||
-            typeof jogadoresPersonalizados !== "object" ||
-            Array.isArray(jogadoresPersonalizados)
-        ) {
-            jogadoresPersonalizados = {};
-        }
-    } catch (erro) {
-        jogadoresPersonalizados = {};
-    }
-
-    const jogadoresValidos = {
-        ...jogadoresFixos,
-        ...jogadoresPersonalizados
-    };
-
-    if (
-        !jogadorAtual ||
-        !Object.prototype.hasOwnProperty.call(jogadoresValidos, jogadorAtual)
-    ) {
+    if (!jogadorAtual || !accessToken) {
         window.location.replace("Jogadores.html");
         return;
     }
 
     document.getElementById("nomeJogador").textContent =
         "Jogador: " + jogadorAtual;
-})();
 
-function trocarJogador() {
-    sessionStorage.removeItem("jogadorAtual");
-    window.location.href = "Jogadores.html";
-}
+    document.getElementById("botaoTrocar").addEventListener("click", function() {
+        sessionStorage.removeItem("jogadorAtual");
+        sessionStorage.removeItem("access_token");
+        sessionStorage.removeItem("refresh_token");
+        sessionStorage.removeItem("user_id");
+
+        window.location.href = "Jogadores.html";
+    });
+})();
 </script>
 
 </body>
