@@ -91,7 +91,10 @@
     </p>
 
     <a class="botao" href="origens.html">CRIAR FICHA</a>
-    <a class="botao secundario" href="ficha-final.html">ABRIR FICHA</a>
+
+    <a class="botao secundario" href="ficha-final.html">
+      ABRIR FICHA
+    </a>
 
     <button class="trocar" id="trocarJogador">
       Trocar de jogador
@@ -100,17 +103,18 @@
 
   <script>
     const jogadoresValidos = ["Brayan", "Vitor", "Sofia"];
+
     const jogadorAtual = sessionStorage.getItem("jogadorAtual");
 
     if (!jogadoresValidos.includes(jogadorAtual)) {
-      window.location.replace("jogadores.html");
+      window.location.replace("Jogadores.html");
     } else {
       document.getElementById("nomeJogador").textContent = jogadorAtual;
     }
 
     document.getElementById("trocarJogador").addEventListener("click", function () {
       sessionStorage.removeItem("jogadorAtual");
-      window.location.href = "jogadores.html";
+      window.location.href = "Jogadores.html";
     });
   </script>
 </body>
