@@ -43,10 +43,10 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 </header>
 
 <main>
-    <p id="nomeJogador">Verificando sessão...</p>
+    <p id="nomeJogador">Carregando jogador...</p>
 
     <nav class="menu">
-        <a href="origens.html">Criar personagem</a>
+        <a href="origens.html" id="criarPersonagem">Criar personagem</a>
         <a href="ficha-final.html">Minha ficha</a>
     </nav>
 
@@ -60,15 +60,23 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 <script>
 (function() {
     const jogadorAtual = sessionStorage.getItem("jogadorAtual");
-    const accessToken = sessionStorage.getItem("access_token");
 
-    if (!jogadorAtual || !accessToken) {
+    if (!jogadorAtual) {
         window.location.replace("Jogadores.html");
         return;
     }
 
     document.getElementById("nomeJogador").textContent =
         "Jogador: " + jogadorAtual;
+
+    document.getElementById("criarPersonagem").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // Mantém o nome do jogador durante a navegação.
+        sessionStorage.setItem("jogadorAtual", jogadorAtual);
+
+        window.location.href = "origens.html";
+    });
 
     document.getElementById("botaoTrocar").addEventListener("click", function() {
         sessionStorage.removeItem("jogadorAtual");
