@@ -114,31 +114,31 @@ button:disabled{
     line-height:1.5;
 }
 
-/* FAIXA DE SEIS PROPAGANDAS */
+/* FAIXA DE PROPAGANDAS */
 #barra-propagandas{
     position:fixed;
     z-index:9999;
     left:0;
     right:0;
     bottom:0;
-    height:96px;
+    height:100px;
     overflow:hidden;
-    display:flex;
-    align-items:center;
-    background:#101010;
+    background:#090909;
     border-top:2px solid #39ff14;
-    box-shadow:0 -4px 18px #0009;
+    box-shadow:0 -4px 20px #000;
 }
 
 .rotulo-publicidade{
     position:absolute;
-    top:2px;
+    z-index:3;
+    top:3px;
     right:8px;
-    z-index:2;
-    padding-left:5px;
-    background:#101010;
-    color:#888;
+    padding:2px 5px;
+    border-radius:3px;
+    background:#090909;
+    color:#999;
     font-size:9px;
+    letter-spacing:1px;
 }
 
 #trilho-propagandas{
@@ -146,8 +146,9 @@ button:disabled{
     align-items:center;
     gap:12px;
     width:max-content;
-    padding:10px 12px;
-    animation:deslizar 42s linear infinite;
+    height:100%;
+    padding:12px;
+    animation:deslizar 36s linear infinite;
 }
 
 #barra-propagandas:hover #trilho-propagandas{
@@ -157,35 +158,70 @@ button:disabled{
 .anuncio{
     display:flex;
     align-items:center;
-    flex:0 0 260px;
-    width:260px;
+    flex:0 0 270px;
+    width:270px;
     height:70px;
-    gap:10px;
-    padding:6px;
+    gap:11px;
+    padding:7px;
     overflow:hidden;
-    border:1px solid #333;
+    border:1px solid #343434;
     border-radius:8px;
-    background:#191919;
+    background:#151515;
     color:white;
     text-decoration:none;
+    transition:border-color .2s,transform .2s;
 }
 
-.anuncio img{
-    width:92px;
-    height:56px;
-    flex-shrink:0;
-    object-fit:cover;
-    border-radius:5px;
-    background:#252525;
+.anuncio:hover{
+    border-color:#39ff14;
+    transform:translateY(-2px);
 }
+
+.arte{
+    position:relative;
+    display:flex;
+    flex:0 0 88px;
+    width:88px;
+    height:54px;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:5px;
+    background:#10200d;
+}
+
+.arte::before{
+    content:"";
+    position:absolute;
+    width:65px;
+    height:65px;
+    border:1px solid #ffffff30;
+    transform:rotate(45deg);
+}
+
+.arte-icone{
+    position:relative;
+    z-index:1;
+    font-size:29px;
+    filter:drop-shadow(0 0 7px #000);
+}
+
+.arte-1{background:linear-gradient(135deg,#09240b,#39ff14)}
+.arte-2{background:linear-gradient(135deg,#071a30,#167bd8)}
+.arte-3{background:linear-gradient(135deg,#250b31,#a52ee8)}
+.arte-4{background:linear-gradient(135deg,#35140a,#e87822)}
+.arte-5{background:linear-gradient(135deg,#101010,#777)}
+.arte-6{background:linear-gradient(135deg,#310912,#e32949)}
 
 .anuncio-texto{
     min-width:0;
+    flex:1;
     overflow:hidden;
 }
 
 .anuncio-titulo{
     display:block;
+    margin-bottom:5px;
     color:#39ff14;
     font-size:13px;
     font-weight:bold;
@@ -196,7 +232,6 @@ button:disabled{
 
 .anuncio-descricao{
     display:block;
-    margin-top:5px;
     color:#ccc;
     font-size:11px;
     line-height:1.3;
@@ -211,16 +246,17 @@ button:disabled{
     body{padding:12px 12px 115px}
     header{padding:18px 0}
     .card{padding:14px}
-    #barra-propagandas{height:88px}
+    #barra-propagandas{height:90px}
     #trilho-propagandas{gap:8px}
     .anuncio{
-        flex-basis:235px;
-        width:235px;
+        flex-basis:245px;
+        width:245px;
         height:64px;
     }
-    .anuncio img{
-        width:80px;
-        height:52px;
+    .arte{
+        flex-basis:78px;
+        width:78px;
+        height:50px;
     }
 }
 
@@ -280,6 +316,7 @@ button:disabled{
     <p id="mensagem" aria-live="polite"></p>
 </main>
 
+<!-- PROPAGANDAS INTEGRADAS AO PRÓPRIO ARQUIVO -->
 <aside id="barra-propagandas" aria-label="Propagandas">
     <span class="rotulo-publicidade">PUBLICIDADE</span>
     <div id="trilho-propagandas"></div>
@@ -289,42 +326,48 @@ button:disabled{
 const ENDPOINT =
 "https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
 
-/* SEIS ANÚNCIOS JÁ INCLUÍDOS */
-const propagandas = [
+/* SEIS PROPAGANDAS COM ARTES CRIADAS NO PRÓPRIO SITE */
+const propagandas=[
     {
-        titulo:"Desastre Milenar",
-        descricao:"Entre no mundo do RPG.",
-        imagem:"https://placehold.co/320x180/101010/39ff14?text=DESASTRE+MILENAR",
+        titulo:"DESASTRE MILENAR",
+        descricao:"Conheça o universo do nosso RPG.",
+        icone:"⚔️",
+        arte:"arte-1",
         link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
     },
     {
-        titulo:"Crie seu personagem",
-        descricao:"Monte sua própria ficha de RPG.",
-        imagem:"https://placehold.co/320x180/171717/39ff14?text=PERSONAGEM",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
+        titulo:"CRIE SEU PERSONAGEM",
+        descricao:"Dê vida ao seu próximo protagonista.",
+        icone:"🧙",
+        arte:"arte-2",
+        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/origens.html"
     },
     {
-        titulo:"Origens misteriosas",
-        descricao:"Descubra quem seu personagem é.",
-        imagem:"https://placehold.co/320x180/171717/ffffff?text=ORIGENS",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
+        titulo:"ESCOLHA SUA ORIGEM",
+        descricao:"Descubra o passado do personagem.",
+        icone:"📜",
+        arte:"arte-3",
+        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/origens.html"
     },
     {
-        titulo:"Atributos e habilidades",
-        descricao:"Prepare seu personagem para o desafio.",
-        imagem:"https://placehold.co/320x180/101010/39ff14?text=ATRIBUTOS",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
+        titulo:"PREPARE-SE PARA O COMBATE",
+        descricao:"Organize seus atributos e habilidades.",
+        icone:"🛡️",
+        arte:"arte-4",
+        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/atributos.html"
     },
     {
-        titulo:"Dados e perícias",
-        descricao:"Role os dados e teste suas habilidades.",
-        imagem:"https://placehold.co/320x180/171717/ffffff?text=DADOS+E+PERICIAS",
-        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
+        titulo:"ROLE OS DADOS",
+        descricao:"A sorte pode mudar tudo.",
+        icone:"🎲",
+        arte:"arte-5",
+        link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/dados.html"
     },
     {
-        titulo:"Sua próxima aventura",
-        descricao:"Reúna os jogadores e comece a jogar.",
-        imagem:"https://placehold.co/320x180/101010/39ff14?text=NOVA+AVENTURA",
+        titulo:"A AVENTURA TE ESPERA",
+        descricao:"Reúna seu grupo e jogue.",
+        icone:"🔥",
+        arte:"arte-6",
         link:"https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
     }
 ];
@@ -332,18 +375,22 @@ const propagandas = [
 function montarPropagandas(){
     const trilho=document.getElementById("trilho-propagandas");
 
-    // Duas cópias da sequência para manter o movimento contínuo.
+    // Duas sequências iguais garantem a repetição contínua.
     for(let repeticao=0;repeticao<2;repeticao++){
         propagandas.forEach(anuncio=>{
             const link=document.createElement("a");
             link.className="anuncio";
             link.href=anuncio.link;
-            link.target="_blank";
-            link.rel="noopener noreferrer";
+            link.setAttribute("aria-label",anuncio.titulo);
 
-            const img=document.createElement("img");
-            img.src=anuncio.imagem;
-            img.alt=anuncio.titulo;
+            const arte=document.createElement("span");
+            arte.className="arte "+anuncio.arte;
+            arte.setAttribute("aria-hidden","true");
+
+            const icone=document.createElement("span");
+            icone.className="arte-icone";
+            icone.textContent=anuncio.icone;
+            arte.appendChild(icone);
 
             const texto=document.createElement("span");
             texto.className="anuncio-texto";
@@ -357,7 +404,7 @@ function montarPropagandas(){
             descricao.textContent=anuncio.descricao;
 
             texto.append(titulo,descricao);
-            link.append(img,texto);
+            link.append(arte,texto);
             trilho.appendChild(link);
         });
     }
@@ -373,7 +420,10 @@ function mostrarMensagem(texto,tipo=""){
 
 async function chamarFuncao(dados,token=""){
     const headers={"Content-Type":"application/json"};
-    if(token) headers.Authorization="Bearer "+token;
+
+    if(token){
+        headers.Authorization="Bearer "+token;
+    }
 
     const resposta=await fetch(ENDPOINT,{
         method:"POST",
@@ -406,12 +456,14 @@ async function chamarFuncao(dados,token=""){
     return resultado;
 }
 
+/* LISTA DE JOGADORES */
 async function carregarJogadores(){
     const lista=document.getElementById("listaJogadores");
     lista.textContent="Carregando jogadores...";
 
     try{
         const resultado=await chamarFuncao({acao:"listar"});
+
         const jogadores=
             resultado.jogadores||
             resultado.participantes||
@@ -448,6 +500,7 @@ async function carregarJogadores(){
     }
 }
 
+/* CRIAR CONTA */
 document.getElementById("formCriar").addEventListener("submit",async evento=>{
     evento.preventDefault();
 
@@ -483,7 +536,9 @@ document.getElementById("formCriar").addEventListener("submit",async evento=>{
         });
 
         if(resultado.sucesso===false){
-            throw new Error(resultado.mensagem||"Não foi possível criar a conta.");
+            throw new Error(
+                resultado.mensagem||"Não foi possível criar a conta."
+            );
         }
 
         mostrarMensagem(
@@ -501,6 +556,7 @@ document.getElementById("formCriar").addEventListener("submit",async evento=>{
     }
 });
 
+/* ENTRAR */
 document.getElementById("formEntrar").addEventListener("submit",async evento=>{
     evento.preventDefault();
 
