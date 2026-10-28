@@ -7,218 +7,381 @@
 <title>Jogadores - Desastre Milenar</title>
 
 <style>
-*{box-sizing:border-box}
-body{
-    margin:0;min-height:100vh;padding:28px 16px;
-    background:#050505;color:#f2f2f2;font-family:Arial,sans-serif;
-    display:flex;flex-direction:column;align-items:center
+* {
+    box-sizing: border-box;
 }
-h1{
-    color:#39ff14;text-align:center;margin:8px 0;
-    text-shadow:0 0 12px #39ff1470
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 15px 125px;
+    background: #080808;
+    color: #fff;
+    font-family: Arial, sans-serif;
 }
-.subtitulo{color:#bbb;text-align:center;margin:0 0 24px}
-.painel{
-    width:100%;max-width:600px;padding:18px;background:#101010;
-    border:1px solid #39ff14;border-radius:14px;
-    box-shadow:0 0 18px #39ff1420
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #39ff14;
 }
-h2{font-size:18px;margin:0 0 14px}
-.lista{display:flex;flex-direction:column;gap:10px}
-.jogador{
-    display:flex;align-items:center;gap:8px;padding:8px;
-    background:#171717;border:1px solid #333;border-radius:10px
+
+h1 {
+    color: #39ff14;
+    text-shadow: 0 0 12px #39ff1470;
+    margin: 0;
 }
-.selecionar{
-    flex:1;min-width:0;padding:12px;border:1px solid transparent;
-    border-radius:7px;background:transparent;color:white;
-    text-align:left;font-size:16px;overflow-wrap:anywhere;cursor:pointer
+
+main {
+    width: 100%;
+    max-width: 440px;
+    margin: 25px auto;
 }
-.selecionar.selecionado{
-    color:#39ff14;background:#183016;border-color:#39ff14
+
+h2 {
+    color: #39ff14;
+    font-size: 20px;
 }
-.excluir{
-    flex-shrink:0;padding:10px 12px;border:1px solid #ff4b4b;
-    border-radius:8px;background:#271010;color:#ff6868;cursor:pointer
+
+.card {
+    padding: 18px;
+    margin-bottom: 18px;
+    background: #121212;
+    border: 1px solid #333;
+    border-radius: 10px;
 }
-.acao{
-    padding:12px 15px;border:1px solid #39ff14;border-radius:9px;
-    background:#10230d;color:#39ff14;font-weight:bold;cursor:pointer
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
 }
-.acao:hover{filter:brightness(1.2)}
-.acao:disabled{opacity:.45;cursor:not-allowed}
-.mais{width:100%;margin-top:14px;font-size:23px}
-.formulario{
-    display:none;margin-top:14px;padding:14px;
-    border:1px solid #333;border-radius:10px;background:#090909
+
+input {
+    width: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #080808;
+    color: white;
+    font-size: 16px;
 }
-.formulario.aberto{display:block}
-label{display:block;margin:12px 0 6px;color:#bbb;font-size:13px}
-input{
-    width:100%;padding:12px;border:1px solid #444;border-radius:8px;
-    background:#171717;color:white;font-size:16px
+
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    border: 0;
+    border-radius: 7px;
+    background: #39ff14;
+    color: #000;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
 }
-input:focus{outline:1px solid #39ff14;border-color:#39ff14}
-.botoes-formulario{display:flex;gap:10px;margin-top:14px}
-.botoes-formulario button{flex:1}
-.cancelar{border-color:#777;background:#222;color:#ddd}
-.mensagem{
-    min-height:20px;margin:12px 0 0;color:#39ff14;
-    font-size:14px;overflow-wrap:anywhere
+
+button:disabled {
+    opacity: .6;
+    cursor: wait;
 }
-.mensagem.erro{color:#ff6868}
-.ajuda{margin:14px 0 0;color:#888;font-size:12px;line-height:1.5}
-.anuncios{
-    width:100%;max-width:600px;height:108px;margin-top:22px;
-    position:relative;overflow:hidden;border:1px solid #39ff14;
-    border-radius:12px;background:#101010
+
+#mensagem {
+    min-height: 22px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
 }
-.anuncio{
-    display:none;width:100%;height:100%;padding:12px 16px;
-    align-items:center;justify-content:center;flex-direction:column;
-    text-align:center
+
+.sucesso {
+    color: #39ff14;
 }
-.anuncio.ativo{display:flex}
-.anuncio h3{margin:0 0 7px;color:#39ff14;font-size:18px}
-.anuncio p{margin:0;color:#ddd;font-size:13px}
-.indicadores{display:flex;justify-content:center;gap:7px;margin-top:9px}
-.ponto{width:7px;height:7px;border-radius:50%;background:#444}
-.ponto.ativo{background:#39ff14;box-shadow:0 0 6px #39ff14}
-@media(max-width:480px){
-    body{padding:22px 12px}
-    .painel{padding:13px}
-    .anuncios{height:100px}
-    .anuncio h3{font-size:16px}
-    .anuncio p{font-size:12px}
+
+.erro {
+    color: #ff5555;
+}
+
+#listaJogadores {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.jogador-item {
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background: #191919;
+    overflow-wrap: anywhere;
+}
+
+.aviso {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* FAIXA DE PROPAGANDAS */
+#barra-propagandas {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 94px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    background: #101010;
+    border-top: 2px solid #39ff14;
+    box-shadow: 0 -4px 18px #0009;
+    overscroll-behavior-x: contain;
+}
+
+.anuncio {
+    display: flex;
+    align-items: center;
+    flex: 0 0 260px;
+    min-width: 0;
+    height: 72px;
+    gap: 10px;
+    padding: 6px;
+    overflow: hidden;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #191919;
+    color: white;
+    text-decoration: none;
+}
+
+.anuncio img {
+    width: 94px;
+    height: 58px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 5px;
+    background: #252525;
+}
+
+.anuncio-texto {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.anuncio-titulo {
+    display: block;
+    color: #39ff14;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anuncio-descricao {
+    display: -webkit-box;
+    margin-top: 5px;
+    color: #ccc;
+    font-size: 11px;
+    line-height: 1.3;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.rotulo-publicidade {
+    position: absolute;
+    top: 2px;
+    right: 8px;
+    color: #888;
+    font-size: 9px;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px 12px 115px;
+    }
+
+    header {
+        padding: 18px 0;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    #barra-propagandas {
+        min-height: 86px;
+        padding: 9px 7px;
+        gap: 8px;
+    }
+
+    .anuncio {
+        flex-basis: 235px;
+        height: 66px;
+    }
+
+    .anuncio img {
+        width: 82px;
+        height: 54px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<h1>DESASTRE MILENAR</h1>
-<p class="subtitulo">Selecione ou crie seu jogador</p>
+<header>
+    <h1>DESASTRE MILENAR</h1>
+</header>
 
-<section class="painel">
-    <h2>Jogadores disponíveis</h2>
+<main>
+    <section class="card">
+        <h2>Entrar</h2>
 
-    <div id="listaJogadores" class="lista">
-        <p>Carregando jogadores...</p>
-    </div>
+        <form id="formEntrar">
+            <label for="nomeEntrar">Nome do jogador</label>
+            <input id="nomeEntrar" type="text" maxlength="50"
+                   autocomplete="username" required>
 
-    <button id="botaoMais" class="acao mais" type="button"
-        aria-expanded="false">+</button>
+            <label for="senhaEntrar">Senha</label>
+            <input id="senhaEntrar" type="password"
+                   autocomplete="current-password" required>
 
-    <form id="formularioJogador" class="formulario">
-        <h2>Novo jogador</h2>
+            <button id="botaoEntrar" type="submit">Entrar</button>
+        </form>
+    </section>
 
-        <label for="nomeNovo">Nome do jogador</label>
-        <input id="nomeNovo" type="text" maxlength="30"
-            placeholder="Digite o nome" autocomplete="username" required>
+    <section class="card">
+        <h2>Criar jogador</h2>
 
-        <label for="senhaNova">Senha (mínimo de 8 caracteres)</label>
-        <input id="senhaNova" type="password" minlength="8" maxlength="72"
-            placeholder="Crie uma senha" autocomplete="new-password" required>
+        <form id="formCriar">
+            <label for="nomeCriar">Nome do jogador</label>
+            <input id="nomeCriar" type="text" maxlength="50"
+                   autocomplete="username" required>
 
-        <div class="botoes-formulario">
-            <button id="botaoCadastrar" class="acao" type="submit">
-                Criar jogador
-            </button>
-            <button id="botaoCancelar" class="acao cancelar" type="button">
-                Cancelar
-            </button>
-        </div>
-    </form>
+            <label for="senhaCriar">Criar senha</label>
+            <input id="senhaCriar" type="password" minlength="6"
+                   autocomplete="new-password" required>
 
-    <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
+            <label for="confirmarSenha">Confirmar senha</label>
+            <input id="confirmarSenha" type="password"
+                   minlength="6" autocomplete="new-password" required>
 
-    <p class="ajuda">
-        Os jogadores são carregados do Supabase. Para entrar, selecione
-        seu nome e informe sua senha. A senha não fica salva neste navegador.
-    </p>
+            <button id="botaoCriar" type="submit">Criar conta</button>
+        </form>
+        <p class="aviso">Use uma senha com pelo menos 6 caracteres.</p>
+    </section>
 
-    <button id="botaoEntrar" class="acao"
-        style="width:100%;margin-top:12px" type="button" disabled>
-        Entrar
-    </button>
-</section>
+    <section class="card">
+        <h2>Jogadores cadastrados</h2>
+        <div id="listaJogadores">Carregando jogadores...</div>
+    </section>
 
-<section class="anuncios" aria-label="Anúncios">
-    <div class="anuncio ativo">
-        <h3>PC DOS SONHOS</h3>
-        <p>Seu próximo nível começa aqui!</p>
-    </div>
-    <div class="anuncio">
-        <h3>INTERNET ULTRARRÁPIDA</h3>
-        <p>Conecte-se a novas aventuras!</p>
-    </div>
-    <div class="anuncio">
-        <h3>SEGREDO MILENAR</h3>
-        <p>Você está pronto para descobrir?</p>
-    </div>
-    <div class="anuncio">
-        <h3>VOCÊ FOI SORTEADO</h3>
-        <p>Uma nova aventura espera por você!</p>
-    </div>
-</section>
+    <p id="mensagem" aria-live="polite"></p>
+</main>
 
-<div class="indicadores" aria-hidden="true">
-    <span class="ponto ativo"></span>
-    <span class="ponto"></span>
-    <span class="ponto"></span>
-    <span class="ponto"></span>
-</div>
+<!-- PROPAGANDAS: aparecem somente nesta página -->
+<aside id="barra-propagandas" aria-label="Propagandas">
+    <span class="rotulo-publicidade">PUBLICIDADE</span>
+</aside>
 
 <script>
-"use strict";
-
+/*
+ * SUPABASE
+ * Mantém o endereço da Edge Function já usado no teu projeto.
+ */
 const ENDPOINT =
     "https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
 
-let jogadores = [];
-let jogadorSelecionado = "";
-let carregando = false;
+/*
+ * PERSONALIZE AS PROPAGANDAS NESTA LISTA.
+ * Troque as imagens e os links pelos endereços reais.
+ */
+const propagandas = [
+    {
+        titulo: "Minha propaganda",
+        descricao: "Coloque aqui uma descrição curta.",
+        imagem: "https://placehold.co/320x180/171717/00ff66?text=Sua+Imagem",
+        link: "https://example.com"
+    },
+    {
+        titulo: "Outra propaganda",
+        descricao: "Divulgue seu projeto ou servidor.",
+        imagem: "https://placehold.co/320x180/171717/ffffff?text=Outro+Anuncio",
+        link: "https://example.com"
+    }
+];
 
-const lista = document.getElementById("listaJogadores");
-const mensagem = document.getElementById("mensagem");
-const botaoEntrar = document.getElementById("botaoEntrar");
-const formulario = document.getElementById("formularioJogador");
-const botaoMais = document.getElementById("botaoMais");
+function montarPropagandas() {
+    const barra = document.getElementById("barra-propagandas");
 
-function mostrarMensagem(texto, erro = false) {
-    mensagem.textContent = texto;
-    mensagem.classList.toggle("erro", erro);
+    propagandas.forEach(propaganda => {
+        const link = document.createElement("a");
+        link.className = "anuncio";
+        link.href = propaganda.link;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        const imagem = document.createElement("img");
+        imagem.src = propaganda.imagem;
+        imagem.alt = propaganda.titulo;
+        imagem.loading = "lazy";
+
+        const texto = document.createElement("span");
+        texto.className = "anuncio-texto";
+
+        const titulo = document.createElement("span");
+        titulo.className = "anuncio-titulo";
+        titulo.textContent = propaganda.titulo;
+
+        const descricao = document.createElement("span");
+        descricao.className = "anuncio-descricao";
+        descricao.textContent = propaganda.descricao;
+
+        texto.appendChild(titulo);
+        texto.appendChild(descricao);
+        link.appendChild(imagem);
+        link.appendChild(texto);
+        barra.appendChild(link);
+    });
 }
 
+montarPropagandas();
+
+/* MENSAGENS */
+function mostrarMensagem(texto, tipo = "") {
+    const mensagem = document.getElementById("mensagem");
+    mensagem.textContent = texto;
+    mensagem.className = tipo;
+}
+
+/* CHAMADA À EDGE FUNCTION */
 async function chamarFuncao(dados, token = "") {
-    const cabecalhos = {
+    const headers = {
         "Content-Type": "application/json"
     };
 
     if (token) {
-        cabecalhos.Authorization = "Bearer " + token;
+        headers.Authorization = "Bearer " + token;
     }
 
-    let resposta;
+    const resposta = await fetch(ENDPOINT, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(dados)
+    });
 
-    try {
-        resposta = await fetch(ENDPOINT, {
-            method: "POST",
-            headers: cabecalhos,
-            body: JSON.stringify(dados)
-        });
-    } catch (erro) {
-        throw new Error(
-            "Não foi possível conectar ao Supabase. Verifique sua internet."
-        );
-    }
+    const texto = await resposta.text();
 
     let resultado;
 
     try {
-        resultado = await resposta.json();
-    } catch (erro) {
-        throw new Error("O Supabase retornou uma resposta inválida.");
+        resultado = texto ? JSON.parse(texto) : {};
+    } catch {
+        throw new Error("O servidor retornou uma resposta inválida.");
     }
 
     if (!resposta.ok) {
@@ -226,317 +389,179 @@ async function chamarFuncao(dados, token = "") {
             resultado.erro ||
             resultado.error ||
             resultado.mensagem ||
-            resultado.message ||
-            "A operação não pôde ser concluída."
+            "Erro na comunicação com o servidor."
         );
+    }
+
+    if (resultado.erro || resultado.error) {
+        throw new Error(resultado.erro || resultado.error);
     }
 
     return resultado;
 }
 
-function obterNome(jogador) {
-    if (typeof jogador === "string") return jogador;
-
-    if (jogador && typeof jogador === "object") {
-        return jogador.display_name || jogador.nome || jogador.name || "";
-    }
-
-    return "";
-}
-
-function atualizarLista() {
-    lista.replaceChildren();
-
-    if (jogadores.length === 0) {
-        const aviso = document.createElement("p");
-        aviso.textContent = "Nenhum jogador cadastrado ainda.";
-        lista.appendChild(aviso);
-        botaoEntrar.disabled = true;
-        return;
-    }
-
-    for (const jogador of jogadores) {
-        const nome = obterNome(jogador);
-        if (!nome) continue;
-
-        const linha = document.createElement("div");
-        linha.className = "jogador";
-
-        const botao = document.createElement("button");
-        botao.type = "button";
-        botao.className = "selecionar";
-        botao.textContent =
-            nome === jogadorSelecionado ? "✓ " + nome : nome;
-        botao.classList.toggle(
-            "selecionado",
-            nome === jogadorSelecionado
-        );
-        botao.setAttribute(
-            "aria-pressed",
-            String(nome === jogadorSelecionado)
-        );
-
-        botao.addEventListener("click", () => {
-            jogadorSelecionado = nome;
-            atualizarLista();
-            mostrarMensagem("Jogador selecionado: " + nome);
-        });
-
-        linha.appendChild(botao);
-
-        const excluir = document.createElement("button");
-        excluir.type = "button";
-        excluir.className = "excluir";
-        excluir.textContent = "🗑️";
-        excluir.title = "Excluir " + nome;
-        excluir.setAttribute("aria-label", "Excluir " + nome);
-        excluir.addEventListener("click", () => excluirJogador(nome));
-        linha.appendChild(excluir);
-
-        lista.appendChild(linha);
-    }
-
-    botaoEntrar.disabled = !jogadorSelecionado;
-}
-
+/* LISTA DE JOGADORES */
 async function carregarJogadores() {
-    lista.replaceChildren();
-    const carregandoTexto = document.createElement("p");
-    carregandoTexto.textContent = "Carregando jogadores...";
-    lista.appendChild(carregandoTexto);
+    const lista = document.getElementById("listaJogadores");
+    lista.textContent = "Carregando jogadores...";
 
     try {
-        const resultado = await chamarFuncao({ acao: "listar" });
+        const resultado = await chamarFuncao({
+            acao: "listar"
+        });
 
-        const listaRecebida =
+        const jogadores =
             resultado.jogadores ||
             resultado.participantes ||
-            resultado.data;
+            resultado.data ||
+            [];
 
-        if (!Array.isArray(listaRecebida)) {
-            throw new Error(
-                "A resposta da função não contém uma lista de jogadores."
-            );
+        lista.replaceChildren();
+
+        if (!Array.isArray(jogadores) || jogadores.length === 0) {
+            lista.textContent = "Nenhum jogador cadastrado ainda.";
+            return;
         }
 
-        jogadores = listaRecebida;
-        atualizarLista();
-    } catch (erro) {
-        lista.replaceChildren();
-        const aviso = document.createElement("p");
-        aviso.textContent = "Não foi possível carregar os jogadores.";
-        lista.appendChild(aviso);
-        mostrarMensagem(erro.message, true);
-        botaoEntrar.disabled = true;
-    }
-}
+        jogadores.forEach(item => {
+            const nome = typeof item === "string"
+                ? item
+                : item.nome || item.name || item.username;
 
-function alternarFormulario(forcarEstado) {
-    const abrir = typeof forcarEstado === "boolean"
-        ? forcarEstado
-        : !formulario.classList.contains("aberto");
+            if (!nome) return;
 
-    formulario.classList.toggle("aberto", abrir);
-    botaoMais.setAttribute("aria-expanded", String(abrir));
-    botaoMais.textContent = abrir ? "−" : "+";
-
-    if (abrir) {
-        document.getElementById("nomeNovo").focus();
-    }
-}
-
-botaoMais.addEventListener("click", () => alternarFormulario());
-
-document.getElementById("botaoCancelar").addEventListener("click", () => {
-    alternarFormulario(false);
-    formulario.reset();
-    mostrarMensagem("");
-});
-
-formulario.addEventListener("submit", async evento => {
-    evento.preventDefault();
-
-    if (carregando) return;
-
-    const nomeCampo = document.getElementById("nomeNovo");
-    const senhaCampo = document.getElementById("senhaNova");
-    const nome = nomeCampo.value.trim();
-    const senha = senhaCampo.value;
-
-    if (nome.length < 2 || nome.length > 30) {
-        mostrarMensagem("O nome deve ter entre 2 e 30 caracteres.", true);
-        return;
-    }
-
-    if (senha.length < 8 || senha.length > 72) {
-        mostrarMensagem("A senha deve ter entre 8 e 72 caracteres.", true);
-        return;
-    }
-
-    if (!senha.trim()) {
-        mostrarMensagem("Digite uma senha válida.", true);
-        return;
-    }
-
-    carregando = true;
-    const botaoCadastrar = document.getElementById("botaoCadastrar");
-    botaoCadastrar.disabled = true;
-    botaoCadastrar.textContent = "Criando...";
-
-    try {
-        await chamarFuncao({
-            acao: "criar",
-            nome: nome,
-            senha: senha
+            const linha = document.createElement("div");
+            linha.className = "jogador-item";
+            linha.textContent = nome;
+            lista.appendChild(linha);
         });
 
-        formulario.reset();
-        alternarFormulario(false);
-        jogadorSelecionado = nome;
+        if (!lista.childElementCount) {
+            lista.textContent = "Nenhum jogador disponível.";
+        }
+    } catch (erro) {
+        lista.textContent =
+            "Não foi possível carregar a lista. Tu ainda pode tentar entrar ou criar uma conta.";
+        console.error("Erro ao listar jogadores:", erro);
+    }
+}
 
-        await carregarJogadores();
+/* CRIAR CONTA */
+document.getElementById("formCriar").addEventListener("submit", async evento => {
+    evento.preventDefault();
 
-        const existe = jogadores.some(
-            jogador => obterNome(jogador).toLowerCase() === nome.toLowerCase()
-        );
+    const nome = document.getElementById("nomeCriar").value.trim();
+    const senha = document.getElementById("senhaCriar").value;
+    const confirmar = document.getElementById("confirmarSenha").value;
+    const botao = document.getElementById("botaoCriar");
 
-        if (existe) {
-            jogadorSelecionado = obterNome(
-                jogadores.find(
-                    jogador => obterNome(jogador).toLowerCase() === nome.toLowerCase()
-                )
-            );
-            atualizarLista();
+    if (!nome) {
+        mostrarMensagem("Digite um nome de jogador.", "erro");
+        return;
+    }
+
+    if (senha.length < 6) {
+        mostrarMensagem("A senha precisa ter pelo menos 6 caracteres.", "erro");
+        return;
+    }
+
+    if (senha !== confirmar) {
+        mostrarMensagem("As senhas não coincidem.", "erro");
+        return;
+    }
+
+    botao.disabled = true;
+    botao.textContent = "Criando conta...";
+    mostrarMensagem("");
+
+    try {
+        const resultado = await chamarFuncao({
+            acao: "criar",
+            nome,
+            senha
+        });
+
+        if (resultado.sucesso === false) {
+            throw new Error(resultado.mensagem || "Não foi possível criar a conta.");
         }
 
         mostrarMensagem(
-            "Jogador cadastrado! Selecione o nome e entre com a senha."
+            resultado.mensagem || "Conta criada! Agora tu pode entrar.",
+            "sucesso"
         );
+
+        document.getElementById("formCriar").reset();
+        await carregarJogadores();
     } catch (erro) {
-        mostrarMensagem(erro.message, true);
+        mostrarMensagem(erro.message || "Erro ao criar a conta.", "erro");
     } finally {
-        carregando = false;
-        botaoCadastrar.disabled = false;
-        botaoCadastrar.textContent = "Criar jogador";
+        botao.disabled = false;
+        botao.textContent = "Criar conta";
     }
 });
 
-botaoEntrar.addEventListener("click", async () => {
-    if (!jogadorSelecionado || carregando) {
-        mostrarMensagem("Selecione um jogador primeiro.", true);
+/* ENTRAR */
+document.getElementById("formEntrar").addEventListener("submit", async evento => {
+    evento.preventDefault();
+
+    const nome = document.getElementById("nomeEntrar").value.trim();
+    const senha = document.getElementById("senhaEntrar").value;
+    const botao = document.getElementById("botaoEntrar");
+
+    if (!nome || !senha) {
+        mostrarMensagem("Preencha o nome e a senha.", "erro");
         return;
     }
 
-    const senha = prompt("Digite a senha de " + jogadorSelecionado + ":");
-
-    if (senha === null) return;
-
-    if (!senha) {
-        mostrarMensagem("Digite sua senha.", true);
-        return;
-    }
-
-    carregando = true;
-    botaoEntrar.disabled = true;
-    botaoEntrar.textContent = "Entrando...";
+    botao.disabled = true;
+    botao.textContent = "Entrando...";
+    mostrarMensagem("");
 
     try {
         const resultado = await chamarFuncao({
             acao: "entrar",
-            nome: jogadorSelecionado,
-            senha: senha
+            nome,
+            senha
         });
 
-        const token = resultado.access_token;
-        const nomeConfirmado =
-            resultado.jogador ||
-            resultado.display_name ||
-            jogadorSelecionado;
-
-        if (!token) {
-            throw new Error(
-                "O login foi respondido sem token. Confira a resposta da função no Supabase."
-            );
+        if (resultado.sucesso === false) {
+            throw new Error(resultado.mensagem || "Nome ou senha incorretos.");
         }
 
-        sessionStorage.setItem("jogadorAtual", nomeConfirmado);
-        sessionStorage.setItem("access_token", token);
+        /*
+         * Não apaga os dados salvos da ficha.
+         * Apenas atualiza a sessão do jogador atual.
+         */
+        sessionStorage.setItem("jogadorAtual", nome);
+
+        if (resultado.access_token) {
+            sessionStorage.setItem("access_token", resultado.access_token);
+        } else {
+            sessionStorage.removeItem("access_token");
+        }
 
         if (resultado.refresh_token) {
             sessionStorage.setItem("refresh_token", resultado.refresh_token);
+        } else {
+            sessionStorage.removeItem("refresh_token");
         }
 
         if (resultado.user_id) {
             sessionStorage.setItem("user_id", resultado.user_id);
+        } else {
+            sessionStorage.removeItem("user_id");
         }
 
         window.location.href = "index.html";
     } catch (erro) {
-        mostrarMensagem(erro.message, true);
+        mostrarMensagem(erro.message || "Não foi possível entrar.", "erro");
     } finally {
-        carregando = false;
-        botaoEntrar.disabled = !jogadorSelecionado;
-        botaoEntrar.textContent = "Entrar";
+        botao.disabled = false;
+        botao.textContent = "Entrar";
     }
 });
 
-async function excluirJogador(nome) {
-    if (carregando) return;
-
-    if (!confirm('Deseja realmente excluir o jogador "' + nome + '"?')) {
-        return;
-    }
-
-    const token = sessionStorage.getItem("access_token");
-
-    if (!token) {
-        mostrarMensagem(
-            "Entre com sua conta antes de tentar excluir um jogador.",
-            true
-        );
-        return;
-    }
-
-    carregando = true;
-
-    try {
-        await chamarFuncao({
-            acao: "excluir",
-            nome: nome
-        }, token);
-
-        if (jogadorSelecionado === nome) {
-            jogadorSelecionado = "";
-        }
-
-        mostrarMensagem("Jogador excluído.");
-        await carregarJogadores();
-    } catch (erro) {
-        mostrarMensagem(
-            "Não foi possível excluir: " + erro.message,
-            true
-        );
-    } finally {
-        carregando = false;
-        botaoEntrar.disabled = !jogadorSelecionado;
-    }
-}
-
-/* Alternância dos anúncios */
-const anuncios = document.querySelectorAll(".anuncio");
-const pontos = document.querySelectorAll(".ponto");
-let anuncioAtual = 0;
-
-function trocarAnuncio() {
-    anuncios[anuncioAtual].classList.remove("ativo");
-    pontos[anuncioAtual].classList.remove("ativo");
-    anuncioAtual = (anuncioAtual + 1) % anuncios.length;
-    anuncios[anuncioAtual].classList.add("ativo");
-    pontos[anuncioAtual].classList.add("ativo");
-}
-
-setInterval(trocarAnuncio, 4000);
-
+/* CARREGAMENTO INICIAL */
 carregarJogadores();
 </script>
 
