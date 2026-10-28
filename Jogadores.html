@@ -1,57 +1,165 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Selecionar Jogador</title>
+<title>Selecionar Jogador - Desastre Milenar</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh}
-main{width:90%;max-width:420px;text-align:center}
-h1{color:#00ff66}
-button,input{width:100%;padding:14px;margin:8px 0;border-radius:8px;font-size:16px}
-button{background:#00ff66;border:0;color:#000;font-weight:bold;cursor:pointer}
-input{background:#181818;color:white;border:1px solid #00ff66}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080808;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+main {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  border: 1px solid #00ff66;
+  border-radius: 12px;
+  padding: 25px 20px;
+  box-shadow: 0 0 20px #00ff6622;
+}
+
+h1 {
+  color: #00ff66;
+}
+
+#jogadores button {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #181818;
+  border: 1px solid #00ff66;
+  color: #00ff66;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+#jogadores button.selecionado {
+  background: #00ff66;
+  color: #000;
+  opacity: 1;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #181818;
+  color: white;
+  border: 1px solid #00ff66;
+}
+
+.entrar {
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #00ff66;
+  border: 0;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#mensagem {
+  color: #ff5555;
+}
 </style>
 </head>
+
 <body>
 <main>
-<h1>Selecionar jogador</h1>
-<div id="jogadores"></div>
-<input id="senha" type="password" placeholder="Senha do jogador">
-<button onclick="entrar()">Entrar</button>
-<p id="mensagem"></p>
-</main>
-<script>
-const jogadores={
-Brayan:"brayan123",
-Vitor:"vitor123",
-Sofia:"sofia123"
-};
-let selecionado="Brayan";
-const area=document.getElementById("jogadores");
+  <h1>Selecionar jogador</h1>
 
-Object.keys(jogadores).forEach(nome=>{
-const b=document.createElement("button");
-b.textContent=nome;
-b.onclick=()=>{
-selecionado=nome;
-document.querySelectorAll("#jogadores button").forEach(x=>x.style.opacity=".55");
-b.style.opacity="1";
+  <div id="jogadores"></div>
+
+  <input
+    id="senha"
+    type="password"
+    placeholder="Senha do jogador"
+    autocomplete="current-password"
+  >
+
+  <button class="entrar" id="botaoEntrar">Entrar</button>
+
+  <p id="mensagem"></p>
+</main>
+
+<script>
+const jogadores = {
+  Brayan: "brayan123",
+  Vitor: "vitor123",
+  Sofia: "sofia123"
 };
-area.appendChild(b);
+
+let selecionado = "Brayan";
+
+const area = document.getElementById("jogadores");
+const campoSenha = document.getElementById("senha");
+const mensagem = document.getElementById("mensagem");
+
+Object.keys(jogadores).forEach(nome => {
+  const botao = document.createElement("button");
+
+  botao.type = "button";
+  botao.textContent = nome;
+
+  if (nome === selecionado) {
+    botao.classList.add("selecionado");
+  }
+
+  botao.addEventListener("click", () => {
+    selecionado = nome;
+
+    document.querySelectorAll("#jogadores button").forEach(b => {
+      b.classList.remove("selecionado");
+    });
+
+    botao.classList.add("selecionado");
+    mensagem.textContent = "";
+  });
+
+  area.appendChild(botao);
 });
 
-document.querySelector("#jogadores button").style.opacity="1";
+function entrar() {
+  if (campoSenha.value !== jogadores[selecionado]) {
+    mensagem.textContent = "Senha incorreta.";
+    return;
+  }
 
-function entrar(){
-if(document.getElementById("senha").value!==jogadores[selecionado]){
-document.getElementById("mensagem").textContent="Senha incorreta.";
-return;
+  sessionStorage.setItem("jogadorAtual", selecionado);
+
+  window.location.href = "./index.html";
 }
-sessionStorage.setItem("jogadorAtual",selecionado);
-location.href="index.html";
-}
+
+document.getElementById("botaoEntrar").addEventListener("click", entrar);
+
+campoSenha.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    entrar();
+  }
+});
 </script>
 </body>
 </html>
