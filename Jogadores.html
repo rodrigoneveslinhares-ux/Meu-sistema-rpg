@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -121,30 +121,42 @@ button:disabled {
     line-height: 1.5;
 }
 
-/* FAIXA DE PROPAGANDAS */
+/* PROPAGANDAS FIXAS NO RODAPÉ */
 #barra-propagandas {
     position: fixed;
     z-index: 9999;
     left: 0;
     right: 0;
     bottom: 0;
-    min-height: 94px;
+    height: 94px;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
-    overflow-x: auto;
+    overflow: hidden;
     background: #101010;
     border-top: 2px solid #39ff14;
     box-shadow: 0 -4px 18px #0009;
-    overscroll-behavior-x: contain;
+}
+
+#trilho-propagandas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    flex-shrink: 0;
+    animation: passarPropagandas 28s linear infinite;
+}
+
+#barra-propagandas:hover #trilho-propagandas {
+    animation-play-state: paused;
 }
 
 .anuncio {
     display: flex;
     align-items: center;
     flex: 0 0 260px;
-    min-width: 0;
+    width: 260px;
     height: 72px;
     gap: 10px;
     padding: 6px;
@@ -195,8 +207,20 @@ button:disabled {
     position: absolute;
     top: 2px;
     right: 8px;
+    z-index: 2;
     color: #888;
     font-size: 9px;
+    background: #101010;
+    padding-left: 4px;
+}
+
+@keyframes passarPropagandas {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
 }
 
 @media (max-width: 480px) {
@@ -213,19 +237,29 @@ button:disabled {
     }
 
     #barra-propagandas {
-        min-height: 86px;
+        height: 86px;
         padding: 9px 7px;
+    }
+
+    #trilho-propagandas {
         gap: 8px;
     }
 
     .anuncio {
         flex-basis: 235px;
+        width: 235px;
         height: 66px;
     }
 
     .anuncio img {
         width: 82px;
         height: 54px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #trilho-propagandas {
+        animation: none;
     }
 }
 </style>
@@ -272,6 +306,7 @@ button:disabled {
 
             <button id="botaoCriar" type="submit">Criar conta</button>
         </form>
+
         <p class="aviso">Use uma senha com pelo menos 6 caracteres.</p>
     </section>
 
@@ -283,23 +318,18 @@ button:disabled {
     <p id="mensagem" aria-live="polite"></p>
 </main>
 
-<!-- PROPAGANDAS: aparecem somente nesta página -->
+<!-- PROPAGANDAS: SOMENTE NESTA PÁGINA -->
 <aside id="barra-propagandas" aria-label="Propagandas">
     <span class="rotulo-publicidade">PUBLICIDADE</span>
+    <div id="trilho-propagandas"></div>
 </aside>
 
 <script>
-/*
- * SUPABASE
- * Mantém o endereço da Edge Function já usado no teu projeto.
- */
+/* ENDEREÇO DA EDGE FUNCTION DO SUPABASE */
 const ENDPOINT =
     "https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
 
-/*
- * PERSONALIZE AS PROPAGANDAS NESTA LISTA.
- * Troque as imagens e os links pelos endereços reais.
- */
+/* PERSONALIZE OS ANÚNCIOS AQUI */
 const propagandas = [
     {
         titulo: "Minha propaganda",
@@ -312,13 +342,20 @@ const propagandas = [
         descricao: "Divulgue seu projeto ou servidor.",
         imagem: "https://placehold.co/320x180/171717/ffffff?text=Outro+Anuncio",
         link: "https://example.com"
+    },
+    {
+        titulo: "Desastre Milenar",
+        descricao: "Acesse o projeto de RPG.",
+        imagem: "https://placehold.co/320x180/171717/39ff14?text=Desastre+Milenar",
+        link: "https://rodrigoneveslinhares-ux.github.io/Meu-sistema-rpg/"
     }
 ];
 
+/* CRIA A FAIXA ANIMADA COM DOIS CONJUNTOS DE ANÚNCIOS */
 function montarPropagandas() {
-    const barra = document.getElementById("barra-propagandas");
+    const trilho = document.getElementById("trilho-propagandas");
 
-    propagandas.forEach(propaganda => {
+    function criarAnuncio(propaganda) {
         const link = document.createElement("a");
         link.className = "anuncio";
         link.href = propaganda.link;
@@ -341,11 +378,17 @@ function montarPropagandas() {
         descricao.className = "anuncio-descricao";
         descricao.textContent = propaganda.descricao;
 
-        texto.appendChild(titulo);
-        texto.appendChild(descricao);
-        link.appendChild(imagem);
-        link.appendChild(texto);
-        barra.appendChild(link);
+        texto.append(titulo, descricao);
+        link.append(imagem, texto);
+
+        return link;
+    }
+
+    // Repetir a sequência permite movimento contínuo.
+    [0, 1].forEach(() => {
+        propagandas.forEach(propaganda => {
+            trilho.appendChild(criarAnuncio(propaganda));
+        });
     });
 }
 
@@ -375,7 +418,6 @@ async function chamarFuncao(dados, token = "") {
     });
 
     const texto = await resposta.text();
-
     let resultado;
 
     try {
@@ -406,9 +448,7 @@ async function carregarJogadores() {
     lista.textContent = "Carregando jogadores...";
 
     try {
-        const resultado = await chamarFuncao({
-            acao: "listar"
-        });
+        const resultado = await chamarFuncao({ acao: "listar" });
 
         const jogadores =
             resultado.jogadores ||
@@ -528,10 +568,6 @@ document.getElementById("formEntrar").addEventListener("submit", async evento =>
             throw new Error(resultado.mensagem || "Nome ou senha incorretos.");
         }
 
-        /*
-         * Não apaga os dados salvos da ficha.
-         * Apenas atualiza a sessão do jogador atual.
-         */
         sessionStorage.setItem("jogadorAtual", nome);
 
         if (resultado.access_token) {
@@ -567,3 +603,4 @@ carregarJogadores();
 
 </body>
 </html>
+```
