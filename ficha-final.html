@@ -40,6 +40,7 @@ button,.botao{display:block;width:100%;padding:14px;margin-top:15px;background:#
 <a class="botao menu" href="dados.html">Dados e perícias</a>
 <a class="botao menu" href="atributos.html">Editar atributos</a>
 <a class="botao menu" href="origens.html">Trocar origem</a>
+<a class="botao menu" href="fichas-salvas.html">Fichas salvas</a>
 <a class="botao menu" href="index.html">Início</a>
 </main>
 
@@ -52,49 +53,177 @@ button,.botao{display:block;width:100%;padding:14px;margin-top:15px;background:#
         return;
     }
 
-    const chave = nome =>
-        "jogador_" + jogador.toLowerCase() + "_" + nome;
+    const slug = jogador.toLowerCase();
+    const prefixo = "jogador_" + slug + "_";
+    const chaveLista = "fichas_lista_" + slug;
+
+    const chaveDados = id => "ficha_dados_" + slug + "_" + id;
 
     const campoJogador = document.getElementById("jogador");
     const campoPersonagem = document.getElementById("personagem");
     const campoOrigem = document.getElementById("origem");
     const mensagem = document.getElementById("mensagem");
 
-    campoJogador.value =
-        localStorage.getItem(chave("nomeJogador")) || jogador;
-
-    campoPersonagem.value =
-        localStorage.getItem(chave("nomePersonagem")) || "";
-
-    function atualizarOrigem(){
-        campoOrigem.value =
-            localStorage.getItem(chave("origem")) || "Não selecionada";
+    function lerLista(){
+        try{
+            const lista = JSON.parse(localStorage.getItem(chaveLista) || "[]");
+            return Array.isArray(lista) ? lista : [];
+        }catch(e){
+            return [];
+        }
     }
 
-    function salvar(silencioso){
-        localStorage.setItem(chave("nomeJogador"), jogador);
-        localStorage.setItem(
-            chave("nomePersonagem"),
-            campoPersonagem.value.trim()
-        );
+    function guardarLista(lista){
+        localStorage.setItem(chaveLista, JSON.stringify(lista));
+    }
 
-        if(!silencioso){
-            mensagem.textContent = "Ficha salva!";
+    function lerDadosFicha(id){
+        try{
+            return JSON.parse(localStorage.getItem(chaveDados(id)) || "null");
+        }catch(e){
+            return null;
+        }
+    }
+
+    function capturarDadosAtuais(){
+        const dados = {};
+
+        for(let i = 0; i < localStorage.length; i++){
+            const chave = localStorage.key(i);
+
+            if(chave && chave.startsWith(prefixo)){
+                dados[chave] = localStorage.getItem(chave);
+            }
+        }
+
+        return dados;
+    }
+
+    function restaurarDados(dados){
+        for(let i = localStorage.length - 1; i >= 0; i--){
+            const chave = localStorage.key(i);
+
+            if(chave && chave.startsWith(prefixo)){
+                localStorage.removeItem(chave);
+            }
+        }
+
+        Object.entries(dados).forEach(([chave, valor]) => {
+            if(chave.startsWith(prefixo)){
+                localStorage.setItem(chave, valor);
+            }
+        });
+    }
+
+    function atualizarCampos(){
+        campoJogador.value =
+            localStorage.getItem(prefixo + "nomeJogador") || jogador;
+
+        campoPersonagem.value =
+            localStorage.getItem(prefixo + "nomePersonagem") || "";
+
+        campoOrigem.value =
+            localStorage.getItem(prefixo + "origem") || "Não selecionada";
+    }
+
+    /*
+     * Ao abrir uma ficha pela lista, recupera a cópia salva.
+     * Ao voltar das outras páginas, mantém os dados atuais.
+     */
+    let id = sessionStorage.getItem("fichaAtivaId");
+    const precisaRestaurar =
+        sessionStorage.getItem("restaurarFichaSalva") === "sim";
+
+    if(precisaRestaurar && id){
+        const dadosSalvos = lerDadosFicha(id);
+
+        if(!dadosSalvos){
+            sessionStorage.removeItem("fichaAtivaId");
+            sessionStorage.removeItem("restaurarFichaSalva");
+            window.location.replace("fichas-salvas.html");
+            return;
+        }
+
+        restaurarDados(dadosSalvos);
+        sessionStorage.removeItem("restaurarFichaSalva");
+    }
+
+    if(!id){
+        id = Date.now().toString(36) +
+            Math.random().toString(36).slice(2,8);
+
+        sessionStorage.setItem("fichaAtivaId", id);
+    }
+
+    campoJogador.value =
+        localStorage.getItem(prefixo + "nomeJogador") || jogador;
+
+    campoPersonagem.value =
+        localStorage.getItem(prefixo + "nomePersonagem") || "";
+
+    atualizarCampos();
+
+    function salvar(incluirNaLista){
+        const nome = campoPersonagem.value.trim();
+
+        localStorage.setItem(prefixo + "nomeJogador", jogador);
+        localStorage.setItem(prefixo + "nomePersonagem", nome);
+
+        const dados = capturarDadosAtuais();
+        localStorage.setItem(chaveDados(id), JSON.stringify(dados));
+
+        const lista = lerLista();
+        const indice = lista.findIndex(ficha => ficha.id === id);
+
+        if(indice !== -1 || incluirNaLista){
+            const ficha = {
+                id,
+                nome: nome || "Personagem sem nome",
+                origem: localStorage.getItem(prefixo + "origem") ||
+                    "Não selecionada",
+                atualizada: Date.now(),
+                criada: indice !== -1
+                    ? lista[indice].criada
+                    : Date.now()
+            };
+
+            if(indice !== -1){
+                lista[indice] = ficha;
+            }else{
+                lista.push(ficha);
+            }
+
+            guardarLista(lista);
+        }
+
+        if(incluirNaLista){
+            mensagem.textContent = "Ficha salva! Ela aparece em Fichas salvas.";
         }
     }
 
     campoPersonagem.addEventListener("input", () => {
-        salvar(true);
+        salvar(false);
         mensagem.textContent = "Alterações salvas automaticamente.";
     });
 
     document.getElementById("botaoSalvar").addEventListener("click", () => {
-        salvar(false);
+        salvar(true);
     });
 
-    atualizarOrigem();
+    /*
+     * Salva uma cópia antes de sair desta página.
+     * Ao retornar de atributos, dados ou status, atualiza a ficha.
+     */
+    document.querySelectorAll('a[href]').forEach(link => {
+        link.addEventListener("click", () => salvar(false));
+    });
 
-    window.addEventListener("pageshow", atualizarOrigem);
+    window.addEventListener("pagehide", () => salvar(false));
+
+    window.addEventListener("pageshow", () => {
+        atualizarCampos();
+        salvar(false);
+    });
 })();
 </script>
 </body>
