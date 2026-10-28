@@ -37,7 +37,6 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 </head>
 
 <body>
-
 <header>
     <h1>DESASTRE MILENAR</h1>
 </header>
@@ -47,7 +46,7 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 
     <nav class="menu">
         <a href="origens.html" id="criarPersonagem">Criar personagem</a>
-        <a href="ficha-final.html">Minha ficha</a>
+        <a href="fichas-salvas.html">Fichas salvas</a>
     </nav>
 
     <button class="botao-trocar" id="botaoTrocar" type="button">
@@ -58,36 +57,51 @@ footer{margin-top:35px;padding:15px;color:#666;font-size:12px}
 <footer>Desastre Milenar</footer>
 
 <script>
-(function() {
-    const jogadorAtual = sessionStorage.getItem("jogadorAtual");
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
 
-    if (!jogadorAtual) {
+    if(!jogador){
         window.location.replace("Jogadores.html");
         return;
     }
 
-    document.getElementById("nomeJogador").textContent =
-        "Jogador: " + jogadorAtual;
+    const chavePrefixo = "jogador_" + jogador.toLowerCase() + "_";
 
-    document.getElementById("criarPersonagem").addEventListener("click", function(event) {
+    document.getElementById("nomeJogador").textContent =
+        "Jogador: " + jogador;
+
+    document.getElementById("criarPersonagem").addEventListener("click", function(event){
         event.preventDefault();
 
-        // Mantém o nome do jogador durante a navegação.
-        sessionStorage.setItem("jogadorAtual", jogadorAtual);
+        /*
+         * Começa uma ficha nova sem apagar as fichas já salvas.
+         * Os dados de trabalho são limpos para não copiar a ficha anterior.
+         */
+        for(let i = localStorage.length - 1; i >= 0; i--){
+            const chave = localStorage.key(i);
+
+            if(chave && chave.startsWith(chavePrefixo)){
+                localStorage.removeItem(chave);
+            }
+        }
+
+        sessionStorage.removeItem("fichaAtivaId");
+        sessionStorage.removeItem("restaurarFichaSalva");
 
         window.location.href = "origens.html";
     });
 
-    document.getElementById("botaoTrocar").addEventListener("click", function() {
+    document.getElementById("botaoTrocar").addEventListener("click", function(){
         sessionStorage.removeItem("jogadorAtual");
         sessionStorage.removeItem("access_token");
         sessionStorage.removeItem("refresh_token");
         sessionStorage.removeItem("user_id");
+        sessionStorage.removeItem("fichaAtivaId");
+        sessionStorage.removeItem("restaurarFichaSalva");
 
         window.location.href = "Jogadores.html";
     });
 })();
 </script>
-
 </body>
 </html>
