@@ -4,417 +4,622 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Selecionar Jogador - Desastre Milenar</title>
+<title>Jogadores - Desastre Milenar</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 25px 15px;
-  min-height: 100vh;
-  background: #080808;
-  color: white;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-main {
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-  border: 1px solid #00ff66;
-  border-radius: 12px;
-  padding: 25px 20px;
-  box-shadow: 0 0 20px #00ff6622;
+    margin: 0;
+    min-height: 100vh;
+    padding: 28px 16px;
+    background: #050505;
+    color: #f2f2f2;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
-  color: #00ff66;
-  text-shadow: 0 0 12px #00ff6680;
-  font-size: 28px;
-  margin-top: 0;
+    color: #39ff14;
+    text-align: center;
+    margin: 8px 0;
+    text-shadow: 0 0 12px #39ff1470;
 }
 
-#jogadores button {
-  width: 100%;
-  padding: 14px;
-  margin: 7px 0;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #181818;
-  border: 1px solid #00ff66;
-  color: #00ff66;
-  font-weight: bold;
-  cursor: pointer;
-  opacity: 0.65;
+.subtitulo {
+    color: #bbb;
+    text-align: center;
+    margin: 0 0 24px;
 }
 
-#jogadores button.selecionado {
-  background: #00ff66;
-  color: #000;
-  opacity: 1;
+.painel {
+    width: 100%;
+    max-width: 600px;
+    padding: 18px;
+    background: #101010;
+    border: 1px solid #39ff14;
+    border-radius: 14px;
+    box-shadow: 0 0 18px #39ff1420;
+}
+
+h2 {
+    font-size: 18px;
+    margin: 0 0 14px;
+}
+
+.lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.jogador {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: #171717;
+    border: 1px solid #333;
+    border-radius: 10px;
+}
+
+.selecionar {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: white;
+    text-align: left;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.selecionar.selecionado {
+    color: #39ff14;
+    background: #183016;
+    border-color: #39ff14;
+}
+
+.excluir {
+    flex-shrink: 0;
+    padding: 10px 12px;
+    border: 1px solid #ff4b4b;
+    border-radius: 8px;
+    background: #271010;
+    color: #ff6868;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.acao {
+    padding: 12px 15px;
+    border: 1px solid #39ff14;
+    border-radius: 9px;
+    background: #10230d;
+    color: #39ff14;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.acao:hover {
+    filter: brightness(1.2);
+}
+
+.mais {
+    width: 100%;
+    margin-top: 14px;
+    font-size: 23px;
+}
+
+.formulario {
+    display: none;
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background: #090909;
+}
+
+.formulario.aberto {
+    display: block;
+}
+
+label {
+    display: block;
+    margin: 12px 0 6px;
+    color: #bbb;
+    font-size: 13px;
 }
 
 input {
-  width: 100%;
-  padding: 14px;
-  margin: 14px 0 8px;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #181818;
-  color: white;
-  border: 1px solid #00ff66;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background: #171717;
+    color: white;
+    font-size: 16px;
 }
 
-.entrar {
-  width: 100%;
-  padding: 14px;
-  margin: 8px 0;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #00ff66;
-  border: 0;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+input:focus {
+    outline: 1px solid #39ff14;
+    border-color: #39ff14;
 }
 
-.entrar:hover {
-  box-shadow: 0 0 15px #00ff6680;
+.botoes-formulario {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
 }
 
-#mensagem {
-  color: #ff5555;
-  min-height: 20px;
+.botoes-formulario button {
+    flex: 1;
 }
 
-/* ANÚNCIOS */
+.cancelar {
+    border-color: #777;
+    background: #222;
+    color: #ddd;
+}
+
+.mensagem {
+    min-height: 20px;
+    margin: 12px 0 0;
+    color: #39ff14;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.ajuda {
+    margin: 14px 0 0;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Anúncios */
 
 .anuncios {
-  width: 100%;
-  max-width: 600px;
-  margin-top: 22px;
-  text-align: center;
+    width: 100%;
+    max-width: 600px;
+    height: 108px;
+    margin-top: 22px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #39ff14;
+    border-radius: 12px;
+    background: #101010;
 }
 
-.titulo-anuncios {
-  color: #00ff66;
-  font-size: 13px;
-  letter-spacing: 3px;
-  margin-bottom: 10px;
-  text-shadow: 0 0 8px #00ff6680;
+.anuncio {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 12px 16px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
 }
 
-.banner {
-  display: none;
-  position: relative;
-  min-height: 100px;
-  padding: 10px 20px;
-  overflow: hidden;
-  border: 2px solid #00ff66;
-  box-shadow: 0 0 12px #00ff6625;
-  color: white;
-  animation: aparecer 0.4s ease;
+.anuncio.ativo {
+    display: flex;
 }
 
-.banner.ativo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+.anuncio h3 {
+    margin: 0 0 7px;
+    color: #39ff14;
+    font-size: 18px;
 }
 
-.banner h2 {
-  margin: 0 0 5px;
-  font-size: 20px;
-  line-height: 1.15;
-  text-transform: uppercase;
+.anuncio p {
+    margin: 0;
+    color: #ddd;
+    font-size: 13px;
 }
 
-.banner p {
-  margin: 3px 0;
-  font-size: 12px;
-}
-
-.banner .chamada {
-  margin-top: 7px;
-  padding: 5px 10px;
-  font-weight: bold;
-  border: 2px solid currentColor;
-  text-transform: uppercase;
-  font-size: 11px;
-}
-
-.banner .aviso {
-  font-size: 9px;
-  margin-top: 6px;
-  opacity: 0.8;
-}
-
-.banner-computador {
-  background: repeating-linear-gradient(
-    135deg,
-    #111 0px,
-    #111 10px,
-    #192b16 10px,
-    #192b16 20px
-  );
-  color: #59ff64;
-}
-
-.banner-internet {
-  background: linear-gradient(120deg, #062b65, #087ed0, #07172c);
-  color: white;
-}
-
-.banner-internet h2 {
-  color: #fff500;
-}
-
-.banner-misterio {
-  background: radial-gradient(circle, #38205c, #100817 75%);
-  color: #e3b4ff;
-}
-
-.banner-misterio h2 {
-  color: #ff4bff;
-  text-shadow: 0 0 10px #ff00ff;
-}
-
-.banner-sorte {
-  background: repeating-linear-gradient(
-    45deg,
-    #6c0909,
-    #6c0909 12px,
-    #a82012 12px,
-    #a82012 24px
-  );
-  color: #fff36a;
-}
-
-/* INDICADORES, SEM SETAS */
-
-.pontos {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 12px;
+.indicadores {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 9px;
 }
 
 .ponto {
-  width: 8px;
-  height: 8px;
-  border: 1px solid #00ff66;
-  border-radius: 50%;
-  background: transparent;
-  padding: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #444;
 }
 
 .ponto.ativo {
-  background: #00ff66;
-  box-shadow: 0 0 8px #00ff66;
-}
-
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    background: #39ff14;
+    box-shadow: 0 0 6px #39ff14;
 }
 
 @media (max-width: 480px) {
-  body {
-    padding: 20px 12px;
-  }
+    body {
+        padding: 22px 12px;
+    }
 
-  .anuncios {
-    max-width: 100%;
-  }
+    .painel {
+        padding: 13px;
+    }
 
-  .banner {
-    min-height: 95px;
-    padding: 9px 12px;
-  }
+    .anuncios {
+        height: 100px;
+    }
 
-  .banner h2 {
-    font-size: 18px;
-  }
+    .anuncio h3 {
+        font-size: 16px;
+    }
 
-  .banner p {
-    font-size: 11px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .banner {
-    animation: none;
-  }
+    .anuncio p {
+        font-size: 12px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<main>
-  <h1>Selecionar jogador</h1>
+<h1>DESASTRE MILENAR</h1>
+<p class="subtitulo">Selecione ou crie seu jogador</p>
 
-  <div id="jogadores"></div>
+<section class="painel">
+    <h2>Jogadores disponíveis</h2>
 
-  <input
-    id="senha"
-    type="password"
-    placeholder="Senha do jogador"
-    autocomplete="current-password"
-  >
+    <div id="listaJogadores" class="lista"></div>
 
-  <button class="entrar" id="botaoEntrar" type="button">
-    Entrar
-  </button>
+    <button id="botaoMais" class="acao mais" type="button"
+        onclick="alternarFormulario()" aria-expanded="false">
+        +
+    </button>
 
-  <p id="mensagem" aria-live="polite"></p>
-</main>
+    <form id="formularioJogador" class="formulario">
+        <h2>Novo jogador</h2>
 
-<section class="anuncios" aria-label="Propagandas fictícias">
-  <div class="titulo-anuncios">— ANÚNCIOS —</div>
+        <label for="nomeNovo">Nome do jogador</label>
+        <input id="nomeNovo" type="text" maxlength="30"
+            placeholder="Digite o nome" autocomplete="off" required>
 
-  <div id="listaAnuncios">
+        <label for="senhaNova">Senha</label>
+        <input id="senhaNova" type="password" maxlength="60"
+            placeholder="Crie uma senha" autocomplete="new-password" required>
 
-    <div class="banner banner-computador ativo">
-      <h2>💻 PC DOS SONHOS</h2>
-      <p>Seu computador aguenta até o próximo milênio!</p>
-      <div class="chamada">Só hoje: R$ 999,90*</div>
-      <p class="aviso">*Preço e produto fictícios.</p>
-    </div>
+        <div class="botoes-formulario">
+            <button class="acao" type="submit">Salvar jogador</button>
+            <button class="acao cancelar" type="button"
+                onclick="alternarFormulario(false)">Cancelar</button>
+        </div>
+    </form>
 
-    <div class="banner banner-internet">
-      <h2>⚡ INTERNET ULTRARRÁPIDA</h2>
-      <p>Baixe um arquivo antes de terminar de ler!</p>
-      <div class="chamada">Clique e acelere!</div>
-      <p class="aviso">Propaganda fictícia.</p>
-    </div>
+    <p id="mensagem" class="mensagem" role="status"></p>
 
-    <div class="banner banner-misterio">
-      <h2>👁️ SEGREDO MILENAR</h2>
-      <p>Você foi escolhido para descobrir o impossível.</p>
-      <div class="chamada">Revelar o mistério</div>
-      <p class="aviso">Não existe prêmio real.</p>
-    </div>
+    <p class="ajuda">
+        Brayan, Vitor e Sofia são jogadores fixos. Jogadores criados por você
+        podem ser excluídos pelo botão da lixeira.
+    </p>
 
-    <div class="banner banner-sorte">
-      <h2>🎁 VOCÊ FOI SORTEADO!</h2>
-      <p>Você ganhou 1 milhão de moedas imaginárias!</p>
-      <div class="chamada">Prêmio totalmente inventado</div>
-      <p class="aviso">Anúncio de brincadeira.</p>
-    </div>
-
-  </div>
-
-  <div class="pontos" id="pontosAnuncios"></div>
+    <button id="botaoEntrar" class="acao"
+        style="width:100%;margin-top:12px" type="button"
+        onclick="entrar()" disabled>
+        Entrar
+    </button>
 </section>
 
+<section class="anuncios" aria-label="Anúncios">
+    <div class="anuncio ativo">
+        <h3>PC DOS SONHOS</h3>
+        <p>Seu próximo nível começa aqui!</p>
+    </div>
+
+    <div class="anuncio">
+        <h3>INTERNET ULTRARRÁPIDA</h3>
+        <p>Conecte-se a novas aventuras!</p>
+    </div>
+
+    <div class="anuncio">
+        <h3>SEGREDO MILENAR</h3>
+        <p>Você está pronto para descobrir?</p>
+    </div>
+
+    <div class="anuncio">
+        <h3>VOCÊ FOI SORTEADO</h3>
+        <p>Uma nova aventura espera por você!</p>
+    </div>
+</section>
+
+<div id="indicadores" class="indicadores" aria-hidden="true">
+    <span class="ponto ativo"></span>
+    <span class="ponto"></span>
+    <span class="ponto"></span>
+    <span class="ponto"></span>
+</div>
+
 <script>
-const jogadores = {
-  Brayan: "brayan123",
-  Vitor: "vitor123",
-  Sofia: "sofia123"
+const jogadoresFixos = {
+    "Brayan": "brayan123",
+    "Vitor": "vitor123",
+    "Sofia": "sofia123"
 };
 
-let selecionado = "Brayan";
+const CHAVE_JOGADORES = "jogadoresPersonalizados";
 
-const area = document.getElementById("jogadores");
-const campoSenha = document.getElementById("senha");
-const mensagem = document.getElementById("mensagem");
+let jogadorSelecionado = "";
+let jogadoresPersonalizados = carregarJogadores();
 
-Object.keys(jogadores).forEach(nome => {
-  const botao = document.createElement("button");
+function carregarJogadores() {
+    try {
+        const dados = JSON.parse(
+            localStorage.getItem(CHAVE_JOGADORES) || "{}"
+        );
 
-  botao.type = "button";
-  botao.textContent = nome;
+        if (
+            !dados ||
+            typeof dados !== "object" ||
+            Array.isArray(dados)
+        ) {
+            return {};
+        }
 
-  if (nome === selecionado) {
-    botao.classList.add("selecionado");
-  }
+        const validos = {};
 
-  botao.addEventListener("click", () => {
-    selecionado = nome;
+        for (const [nome, senha] of Object.entries(dados)) {
+            if (
+                typeof nome === "string" &&
+                nome.trim() &&
+                typeof senha === "string" &&
+                senha.length > 0 &&
+                !Object.prototype.hasOwnProperty.call(jogadoresFixos, nome)
+            ) {
+                validos[nome] = senha;
+            }
+        }
 
-    document.querySelectorAll("#jogadores button").forEach(b => {
-      b.classList.remove("selecionado");
-    });
+        return validos;
+    } catch (erro) {
+        return {};
+    }
+}
 
-    botao.classList.add("selecionado");
-    mensagem.textContent = "";
-    campoSenha.value = "";
-  });
+function salvarJogadores() {
+    try {
+        localStorage.setItem(
+            CHAVE_JOGADORES,
+            JSON.stringify(jogadoresPersonalizados)
+        );
+        return true;
+    } catch (erro) {
+        mostrarMensagem(
+            "Não foi possível salvar. Verifique o armazenamento do navegador."
+        );
+        return false;
+    }
+}
 
-  area.appendChild(botao);
-});
+function todosJogadores() {
+    return {
+        ...jogadoresFixos,
+        ...jogadoresPersonalizados
+    };
+}
+
+function mostrarMensagem(texto) {
+    document.getElementById("mensagem").textContent = texto;
+}
+
+function atualizarJogadores() {
+    const lista = document.getElementById("listaJogadores");
+    const jogadores = todosJogadores();
+
+    lista.replaceChildren();
+
+    for (const nome of Object.keys(jogadores)) {
+        const linha = document.createElement("div");
+        linha.className = "jogador";
+
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "selecionar";
+
+        if (nome === jogadorSelecionado) {
+            botao.classList.add("selecionado");
+        }
+
+        botao.textContent =
+            nome === jogadorSelecionado ? "✓ " + nome : nome;
+
+        botao.setAttribute(
+            "aria-pressed",
+            String(nome === jogadorSelecionado)
+        );
+
+        botao.addEventListener("click", function() {
+            jogadorSelecionado = nome;
+            atualizarJogadores();
+            document.getElementById("botaoEntrar").disabled = false;
+            mostrarMensagem("Jogador selecionado: " + nome);
+        });
+
+        linha.appendChild(botao);
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                jogadoresPersonalizados,
+                nome
+            )
+        ) {
+            const excluir = document.createElement("button");
+            excluir.type = "button";
+            excluir.className = "excluir";
+            excluir.textContent = "🗑️";
+            excluir.title = "Excluir " + nome;
+            excluir.setAttribute("aria-label", "Excluir " + nome);
+
+            excluir.addEventListener("click", function() {
+                excluirJogador(nome);
+            });
+
+            linha.appendChild(excluir);
+        }
+
+        lista.appendChild(linha);
+    }
+
+    document.getElementById("botaoEntrar").disabled =
+        !jogadorSelecionado ||
+        !Object.prototype.hasOwnProperty.call(jogadores, jogadorSelecionado);
+}
+
+function alternarFormulario(forcarEstado) {
+    const formulario = document.getElementById("formularioJogador");
+    const botao = document.getElementById("botaoMais");
+
+    const abrir = typeof forcarEstado === "boolean"
+        ? forcarEstado
+        : !formulario.classList.contains("aberto");
+
+    formulario.classList.toggle("aberto", abrir);
+    botao.setAttribute("aria-expanded", String(abrir));
+    botao.textContent = abrir ? "−" : "+";
+
+    if (abrir) {
+        document.getElementById("nomeNovo").focus();
+    }
+}
+
+document.getElementById("formularioJogador").addEventListener(
+    "submit",
+    function(evento) {
+        evento.preventDefault();
+
+        const campoNome = document.getElementById("nomeNovo");
+        const campoSenha = document.getElementById("senhaNova");
+        const nome = campoNome.value.trim();
+        const senha = campoSenha.value;
+
+        if (!nome || !senha.trim()) {
+            mostrarMensagem("Preencha o nome e a senha.");
+            return;
+        }
+
+        if (Object.keys(todosJogadores()).some(
+            existente => existente.toLowerCase() === nome.toLowerCase()
+        )) {
+            mostrarMensagem("Já existe um jogador com esse nome.");
+            return;
+        }
+
+        jogadoresPersonalizados[nome] = senha;
+
+        if (!salvarJogadores()) {
+            delete jogadoresPersonalizados[nome];
+            return;
+        }
+
+        jogadorSelecionado = nome;
+
+        campoNome.value = "";
+        campoSenha.value = "";
+
+        alternarFormulario(false);
+        atualizarJogadores();
+        mostrarMensagem("Jogador " + nome + " salvo com sucesso!");
+    }
+);
+
+function excluirJogador(nome) {
+    if (
+        !Object.prototype.hasOwnProperty.call(
+            jogadoresPersonalizados,
+            nome
+        )
+    ) {
+        mostrarMensagem("Esse jogador fixo não pode ser excluído.");
+        return;
+    }
+
+    if (!confirm('Deseja realmente excluir o jogador "' + nome + '"?')) {
+        return;
+    }
+
+    const senhaAnterior = jogadoresPersonalizados[nome];
+    delete jogadoresPersonalizados[nome];
+
+    if (!salvarJogadores()) {
+        jogadoresPersonalizados[nome] = senhaAnterior;
+        return;
+    }
+
+    if (jogadorSelecionado === nome) {
+        jogadorSelecionado = "";
+    }
+
+    atualizarJogadores();
+    mostrarMensagem("Jogador " + nome + " excluído.");
+}
 
 function entrar() {
-  if (campoSenha.value !== jogadores[selecionado]) {
-    mensagem.textContent = "Senha incorreta.";
-    return;
-  }
+    if (!jogadorSelecionado) {
+        mostrarMensagem("Selecione um jogador primeiro.");
+        return;
+    }
 
-  sessionStorage.setItem("jogadorAtual", selecionado);
-  window.location.href = "index.html";
+    const jogadores = todosJogadores();
+
+    if (!Object.prototype.hasOwnProperty.call(
+        jogadores,
+        jogadorSelecionado
+    )) {
+        jogadorSelecionado = "";
+        atualizarJogadores();
+        mostrarMensagem("Esse jogador não existe mais.");
+        return;
+    }
+
+    const senhaDigitada = prompt(
+        "Digite a senha de " + jogadorSelecionado + ":"
+    );
+
+    if (senhaDigitada === null) {
+        return;
+    }
+
+    if (senhaDigitada !== jogadores[jogadorSelecionado]) {
+        mostrarMensagem("Senha incorreta.");
+        return;
+    }
+
+    sessionStorage.setItem("jogadorAtual", jogadorSelecionado);
+    window.location.href = "index.html";
 }
 
-document.getElementById("botaoEntrar")
-  .addEventListener("click", entrar);
-
-campoSenha.addEventListener("keydown", event => {
-  if (event.key === "Enter") {
-    entrar();
-  }
-});
-
-/* PROPAGANDAS AUTOMÁTICAS */
-
-const banners = document.querySelectorAll(".banner");
-const areaPontos = document.getElementById("pontosAnuncios");
-
+/* Anúncios alternam automaticamente a cada 4 segundos. */
+const anuncios = document.querySelectorAll(".anuncio");
+const pontos = document.querySelectorAll(".ponto");
 let anuncioAtual = 0;
 
-banners.forEach((banner, indice) => {
-  const ponto = document.createElement("span");
+function trocarAnuncio() {
+    anuncios[anuncioAtual].classList.remove("ativo");
+    pontos[anuncioAtual].classList.remove("ativo");
 
-  ponto.className = "ponto";
-  ponto.setAttribute("aria-hidden", "true");
+    anuncioAtual = (anuncioAtual + 1) % anuncios.length;
 
-  areaPontos.appendChild(ponto);
-});
-
-const pontos = areaPontos.querySelectorAll(".ponto");
-
-function mostrarAnuncio(indice) {
-  anuncioAtual = indice % banners.length;
-
-  banners.forEach((banner, i) => {
-    banner.classList.toggle("ativo", i === anuncioAtual);
-  });
-
-  pontos.forEach((ponto, i) => {
-    ponto.classList.toggle("ativo", i === anuncioAtual);
-  });
+    anuncios[anuncioAtual].classList.add("ativo");
+    pontos[anuncioAtual].classList.add("ativo");
 }
 
-mostrarAnuncio(0);
+setInterval(trocarAnuncio, 4000);
 
-setInterval(() => {
-  mostrarAnuncio(anuncioAtual + 1);
-}, 4000);
+atualizarJogadores();
 </script>
 
 </body>
