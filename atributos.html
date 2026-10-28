@@ -1,69 +1,299 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atributos</title>
+<title>Atributos - Desastre Milenar</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif;padding:20px}
-h1{text-align:center;color:#00ff66}
-main{max-width:500px;margin:auto}
-.linha{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#151515;margin:10px 0;border:1px solid #333;border-radius:8px}
-button{background:#00ff66;color:#000;border:0;border-radius:6px;padding:9px 14px;font-weight:bold}
-.valor{margin:0 15px}
-.avancar{width:100%;padding:15px;margin-top:20px}
+
+body{
+    margin:0;
+    background:#080808;
+    color:white;
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    color:#00ff66;
+}
+
+main{
+    max-width:500px;
+    margin:auto;
+}
+
+.linha{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:15px;
+    background:#151515;
+    margin:10px 0;
+    border:1px solid #333;
+    border-radius:8px;
+}
+
+button{
+    background:#00ff66;
+    color:#000;
+    border:0;
+    border-radius:6px;
+    padding:9px 14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.35;
+    cursor:not-allowed;
+}
+
+.valor{
+    display:inline-block;
+    min-width:20px;
+    margin:0 12px;
+    text-align:center;
+}
+
+.avancar{
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    font-size:16px;
+}
+
+.voltar{
+    display:block;
+    margin-top:12px;
+    padding:12px;
+    text-align:center;
+    color:#00ff66;
+    text-decoration:none;
+    border:1px solid #00ff66;
+    border-radius:6px;
+}
+
+#jogadorInfo{
+    text-align:center;
+    color:#aaa;
+}
+
+#erro{
+    color:#ff6868;
+    text-align:center;
+}
 </style>
 </head>
+
 <body>
 <main>
+
 <h1>Atributos</h1>
+
+<p id="jogadorInfo"></p>
+
 <p>Pontos disponíveis: <strong id="restantes">4</strong></p>
+
 <div id="lista"></div>
-<button class="avancar" onclick="continuar()">Continuar</button>
+
+<p id="erro"></p>
+
+<button class="avancar" id="botaoAvancar" type="button">
+    Continuar
+</button>
+
+<a class="voltar" href="origens.html">Voltar para origens</a>
+
 </main>
+
 <script>
-const j=sessionStorage.getItem("jogadorAtual");
-if(!["Brayan","Vitor","Sofia"].includes(j))location.replace("jogadores.html");
-const key=k=>"jogador_"+j.toLowerCase()+"_"+k;
-const nomes=["Intelecto","Agilidade","Força","Vigor","Presença"];
-const ids=["intelecto","agilidade","forca","vigor","presenca"];
-const origem=localStorage.getItem(key("origem"))||"";
-let valores=JSON.parse(localStorage.getItem(key("atributos"))||"null");
+(function(){
 
-if(!valores){
-valores={intelecto:0,agilidade:0,forca:0,vigor:0,presenca:0};
-const bonus={Lutador:"forca",Professor:"intelecto",Atleta:"vigor",Apresentador:"presenca"};
-if(bonus[origem])valores[bonus[origem]]=1;
-}
+    const jogador = sessionStorage.getItem("jogadorAtual");
 
-function total(){return Object.values(valores).reduce((a,b)=>a+b,0);}
-function render(){
-document.getElementById("lista").innerHTML=nomes.map((n,i)=>`
-<div class="linha">
-<strong>${n}</strong>
-<div>
-<button onclick="alterar('${ids[i]}',-1)">−</button>
-<strong class="valor">${valores[ids[i]]}</strong>
-<button onclick="alterar('${ids[i]}',1)">+</button>
-</div>
-</div>`).join("");
-document.getElementById("restantes").textContent=4-(total()-Object.values(valores).filter((v,i)=>false).length);
-}
-function alterar(id,d){
-const bonus={Lutador:"forca",Professor:"intelecto",Atleta:"vigor",Apresentador:"presenca"};
-const base=bonus[origem]===id?1:0;
-if(d>0&&total()>=4)return;
-if(d<0&&valores[id]<=base)return;
-valores[id]+=d;
-render();
-}
-function continuar(){
-if(total()!==4){alert("Distribua os 4 pontos disponíveis.");return;}
-localStorage.setItem(key("atributos"),JSON.stringify(valores));
-location.href="ficha-final.html";
-}
-render();
+    // Só exige que exista um jogador na sessão.
+    // Não exige access_token para abrir esta página.
+    if(!jogador){
+        window.location.replace("Jogadores.html");
+        return;
+    }
+
+    document.getElementById("jogadorInfo").textContent =
+        "Jogador: " + jogador;
+
+    const chave = nome =>
+        "jogador_" + jogador.toLowerCase() + "_" + nome;
+
+    const nomes = [
+        "Intelecto",
+        "Agilidade",
+        "Força",
+        "Vigor",
+        "Presença"
+    ];
+
+    const ids = [
+        "intelecto",
+        "agilidade",
+        "forca",
+        "vigor",
+        "presenca"
+    ];
+
+    const origem = localStorage.getItem(chave("origem")) || "";
+
+    const bonusOrigem = {
+        "Lutador": "forca",
+        "Professor": "intelecto",
+        "Atleta": "vigor",
+        "Apresentador": "presenca"
+    };
+
+    const atributoBonus = bonusOrigem[origem];
+
+    let valoresSalvos;
+
+    try{
+        valoresSalvos = JSON.parse(
+            localStorage.getItem(chave("atributos")) || "null"
+        );
+    }catch(e){
+        valoresSalvos = null;
+    }
+
+    const valores = {};
+
+    ids.forEach(id => {
+        const valorSalvo = valoresSalvos &&
+            Number.isInteger(valoresSalvos[id])
+            ? valoresSalvos[id]
+            : 0;
+
+        valores[id] = Math.max(0, Math.min(4, valorSalvo));
+    });
+
+    // Garante o bônus da origem sem concedê-lo duas vezes.
+    if(atributoBonus){
+        valores[atributoBonus] = Math.max(1, valores[atributoBonus]);
+    }
+
+    // Limita a distribuição ao total de quatro pontos.
+    // O bônus de origem conta dentro desses quatro pontos.
+    let soma = ids.reduce((total, id) => total + valores[id], 0);
+
+    if(soma > 4){
+        ids.slice().reverse().forEach(id => {
+            const minimo = id === atributoBonus ? 1 : 0;
+
+            while(soma > 4 && valores[id] > minimo){
+                valores[id]--;
+                soma--;
+            }
+        });
+    }
+
+    function total(){
+        return ids.reduce((soma, id) => soma + valores[id], 0);
+    }
+
+    function salvar(){
+        localStorage.setItem(
+            chave("atributos"),
+            JSON.stringify(valores)
+        );
+    }
+
+    function render(){
+
+        const usados = total();
+        const restantes = Math.max(0, 4 - usados);
+
+        document.getElementById("restantes").textContent = restantes;
+
+        document.getElementById("lista").innerHTML =
+            nomes.map((nome, i) => {
+
+                const id = ids[i];
+                const minimo = id === atributoBonus ? 1 : 0;
+                const bloqueiaMenos = valores[id] <= minimo;
+                const bloqueiaMais = usados >= 4;
+
+                return `
+                    <div class="linha">
+                        <strong>${nome}</strong>
+                        <div>
+                            <button
+                                type="button"
+                                data-id="${id}"
+                                data-delta="-1"
+                                ${bloqueiaMenos ? "disabled" : ""}
+                            >−</button>
+
+                            <strong class="valor">${valores[id]}</strong>
+
+                            <button
+                                type="button"
+                                data-id="${id}"
+                                data-delta="1"
+                                ${bloqueiaMais ? "disabled" : ""}
+                            >+</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+        document.getElementById("lista")
+            .querySelectorAll("button")
+            .forEach(botao => {
+                botao.addEventListener("click", () => {
+                    alterar(
+                        botao.dataset.id,
+                        Number(botao.dataset.delta)
+                    );
+                });
+            });
+
+        salvar();
+    }
+
+    function alterar(id, delta){
+
+        const minimo = id === atributoBonus ? 1 : 0;
+
+        if(delta > 0 && total() >= 4) return;
+        if(delta < 0 && valores[id] <= minimo) return;
+
+        valores[id] += delta;
+
+        document.getElementById("erro").textContent = "";
+
+        render();
+    }
+
+    document.getElementById("botaoAvancar")
+        .addEventListener("click", () => {
+
+            if(total() !== 4){
+                document.getElementById("erro").textContent =
+                    "Distribua os 4 pontos disponíveis antes de continuar.";
+                return;
+            }
+
+            salvar();
+
+            window.location.href = "ficha-final.html";
+        });
+
+    render();
+
+})();
 </script>
+
 </body>
 </html>
