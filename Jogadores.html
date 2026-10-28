@@ -7,263 +7,89 @@
 <title>Jogadores - Desastre Milenar</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+    margin:0;min-height:100vh;padding:28px 16px;
+    background:#050505;color:#f2f2f2;font-family:Arial,sans-serif;
+    display:flex;flex-direction:column;align-items:center
 }
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    padding: 28px 16px;
-    background: #050505;
-    color: #f2f2f2;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+h1{
+    color:#39ff14;text-align:center;margin:8px 0;
+    text-shadow:0 0 12px #39ff1470
 }
-
-h1 {
-    color: #39ff14;
-    text-align: center;
-    margin: 8px 0;
-    text-shadow: 0 0 12px #39ff1470;
+.subtitulo{color:#bbb;text-align:center;margin:0 0 24px}
+.painel{
+    width:100%;max-width:600px;padding:18px;background:#101010;
+    border:1px solid #39ff14;border-radius:14px;
+    box-shadow:0 0 18px #39ff1420
 }
-
-.subtitulo {
-    color: #bbb;
-    text-align: center;
-    margin: 0 0 24px;
+h2{font-size:18px;margin:0 0 14px}
+.lista{display:flex;flex-direction:column;gap:10px}
+.jogador{
+    display:flex;align-items:center;gap:8px;padding:8px;
+    background:#171717;border:1px solid #333;border-radius:10px
 }
-
-.painel {
-    width: 100%;
-    max-width: 600px;
-    padding: 18px;
-    background: #101010;
-    border: 1px solid #39ff14;
-    border-radius: 14px;
-    box-shadow: 0 0 18px #39ff1420;
+.selecionar{
+    flex:1;min-width:0;padding:12px;border:1px solid transparent;
+    border-radius:7px;background:transparent;color:white;
+    text-align:left;font-size:16px;overflow-wrap:anywhere;cursor:pointer
 }
-
-h2 {
-    font-size: 18px;
-    margin: 0 0 14px;
+.selecionar.selecionado{
+    color:#39ff14;background:#183016;border-color:#39ff14
 }
-
-.lista {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.excluir{
+    flex-shrink:0;padding:10px 12px;border:1px solid #ff4b4b;
+    border-radius:8px;background:#271010;color:#ff6868;cursor:pointer
 }
-
-.jogador {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px;
-    background: #171717;
-    border: 1px solid #333;
-    border-radius: 10px;
+.acao{
+    padding:12px 15px;border:1px solid #39ff14;border-radius:9px;
+    background:#10230d;color:#39ff14;font-weight:bold;cursor:pointer
 }
-
-.selecionar {
-    flex: 1;
-    min-width: 0;
-    padding: 12px;
-    border: 1px solid transparent;
-    border-radius: 7px;
-    background: transparent;
-    color: white;
-    text-align: left;
-    font-size: 16px;
-    overflow-wrap: anywhere;
-    cursor: pointer;
+.acao:hover{filter:brightness(1.2)}
+.acao:disabled{opacity:.45;cursor:not-allowed}
+.mais{width:100%;margin-top:14px;font-size:23px}
+.formulario{
+    display:none;margin-top:14px;padding:14px;
+    border:1px solid #333;border-radius:10px;background:#090909
 }
-
-.selecionar.selecionado {
-    color: #39ff14;
-    background: #183016;
-    border-color: #39ff14;
+.formulario.aberto{display:block}
+label{display:block;margin:12px 0 6px;color:#bbb;font-size:13px}
+input{
+    width:100%;padding:12px;border:1px solid #444;border-radius:8px;
+    background:#171717;color:white;font-size:16px
 }
-
-.excluir {
-    flex-shrink: 0;
-    padding: 10px 12px;
-    border: 1px solid #ff4b4b;
-    border-radius: 8px;
-    background: #271010;
-    color: #ff6868;
-    cursor: pointer;
-    font-size: 16px;
+input:focus{outline:1px solid #39ff14;border-color:#39ff14}
+.botoes-formulario{display:flex;gap:10px;margin-top:14px}
+.botoes-formulario button{flex:1}
+.cancelar{border-color:#777;background:#222;color:#ddd}
+.mensagem{
+    min-height:20px;margin:12px 0 0;color:#39ff14;
+    font-size:14px;overflow-wrap:anywhere
 }
-
-.acao {
-    padding: 12px 15px;
-    border: 1px solid #39ff14;
-    border-radius: 9px;
-    background: #10230d;
-    color: #39ff14;
-    font-weight: bold;
-    cursor: pointer;
+.mensagem.erro{color:#ff6868}
+.ajuda{margin:14px 0 0;color:#888;font-size:12px;line-height:1.5}
+.anuncios{
+    width:100%;max-width:600px;height:108px;margin-top:22px;
+    position:relative;overflow:hidden;border:1px solid #39ff14;
+    border-radius:12px;background:#101010
 }
-
-.acao:hover {
-    filter: brightness(1.2);
+.anuncio{
+    display:none;width:100%;height:100%;padding:12px 16px;
+    align-items:center;justify-content:center;flex-direction:column;
+    text-align:center
 }
-
-.mais {
-    width: 100%;
-    margin-top: 14px;
-    font-size: 23px;
-}
-
-.formulario {
-    display: none;
-    margin-top: 14px;
-    padding: 14px;
-    border: 1px solid #333;
-    border-radius: 10px;
-    background: #090909;
-}
-
-.formulario.aberto {
-    display: block;
-}
-
-label {
-    display: block;
-    margin: 12px 0 6px;
-    color: #bbb;
-    font-size: 13px;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #444;
-    border-radius: 8px;
-    background: #171717;
-    color: white;
-    font-size: 16px;
-}
-
-input:focus {
-    outline: 1px solid #39ff14;
-    border-color: #39ff14;
-}
-
-.botoes-formulario {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-}
-
-.botoes-formulario button {
-    flex: 1;
-}
-
-.cancelar {
-    border-color: #777;
-    background: #222;
-    color: #ddd;
-}
-
-.mensagem {
-    min-height: 20px;
-    margin: 12px 0 0;
-    color: #39ff14;
-    font-size: 14px;
-    overflow-wrap: anywhere;
-}
-
-.ajuda {
-    margin: 14px 0 0;
-    color: #888;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-/* Anúncios */
-
-.anuncios {
-    width: 100%;
-    max-width: 600px;
-    height: 108px;
-    margin-top: 22px;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid #39ff14;
-    border-radius: 12px;
-    background: #101010;
-}
-
-.anuncio {
-    display: none;
-    width: 100%;
-    height: 100%;
-    padding: 12px 16px;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
-
-.anuncio.ativo {
-    display: flex;
-}
-
-.anuncio h3 {
-    margin: 0 0 7px;
-    color: #39ff14;
-    font-size: 18px;
-}
-
-.anuncio p {
-    margin: 0;
-    color: #ddd;
-    font-size: 13px;
-}
-
-.indicadores {
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    margin-top: 9px;
-}
-
-.ponto {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #444;
-}
-
-.ponto.ativo {
-    background: #39ff14;
-    box-shadow: 0 0 6px #39ff14;
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 22px 12px;
-    }
-
-    .painel {
-        padding: 13px;
-    }
-
-    .anuncios {
-        height: 100px;
-    }
-
-    .anuncio h3 {
-        font-size: 16px;
-    }
-
-    .anuncio p {
-        font-size: 12px;
-    }
+.anuncio.ativo{display:flex}
+.anuncio h3{margin:0 0 7px;color:#39ff14;font-size:18px}
+.anuncio p{margin:0;color:#ddd;font-size:13px}
+.indicadores{display:flex;justify-content:center;gap:7px;margin-top:9px}
+.ponto{width:7px;height:7px;border-radius:50%;background:#444}
+.ponto.ativo{background:#39ff14;box-shadow:0 0 6px #39ff14}
+@media(max-width:480px){
+    body{padding:22px 12px}
+    .painel{padding:13px}
+    .anuncios{height:100px}
+    .anuncio h3{font-size:16px}
+    .anuncio p{font-size:12px}
 }
 </style>
 </head>
@@ -276,41 +102,43 @@ input:focus {
 <section class="painel">
     <h2>Jogadores disponíveis</h2>
 
-    <div id="listaJogadores" class="lista"></div>
+    <div id="listaJogadores" class="lista">
+        <p>Carregando jogadores...</p>
+    </div>
 
     <button id="botaoMais" class="acao mais" type="button"
-        onclick="alternarFormulario()" aria-expanded="false">
-        +
-    </button>
+        aria-expanded="false">+</button>
 
     <form id="formularioJogador" class="formulario">
         <h2>Novo jogador</h2>
 
         <label for="nomeNovo">Nome do jogador</label>
         <input id="nomeNovo" type="text" maxlength="30"
-            placeholder="Digite o nome" autocomplete="off" required>
+            placeholder="Digite o nome" autocomplete="username" required>
 
-        <label for="senhaNova">Senha</label>
-        <input id="senhaNova" type="password" maxlength="60"
+        <label for="senhaNova">Senha (mínimo de 8 caracteres)</label>
+        <input id="senhaNova" type="password" minlength="8" maxlength="72"
             placeholder="Crie uma senha" autocomplete="new-password" required>
 
         <div class="botoes-formulario">
-            <button class="acao" type="submit">Salvar jogador</button>
-            <button class="acao cancelar" type="button"
-                onclick="alternarFormulario(false)">Cancelar</button>
+            <button id="botaoCadastrar" class="acao" type="submit">
+                Criar jogador
+            </button>
+            <button id="botaoCancelar" class="acao cancelar" type="button">
+                Cancelar
+            </button>
         </div>
     </form>
 
-    <p id="mensagem" class="mensagem" role="status"></p>
+    <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
 
     <p class="ajuda">
-        Brayan, Vitor e Sofia são jogadores fixos. Jogadores criados por você
-        podem ser excluídos pelo botão da lixeira.
+        Os jogadores são carregados do Supabase. Para entrar, selecione
+        seu nome e informe sua senha. A senha não fica salva neste navegador.
     </p>
 
     <button id="botaoEntrar" class="acao"
-        style="width:100%;margin-top:12px" type="button"
-        onclick="entrar()" disabled>
+        style="width:100%;margin-top:12px" type="button" disabled>
         Entrar
     </button>
 </section>
@@ -320,24 +148,21 @@ input:focus {
         <h3>PC DOS SONHOS</h3>
         <p>Seu próximo nível começa aqui!</p>
     </div>
-
     <div class="anuncio">
         <h3>INTERNET ULTRARRÁPIDA</h3>
         <p>Conecte-se a novas aventuras!</p>
     </div>
-
     <div class="anuncio">
         <h3>SEGREDO MILENAR</h3>
         <p>Você está pronto para descobrir?</p>
     </div>
-
     <div class="anuncio">
         <h3>VOCÊ FOI SORTEADO</h3>
         <p>Uma nova aventura espera por você!</p>
     </div>
 </section>
 
-<div id="indicadores" class="indicadores" aria-hidden="true">
+<div class="indicadores" aria-hidden="true">
     <span class="ponto ativo"></span>
     <span class="ponto"></span>
     <span class="ponto"></span>
@@ -345,264 +170,359 @@ input:focus {
 </div>
 
 <script>
-const jogadoresFixos = {
-    "Brayan": "brayan123",
-    "Vitor": "vitor123",
-    "Sofia": "sofia123"
-};
+"use strict";
 
-const CHAVE_JOGADORES = "jogadoresPersonalizados";
+const ENDPOINT =
+    "https://odjlvvmdkqzpexlcgkym.supabase.co/functions/v1/bright-action";
 
+let jogadores = [];
 let jogadorSelecionado = "";
-let jogadoresPersonalizados = carregarJogadores();
+let carregando = false;
 
-function carregarJogadores() {
-    try {
-        const dados = JSON.parse(
-            localStorage.getItem(CHAVE_JOGADORES) || "{}"
-        );
+const lista = document.getElementById("listaJogadores");
+const mensagem = document.getElementById("mensagem");
+const botaoEntrar = document.getElementById("botaoEntrar");
+const formulario = document.getElementById("formularioJogador");
+const botaoMais = document.getElementById("botaoMais");
 
-        if (
-            !dados ||
-            typeof dados !== "object" ||
-            Array.isArray(dados)
-        ) {
-            return {};
-        }
-
-        const validos = {};
-
-        for (const [nome, senha] of Object.entries(dados)) {
-            if (
-                typeof nome === "string" &&
-                nome.trim() &&
-                typeof senha === "string" &&
-                senha.length > 0 &&
-                !Object.prototype.hasOwnProperty.call(jogadoresFixos, nome)
-            ) {
-                validos[nome] = senha;
-            }
-        }
-
-        return validos;
-    } catch (erro) {
-        return {};
-    }
+function mostrarMensagem(texto, erro = false) {
+    mensagem.textContent = texto;
+    mensagem.classList.toggle("erro", erro);
 }
 
-function salvarJogadores() {
-    try {
-        localStorage.setItem(
-            CHAVE_JOGADORES,
-            JSON.stringify(jogadoresPersonalizados)
-        );
-        return true;
-    } catch (erro) {
-        mostrarMensagem(
-            "Não foi possível salvar. Verifique o armazenamento do navegador."
-        );
-        return false;
-    }
-}
-
-function todosJogadores() {
-    return {
-        ...jogadoresFixos,
-        ...jogadoresPersonalizados
+async function chamarFuncao(dados, token = "") {
+    const cabecalhos = {
+        "Content-Type": "application/json"
     };
+
+    if (token) {
+        cabecalhos.Authorization = "Bearer " + token;
+    }
+
+    let resposta;
+
+    try {
+        resposta = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: cabecalhos,
+            body: JSON.stringify(dados)
+        });
+    } catch (erro) {
+        throw new Error(
+            "Não foi possível conectar ao Supabase. Verifique sua internet."
+        );
+    }
+
+    let resultado;
+
+    try {
+        resultado = await resposta.json();
+    } catch (erro) {
+        throw new Error("O Supabase retornou uma resposta inválida.");
+    }
+
+    if (!resposta.ok) {
+        throw new Error(
+            resultado.erro ||
+            resultado.error ||
+            resultado.mensagem ||
+            resultado.message ||
+            "A operação não pôde ser concluída."
+        );
+    }
+
+    return resultado;
 }
 
-function mostrarMensagem(texto) {
-    document.getElementById("mensagem").textContent = texto;
+function obterNome(jogador) {
+    if (typeof jogador === "string") return jogador;
+
+    if (jogador && typeof jogador === "object") {
+        return jogador.display_name || jogador.nome || jogador.name || "";
+    }
+
+    return "";
 }
 
-function atualizarJogadores() {
-    const lista = document.getElementById("listaJogadores");
-    const jogadores = todosJogadores();
-
+function atualizarLista() {
     lista.replaceChildren();
 
-    for (const nome of Object.keys(jogadores)) {
+    if (jogadores.length === 0) {
+        const aviso = document.createElement("p");
+        aviso.textContent = "Nenhum jogador cadastrado ainda.";
+        lista.appendChild(aviso);
+        botaoEntrar.disabled = true;
+        return;
+    }
+
+    for (const jogador of jogadores) {
+        const nome = obterNome(jogador);
+        if (!nome) continue;
+
         const linha = document.createElement("div");
         linha.className = "jogador";
 
         const botao = document.createElement("button");
         botao.type = "button";
         botao.className = "selecionar";
-
-        if (nome === jogadorSelecionado) {
-            botao.classList.add("selecionado");
-        }
-
         botao.textContent =
             nome === jogadorSelecionado ? "✓ " + nome : nome;
-
+        botao.classList.toggle(
+            "selecionado",
+            nome === jogadorSelecionado
+        );
         botao.setAttribute(
             "aria-pressed",
             String(nome === jogadorSelecionado)
         );
 
-        botao.addEventListener("click", function() {
+        botao.addEventListener("click", () => {
             jogadorSelecionado = nome;
-            atualizarJogadores();
-            document.getElementById("botaoEntrar").disabled = false;
+            atualizarLista();
             mostrarMensagem("Jogador selecionado: " + nome);
         });
 
         linha.appendChild(botao);
 
-        if (
-            Object.prototype.hasOwnProperty.call(
-                jogadoresPersonalizados,
-                nome
-            )
-        ) {
-            const excluir = document.createElement("button");
-            excluir.type = "button";
-            excluir.className = "excluir";
-            excluir.textContent = "🗑️";
-            excluir.title = "Excluir " + nome;
-            excluir.setAttribute("aria-label", "Excluir " + nome);
-
-            excluir.addEventListener("click", function() {
-                excluirJogador(nome);
-            });
-
-            linha.appendChild(excluir);
-        }
+        const excluir = document.createElement("button");
+        excluir.type = "button";
+        excluir.className = "excluir";
+        excluir.textContent = "🗑️";
+        excluir.title = "Excluir " + nome;
+        excluir.setAttribute("aria-label", "Excluir " + nome);
+        excluir.addEventListener("click", () => excluirJogador(nome));
+        linha.appendChild(excluir);
 
         lista.appendChild(linha);
     }
 
-    document.getElementById("botaoEntrar").disabled =
-        !jogadorSelecionado ||
-        !Object.prototype.hasOwnProperty.call(jogadores, jogadorSelecionado);
+    botaoEntrar.disabled = !jogadorSelecionado;
+}
+
+async function carregarJogadores() {
+    lista.replaceChildren();
+    const carregandoTexto = document.createElement("p");
+    carregandoTexto.textContent = "Carregando jogadores...";
+    lista.appendChild(carregandoTexto);
+
+    try {
+        const resultado = await chamarFuncao({ acao: "listar" });
+
+        const listaRecebida =
+            resultado.jogadores ||
+            resultado.participantes ||
+            resultado.data;
+
+        if (!Array.isArray(listaRecebida)) {
+            throw new Error(
+                "A resposta da função não contém uma lista de jogadores."
+            );
+        }
+
+        jogadores = listaRecebida;
+        atualizarLista();
+    } catch (erro) {
+        lista.replaceChildren();
+        const aviso = document.createElement("p");
+        aviso.textContent = "Não foi possível carregar os jogadores.";
+        lista.appendChild(aviso);
+        mostrarMensagem(erro.message, true);
+        botaoEntrar.disabled = true;
+    }
 }
 
 function alternarFormulario(forcarEstado) {
-    const formulario = document.getElementById("formularioJogador");
-    const botao = document.getElementById("botaoMais");
-
     const abrir = typeof forcarEstado === "boolean"
         ? forcarEstado
         : !formulario.classList.contains("aberto");
 
     formulario.classList.toggle("aberto", abrir);
-    botao.setAttribute("aria-expanded", String(abrir));
-    botao.textContent = abrir ? "−" : "+";
+    botaoMais.setAttribute("aria-expanded", String(abrir));
+    botaoMais.textContent = abrir ? "−" : "+";
 
     if (abrir) {
         document.getElementById("nomeNovo").focus();
     }
 }
 
-document.getElementById("formularioJogador").addEventListener(
-    "submit",
-    function(evento) {
-        evento.preventDefault();
+botaoMais.addEventListener("click", () => alternarFormulario());
 
-        const campoNome = document.getElementById("nomeNovo");
-        const campoSenha = document.getElementById("senhaNova");
-        const nome = campoNome.value.trim();
-        const senha = campoSenha.value;
+document.getElementById("botaoCancelar").addEventListener("click", () => {
+    alternarFormulario(false);
+    formulario.reset();
+    mostrarMensagem("");
+});
 
-        if (!nome || !senha.trim()) {
-            mostrarMensagem("Preencha o nome e a senha.");
-            return;
-        }
+formulario.addEventListener("submit", async evento => {
+    evento.preventDefault();
 
-        if (Object.keys(todosJogadores()).some(
-            existente => existente.toLowerCase() === nome.toLowerCase()
-        )) {
-            mostrarMensagem("Já existe um jogador com esse nome.");
-            return;
-        }
+    if (carregando) return;
 
-        jogadoresPersonalizados[nome] = senha;
+    const nomeCampo = document.getElementById("nomeNovo");
+    const senhaCampo = document.getElementById("senhaNova");
+    const nome = nomeCampo.value.trim();
+    const senha = senhaCampo.value;
 
-        if (!salvarJogadores()) {
-            delete jogadoresPersonalizados[nome];
-            return;
-        }
-
-        jogadorSelecionado = nome;
-
-        campoNome.value = "";
-        campoSenha.value = "";
-
-        alternarFormulario(false);
-        atualizarJogadores();
-        mostrarMensagem("Jogador " + nome + " salvo com sucesso!");
-    }
-);
-
-function excluirJogador(nome) {
-    if (
-        !Object.prototype.hasOwnProperty.call(
-            jogadoresPersonalizados,
-            nome
-        )
-    ) {
-        mostrarMensagem("Esse jogador fixo não pode ser excluído.");
+    if (nome.length < 2 || nome.length > 30) {
+        mostrarMensagem("O nome deve ter entre 2 e 30 caracteres.", true);
         return;
     }
+
+    if (senha.length < 8 || senha.length > 72) {
+        mostrarMensagem("A senha deve ter entre 8 e 72 caracteres.", true);
+        return;
+    }
+
+    if (!senha.trim()) {
+        mostrarMensagem("Digite uma senha válida.", true);
+        return;
+    }
+
+    carregando = true;
+    const botaoCadastrar = document.getElementById("botaoCadastrar");
+    botaoCadastrar.disabled = true;
+    botaoCadastrar.textContent = "Criando...";
+
+    try {
+        await chamarFuncao({
+            acao: "criar",
+            nome: nome,
+            senha: senha
+        });
+
+        formulario.reset();
+        alternarFormulario(false);
+        jogadorSelecionado = nome;
+
+        await carregarJogadores();
+
+        const existe = jogadores.some(
+            jogador => obterNome(jogador).toLowerCase() === nome.toLowerCase()
+        );
+
+        if (existe) {
+            jogadorSelecionado = obterNome(
+                jogadores.find(
+                    jogador => obterNome(jogador).toLowerCase() === nome.toLowerCase()
+                )
+            );
+            atualizarLista();
+        }
+
+        mostrarMensagem(
+            "Jogador cadastrado! Selecione o nome e entre com a senha."
+        );
+    } catch (erro) {
+        mostrarMensagem(erro.message, true);
+    } finally {
+        carregando = false;
+        botaoCadastrar.disabled = false;
+        botaoCadastrar.textContent = "Criar jogador";
+    }
+});
+
+botaoEntrar.addEventListener("click", async () => {
+    if (!jogadorSelecionado || carregando) {
+        mostrarMensagem("Selecione um jogador primeiro.", true);
+        return;
+    }
+
+    const senha = prompt("Digite a senha de " + jogadorSelecionado + ":");
+
+    if (senha === null) return;
+
+    if (!senha) {
+        mostrarMensagem("Digite sua senha.", true);
+        return;
+    }
+
+    carregando = true;
+    botaoEntrar.disabled = true;
+    botaoEntrar.textContent = "Entrando...";
+
+    try {
+        const resultado = await chamarFuncao({
+            acao: "entrar",
+            nome: jogadorSelecionado,
+            senha: senha
+        });
+
+        const token = resultado.access_token;
+        const nomeConfirmado =
+            resultado.jogador ||
+            resultado.display_name ||
+            jogadorSelecionado;
+
+        if (!token) {
+            throw new Error(
+                "O login foi respondido sem token. Confira a resposta da função no Supabase."
+            );
+        }
+
+        sessionStorage.setItem("jogadorAtual", nomeConfirmado);
+        sessionStorage.setItem("access_token", token);
+
+        if (resultado.refresh_token) {
+            sessionStorage.setItem("refresh_token", resultado.refresh_token);
+        }
+
+        if (resultado.user_id) {
+            sessionStorage.setItem("user_id", resultado.user_id);
+        }
+
+        window.location.href = "index.html";
+    } catch (erro) {
+        mostrarMensagem(erro.message, true);
+    } finally {
+        carregando = false;
+        botaoEntrar.disabled = !jogadorSelecionado;
+        botaoEntrar.textContent = "Entrar";
+    }
+});
+
+async function excluirJogador(nome) {
+    if (carregando) return;
 
     if (!confirm('Deseja realmente excluir o jogador "' + nome + '"?')) {
         return;
     }
 
-    const senhaAnterior = jogadoresPersonalizados[nome];
-    delete jogadoresPersonalizados[nome];
+    const token = sessionStorage.getItem("access_token");
 
-    if (!salvarJogadores()) {
-        jogadoresPersonalizados[nome] = senhaAnterior;
+    if (!token) {
+        mostrarMensagem(
+            "Entre com sua conta antes de tentar excluir um jogador.",
+            true
+        );
         return;
     }
 
-    if (jogadorSelecionado === nome) {
-        jogadorSelecionado = "";
-    }
+    carregando = true;
 
-    atualizarJogadores();
-    mostrarMensagem("Jogador " + nome + " excluído.");
+    try {
+        await chamarFuncao({
+            acao: "excluir",
+            nome: nome
+        }, token);
+
+        if (jogadorSelecionado === nome) {
+            jogadorSelecionado = "";
+        }
+
+        mostrarMensagem("Jogador excluído.");
+        await carregarJogadores();
+    } catch (erro) {
+        mostrarMensagem(
+            "Não foi possível excluir: " + erro.message,
+            true
+        );
+    } finally {
+        carregando = false;
+        botaoEntrar.disabled = !jogadorSelecionado;
+    }
 }
 
-function entrar() {
-    if (!jogadorSelecionado) {
-        mostrarMensagem("Selecione um jogador primeiro.");
-        return;
-    }
-
-    const jogadores = todosJogadores();
-
-    if (!Object.prototype.hasOwnProperty.call(
-        jogadores,
-        jogadorSelecionado
-    )) {
-        jogadorSelecionado = "";
-        atualizarJogadores();
-        mostrarMensagem("Esse jogador não existe mais.");
-        return;
-    }
-
-    const senhaDigitada = prompt(
-        "Digite a senha de " + jogadorSelecionado + ":"
-    );
-
-    if (senhaDigitada === null) {
-        return;
-    }
-
-    if (senhaDigitada !== jogadores[jogadorSelecionado]) {
-        mostrarMensagem("Senha incorreta.");
-        return;
-    }
-
-    sessionStorage.setItem("jogadorAtual", jogadorSelecionado);
-    window.location.href = "index.html";
-}
-
-/* Anúncios alternam automaticamente a cada 4 segundos. */
+/* Alternância dos anúncios */
 const anuncios = document.querySelectorAll(".anuncio");
 const pontos = document.querySelectorAll(".ponto");
 let anuncioAtual = 0;
@@ -610,16 +530,14 @@ let anuncioAtual = 0;
 function trocarAnuncio() {
     anuncios[anuncioAtual].classList.remove("ativo");
     pontos[anuncioAtual].classList.remove("ativo");
-
     anuncioAtual = (anuncioAtual + 1) % anuncios.length;
-
     anuncios[anuncioAtual].classList.add("ativo");
     pontos[anuncioAtual].classList.add("ativo");
 }
 
 setInterval(trocarAnuncio, 4000);
 
-atualizarJogadores();
+carregarJogadores();
 </script>
 
 </body>
