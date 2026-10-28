@@ -7,300 +7,125 @@
 <title>Origens - Desastre Milenar</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+    margin:0;padding:20px;background:#050505;color:#fff;
+    font-family:Arial,sans-serif
 }
-
-body {
-    margin: 0;
-    background: #080808;
-    color: white;
-    font-family: Arial, sans-serif;
-    padding: 20px;
+main{max-width:850px;margin:auto}
+header{text-align:center;margin-bottom:25px}
+h1{color:#39ff14}
+#jogadorInfo{color:#aaa}
+.origem{
+    margin-bottom:12px;background:#111;
+    border:1px solid #333;border-radius:9px;overflow:hidden
 }
-
-h1 {
-    color: #00ff66;
-    text-align: center;
+.origem-titulo{
+    display:block;width:100%;padding:16px;
+    border:0;background:#111;color:#39ff14;
+    text-align:left;font-size:17px;font-weight:bold;cursor:pointer
 }
-
-#lista {
-    max-width: 700px;
-    margin: auto;
+.origem-titulo:hover{background:#1b1b1b}
+.detalhes{display:none;padding:0 16px 16px;color:#ddd}
+.selecionar{
+    padding:12px;width:100%;border:0;border-radius:6px;
+    background:#39ff14;color:#000;font-weight:bold;cursor:pointer
 }
-
-.origem {
-    background: #151515;
-    border: 1px solid #00ff66;
-    border-radius: 8px;
-    margin: 10px 0;
-    padding: 15px;
+.botoes{display:flex;gap:10px;margin:20px 0}
+.botoes a{
+    flex:1;padding:13px;text-align:center;text-decoration:none;
+    color:#39ff14;border:1px solid #39ff14;border-radius:7px
 }
-
-.origem button {
-    width: 100%;
-    background: none;
-    color: #00ff66;
-    border: 0;
-    text-align: left;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-    overflow-wrap: anywhere;
-}
-
-.descricao {
-    display: none;
-    color: #ddd;
-    padding-top: 10px;
-    line-height: 1.5;
-}
-
-.origem.selecionada {
-    border-color: #00ff66;
-    box-shadow: 0 0 8px #00ff6630;
-}
-
-button.avancar {
-    display: block;
-    width: 100%;
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 15px;
-    background: #00ff66;
-    color: #000;
-    border: 0;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button.avancar:hover {
-    background: #39ff85;
-}
-
-button.voltar {
-    display: block;
-    width: 100%;
-    max-width: 700px;
-    margin: 10px auto;
-    padding: 13px;
-    background: #151515;
-    color: #00ff66;
-    border: 1px solid #00ff66;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#mensagem {
-    text-align: center;
-    color: #ff6868;
-    margin: 15px auto;
-    max-width: 700px;
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 14px;
-    }
-
-    .origem {
-        padding: 12px;
-    }
-}
+#mensagem{text-align:center;color:#39ff14}
 </style>
 </head>
 
 <body>
+<main>
+<header>
+    <h1>ESCOLHA SUA ORIGEM</h1>
+    <p id="jogadorInfo"></p>
+</header>
 
-<h1>Escolha sua origem</h1>
+<div class="botoes">
+    <a href="index.html">Voltar</a>
+    <a href="atributos.html" id="continuar">Continuar</a>
+</div>
 
-<p id="mensagem" role="status"></p>
-
-<div id="lista"></div>
-
-<button class="avancar" id="botaoContinuar" type="button">
-    Continuar
-</button>
-
-<button class="voltar" id="botaoVoltar" type="button">
-    Voltar ao menu
-</button>
+<p id="mensagem"></p>
+<div id="listaOrigens"></div>
+</main>
 
 <script>
-"use strict";
+(function(){
+    const jogador = sessionStorage.getItem("jogadorAtual");
 
-/* Verifica se existe uma sessão de jogador */
-const jogador = sessionStorage.getItem("jogadorAtual");
-const token = sessionStorage.getItem("access_token");
+    document.getElementById("jogadorInfo").textContent =
+        jogador ? "Jogador: " + jogador : "Criando personagem";
 
-if (!jogador || !token) {
-    window.location.replace("Jogadores.html");
-}
+    const origens = [
+        "Acadêmico","Agente de Saúde","Amigo dos Animais","Amnésico",
+        "Artista","Astronauta","Atleta","Blaster","Body Builder","Chef",
+        "Chef do Outro Lado","Cientista Forense","Colegial","Cosplayer",
+        "Criminoso","Cultista Arrependido","Desgarrado","Diplomata","Dublê",
+        "Engenheiro","Espírito","Executivo","Experimento","Explorador",
+        "Fanático","Fotógrafo","Gaudério Abutre","Ginasta","Investigador",
+        "Inventor","Jornalista","Legista","Lutador","Magnata","Mateiro",
+        "Mercenário","Mergulhador","Militar","Místico","Motorista","Nerd",
+        "Operário","Personal Trainer","Policial","Professor","Profetizado",
+        "Psicólogo","Religioso","Repórter","Revoltado","Servidor Público",
+        "T.I.","Teórico da Conspiração","Trabalhador Rural","Trambiqueiro",
+        "Universitário","Vítima"
+    ];
 
-/* Identifica os dados deste jogador */
-const chave = nome =>
-    "jogador_" + jogador.toLowerCase() + "_" + nome;
+    const chave = "jogador_" +
+        (jogador || "visitante").toLowerCase() + "_origem";
 
-/* Lista de origens */
-const origens = [
-    "Acadêmico",
-    "Agente de Saúde",
-    "Amigo dos Animais",
-    "Amnésico",
-    "Artista",
-    "Astronauta",
-    "Atleta",
-    "Blaster",
-    "Body Builder",
-    "Chef",
-    "Chef do Outro Lado",
-    "Cientista Forense",
-    "Colegial",
-    "Cosplayer",
-    "Criminoso",
-    "Cultista Arrependido",
-    "Desgarrado",
-    "Diplomata",
-    "Dublê",
-    "Engenheiro",
-    "Espírito",
-    "Executivo",
-    "Experimento",
-    "Explorador",
-    "Fanático",
-    "Fotógrafo",
-    "Gaudério Abutre",
-    "Ginasta",
-    "Investigador",
-    "Inventor",
-    "Jornalista",
-    "Legista",
-    "Lutador",
-    "Magnata",
-    "Mateiro",
-    "Mercenário",
-    "Mergulhador",
-    "Militar",
-    "Místico",
-    "Motorista",
-    "Nerd",
-    "Operário",
-    "Personal Trainer",
-    "Policial",
-    "Professor",
-    "Profetizado",
-    "Psicólogo",
-    "Religioso",
-    "Repórter",
-    "Revoltado",
-    "Servidor Público",
-    "T.I.",
-    "Teórico da Conspiração",
-    "Trabalhador Rural",
-    "Trambiqueiro",
-    "Universitário",
-    "Vítima"
-];
+    const lista = document.getElementById("listaOrigens");
+    const mensagem = document.getElementById("mensagem");
 
-const lista = document.getElementById("lista");
-const mensagem = document.getElementById("mensagem");
+    origens.forEach(nome => {
+        const bloco = document.createElement("section");
+        bloco.className = "origem";
 
-let origemEscolhida = "";
+        const titulo = document.createElement("button");
+        titulo.className = "origem-titulo";
+        titulo.type = "button";
+        titulo.textContent = "▼ " + nome;
 
-try {
-    origemEscolhida = localStorage.getItem(chave("origem")) || "";
-} catch (erro) {
-    origemEscolhida = "";
-}
+        const detalhes = document.createElement("div");
+        detalhes.className = "detalhes";
 
-function mostrarMensagem(texto) {
-    mensagem.textContent = texto;
-}
+        const descricao = document.createElement("p");
+        descricao.textContent = "Selecione esta origem para sua personagem.";
 
-function selecionarOrigem(nome, botao, descricao, cartao) {
-    origemEscolhida = nome;
+        const selecionar = document.createElement("button");
+        selecionar.className = "selecionar";
+        selecionar.type = "button";
+        selecionar.textContent = "Selecionar origem";
 
-    try {
-        localStorage.setItem(chave("origem"), nome);
-    } catch (erro) {
-        mostrarMensagem(
-            "Não foi possível salvar a origem neste navegador."
-        );
-        return;
-    }
+        titulo.addEventListener("click", () => {
+            detalhes.style.display =
+                detalhes.style.display === "block" ? "none" : "block";
+        });
 
-    document.querySelectorAll(".origem").forEach(elemento => {
-        elemento.classList.remove("selecionada");
+        selecionar.addEventListener("click", () => {
+            localStorage.setItem(chave, nome);
+            mensagem.textContent = "Origem selecionada: " + nome;
+        });
 
-        const botaoOrigem = elemento.querySelector("button");
-        const descricaoOrigem = elemento.querySelector(".descricao");
-
-        const nomeOriginal = botaoOrigem.dataset.nome;
-
-        botaoOrigem.textContent = "＋ " + nomeOriginal;
-        descricaoOrigem.style.display = "none";
+        detalhes.append(descricao, selecionar);
+        bloco.append(titulo, detalhes);
+        lista.appendChild(bloco);
     });
 
-    botao.textContent = "✓ " + nome;
-    cartao.classList.add("selecionada");
-    descricao.style.display = "block";
-
-    mostrarMensagem("");
-}
-
-origens.forEach(nome => {
-    const cartao = document.createElement("div");
-    cartao.className = "origem";
-
-    const botao = document.createElement("button");
-    botao.type = "button";
-    botao.dataset.nome = nome;
-    botao.textContent = "＋ " + nome;
-
-    const descricao = document.createElement("div");
-    descricao.className = "descricao";
-    descricao.textContent =
-        "Origem selecionada: " + nome + ".";
-
-    botao.addEventListener("click", () => {
-        selecionarOrigem(nome, botao, descricao, cartao);
-    });
-
-    cartao.appendChild(botao);
-    cartao.appendChild(descricao);
-    lista.appendChild(cartao);
-
-    if (origemEscolhida === nome) {
-        botao.textContent = "✓ " + nome;
-        descricao.style.display = "block";
-        cartao.classList.add("selecionada");
-    }
-});
-
-/* Continua para a escolha dos atributos */
-document.getElementById("botaoContinuar").addEventListener(
-    "click",
-    () => {
-        if (!origemEscolhida) {
-            mostrarMensagem("Escolha uma origem antes de continuar.");
-            return;
+    document.getElementById("continuar").addEventListener("click", event => {
+        if (!localStorage.getItem(chave)) {
+            event.preventDefault();
+            mensagem.textContent = "Selecione uma origem antes de continuar.";
         }
-
-        window.location.href = "atributos.html";
-    }
-);
-
-/* Volta ao menu */
-document.getElementById("botaoVoltar").addEventListener(
-    "click",
-    () => {
-        window.location.href = "index.html";
-    }
-);
+    });
+})();
 </script>
-
 </body>
 </html>
